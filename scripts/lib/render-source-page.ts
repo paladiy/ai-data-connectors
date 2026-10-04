@@ -15,7 +15,7 @@ export function escapeHtml(value: string): string {
 const e = escapeHtml;
 
 function anchor(label: string, url: string): string {
-  return `<a href="${e(encodeURI(url))}">${e(label)}</a>`;
+  return `<a href="${e(url)}">${e(label)}</a>`;
 }
 
 function list(items: string[], className?: string): string {

@@ -28,8 +28,17 @@ export function escapeCell(value: string): string {
   return escapeText(value) || "—";
 }
 
+/**
+ * Percent-encodes only what would break a Markdown link destination or let a URL escape its own
+ * brackets. `encodeURI` cannot be used here: it re-encodes the `%` of an already-encoded query
+ * value, so `?title=Correction%3A+X` would arrive as `Correction%253A+X`.
+ */
+export function encodeDestination(url: string): string {
+  return url.replace(/[\s()<>[\]"\\]/g, (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`);
+}
+
 export function link(label: string, url: string): string {
-  return `[${escapeText(label)}](${encodeURI(url)})`;
+  return `[${escapeText(label)}](${encodeDestination(url)})`;
 }
 
 export function claimText(claim: Claim<unknown>, { known }: { known: (value: unknown) => string }): string {

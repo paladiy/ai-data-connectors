@@ -138,6 +138,10 @@ describe("connector page rendering", () => {
     const guide = guideFor({}, site);
     expect(guide).toContain("https://github.com/owner/name/issues/new?template=correction.yml");
     expect(guide).toContain("source=fixture-source");
+    // The query is already percent-encoded; encoding it again would land the reader on a
+    // prefilled title reading "Correction%3A".
+    expect(guide).toContain("title=Correction%3A+Fixture+Source");
+    expect(guide).not.toContain("%25");
   });
 });
 
