@@ -131,11 +131,45 @@ describe("README rendering", () => {
     expect(readme).toContain("No sources have been added yet.");
   });
 
-  it("lists every record", () => {
+  it("lists every record with its Coupler.io sample question", () => {
     const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
-    expect(readme).toContain(
-      "| Fixture Source SYNTHETIC-FIXTURE | — |",
-    );
+    expect(readme).toContain("| Fixture Source SYNTHETIC-FIXTURE | “Show last month's fixture totals.” | — |");
+  });
+
+  it("links the Coupler.io landing page cited in a record's evidence", () => {
+    const record = fixtureRecord();
+    const content = fixtureContent([
+      {
+        ...record,
+        evidence: [
+          ...record.evidence,
+          {
+            id: "fx-landing",
+            url: "https://www.coupler.io/claude-integrations/fixture-to-claude",
+            title: "Fixture landing page",
+            publisher: "Coupler.io",
+            checked_on: "2026-09-01",
+            kind: "vendor_docs",
+            public: true,
+          },
+        ],
+      },
+    ]);
+    const readme = renderReadme(buildModel(content));
+    expect(readme).toContain("(https://www.coupler.io/claude-integrations/fixture-to-claude)");
+  });
+
+  it("puts the Coupler.io overview before the developer material", () => {
+    const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
+    const order = [
+      "## How to connect your business data to Claude",
+      "## Data sources you can connect to Claude",
+      "## Frequently asked questions",
+      "## For developers and contributors",
+      "### Repository commands",
+    ].map((heading) => readme.indexOf(heading));
+    expect(order.every((index) => index >= 0)).toBe(true);
+    expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
   it("states that the directory is not a connector service", () => {
