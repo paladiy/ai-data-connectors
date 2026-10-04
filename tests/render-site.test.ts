@@ -84,11 +84,6 @@ describe("site outputs", () => {
     expect(keys.filter((key) => /categories|guides|_headers/.test(key))).toEqual([]);
   });
 
-  it("state the affiliation near the beginning of llms.txt", () => {
-    const llms = generateOutputs(content).files.get("site/public/llms.txt")!;
-    expect(llms.split("\n").slice(0, 4).join("\n")).toContain(fixtureSite.affiliation_statement);
-  });
-
   it("omit internal references from every generated file", () => {
     const record = fixtureRecord({
       options: [fixtureOption({ limits: known("Note.", ["fx-docs", "fx-internal"]) }), fixtureOurOption()],

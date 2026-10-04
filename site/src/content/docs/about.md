@@ -3,12 +3,6 @@ title: About
 description: What this directory covers, how options are ordered, what claims mean, and how to report a correction.
 ---
 
-## Who maintains this
-
-This directory is maintained by Olexander Paladiy, who works at Coupler.io. Coupler.io is one of the
-services listed here and is compared using the same fields as every other option. The directory is
-not affiliated with Anthropic.
-
 ## What it covers
 
 Each connector page answers one question: how can the data in a given business source be used by an

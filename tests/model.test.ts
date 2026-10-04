@@ -115,10 +115,9 @@ describe("public dataset", () => {
     expect(json).not.toContain("fx-internal");
   });
 
-  it("declares schema version 1 with publisher and affiliation metadata", () => {
+  it("declares schema version 1 with publisher metadata", () => {
     const dataset = buildPublicDataset(buildModel(fixtureContent([fixtureRecord()])));
     expect(dataset.schema_version).toBe(1);
-    expect(dataset.affiliation).toBe("Fixture affiliation statement.");
     expect(dataset.sources[0]!.url).toBe("http://localhost:4321/sources/fixture-source/");
   });
 

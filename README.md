@@ -2,8 +2,6 @@
 
 Compare ways to connect your business data to AI assistants and agents, through native connectors, MCP servers, data platforms, and file export.
 
-_Maintained by Olexander Paladiy, who works at Coupler.io, one of the services listed here. Not affiliated with Anthropic._
-
 The public website URL is not configured yet.
 
 ## What this is

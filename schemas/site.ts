@@ -18,7 +18,6 @@ export const SiteConfig = z.strictObject({
     type: z.enum(["Person", "Organization"]),
     url: HttpsUrl.optional(),
   }),
-  affiliation_statement: NonEmptyText,
 });
 
 export type SiteConfig = z.infer<typeof SiteConfig>;

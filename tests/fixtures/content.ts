@@ -11,7 +11,6 @@ export const fixtureSite = SiteConfig.parse({
   repo: null,
   maintainer: { name: "Fixture Maintainer", relationship_confirmed: false },
   publisher: { name: "Fixture Maintainer", type: "Person" },
-  affiliation_statement: "Fixture affiliation statement.",
 });
 
 /** Parses a fixture record. */

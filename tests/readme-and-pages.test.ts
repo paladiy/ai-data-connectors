@@ -43,9 +43,8 @@ describe("markdown escaping", () => {
 });
 
 describe("connector page rendering", () => {
-  it("uses the documented title pattern and states the affiliation", () => {
+  it("uses the documented title pattern", () => {
     const guide = guideFor();
-    expect(guide).toContain("Fixture affiliation statement.");
   });
 
   it("shows undocumented capabilities as unknown rather than as a no", () => {

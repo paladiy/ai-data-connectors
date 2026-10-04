@@ -82,7 +82,6 @@ export const PublicDataset = z.strictObject({
   name: z.string(),
   url: z.string(),
   publisher: z.strictObject({ name: z.string(), type: z.enum(["Person", "Organization"]) }),
-  affiliation: z.string(),
   documentation: z.string(),
   sources: z.array(PublicSource),
 });
@@ -169,7 +168,6 @@ export function buildPublicDataset(model: Model): PublicDataset {
     name: model.site.name,
     url: new URL("/", model.site.url).toString(),
     publisher: { name: model.site.publisher.name, type: model.site.publisher.type },
-    affiliation: model.site.affiliation_statement,
     documentation: new URL("/about/", model.site.url).toString(),
     sources: model.sources.map((source) => publicSource(source, model.site.url)),
   });

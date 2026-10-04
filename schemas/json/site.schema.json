@@ -64,10 +64,6 @@
         "type"
       ],
       "additionalProperties": false
-    },
-    "affiliation_statement": {
-      "type": "string",
-      "minLength": 1
     }
   },
   "required": [
@@ -76,8 +72,7 @@
     "url",
     "repo",
     "maintainer",
-    "publisher",
-    "affiliation_statement"
+    "publisher"
   ],
   "additionalProperties": false
 }

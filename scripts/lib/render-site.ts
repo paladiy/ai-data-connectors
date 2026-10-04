@@ -236,7 +236,6 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
       head,
     }),
-    `_${escapeText(site.affiliation_statement)}_`,
     escapeText(source.summary),
     usable.length > 0
       ? `**Covered here:** ${usable.map((option) => escapeText(option.name)).join(", ")}.`
@@ -317,8 +316,6 @@ export function renderLlmsTxt(model: Model): string {
   const { site } = model;
   const lines = [
     `# ${site.name}`,
-    "",
-    `> ${site.affiliation_statement}`,
     "",
     site.tagline,
     "",

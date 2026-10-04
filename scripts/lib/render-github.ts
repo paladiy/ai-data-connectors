@@ -48,7 +48,6 @@ export function renderReadme(model: Model): string {
   return joinSections([
     `# ${escapeText(site.name)}`,
     escapeText(site.tagline),
-    `_${escapeText(site.affiliation_statement)}_`,
     home ? `Website: ${link(site.name, home)}` : "The public website URL is not configured yet.",
     "## What this is",
     [
