@@ -77,7 +77,9 @@ const present = new Set(groups.map((g) => g.letter));
       )
     }
 
-    <div class="dx-meta">
+  </div>
+
+  <div class="dx-meta">
     <nav class="dx-letters" aria-label="Jump to letter">
       {
         alphabet.map((letter) =>
@@ -97,7 +99,6 @@ const present = new Set(groups.map((g) => g.letter));
     <p id="dx-count" class="dx-count" role="status" aria-live="polite">
       {sources.length} {sources.length === 1 ? "source" : "sources"}
     </p>
-    </div>
   </div>
 
   {

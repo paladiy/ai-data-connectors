@@ -280,7 +280,6 @@ export function renderIndexPage(model: Model): string {
       head,
     }),
     `import Directory from "../../components/Directory.astro";`,
-    `_${escapeText(site.affiliation_statement)}_`,
     "<Directory />",
   ]);
 }
