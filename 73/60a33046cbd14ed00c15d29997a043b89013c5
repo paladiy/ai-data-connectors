@@ -1,0 +1,30 @@
+site/src/components/Head.astro
+  s_1a94978dc8420b::t_e48d5f2bcbcaec 142,147-148
+  s_1a94978dc8420b::t_97904a741e1ae9 108-110
+  s_1a94978dc8420b::t_4d384443142a74 129-130,135
+  s_1a94978dc8420b::t_acd3aece02feb6 78-89
+tests/skills.test.ts
+  s_1a94978dc8420b::t_bc7fc6dba3ab26 1-76
+scripts/lib/render-source-page.ts
+  s_1a94978dc8420b::t_8d410eb07c2a32 4
+scripts/lib/render-guide.ts
+  s_1a94978dc8420b::t_57141efa8c8cc0 7
+scripts/lib/skills.ts
+  s_1a94978dc8420b::t_97a51a2bf07b0b 1-107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7360a33046cbd14ed00c15d29997a043b89013c5",
+  "prompts": {},
+  "sessions": {
+    "s_1a94978dc8420b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c0c836c0-016a-4114-a1cb-601d046187bd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
