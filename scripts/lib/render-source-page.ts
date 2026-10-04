@@ -1,6 +1,7 @@
 import { buildInstall, type InstallLink, type OptionInstall, type ToolInstall } from "./install.ts";
 import { formatValue } from "./markdown.ts";
 import type { ModelAiTool, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
+import { SKILLS_INDEX_URL, SKILLS_REPO_URL } from "./skills.ts";
 
 export function escapeHtml(value: string): string {
   return value
@@ -194,9 +195,6 @@ export function routesSection(source: ModelSource, aiTools: ModelAiTools): strin
       `</div>`,
   ];
 }
-
-export const SKILLS_INDEX_URL = "https://raw.githubusercontent.com/coupler-io/skills/main/skills-index.json";
-export const SKILLS_REPO_URL = "https://github.com/coupler-io/skills";
 
 export function skillsSection(source: ModelSource): string[] {
   const names = JSON.stringify([source.name, ...source.aliases]);

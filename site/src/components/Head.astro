@@ -75,56 +75,18 @@ import Default from "@astrojs/starlight/components/Head.astro";
 </script>
 
 <script>
-  // Related skills: read the live coupler-io/skills index in the browser and list the skills for this source.
-  interface IndexedSkill {
-    name: string;
-    path: string;
-    category?: string;
-    sources?: string[];
-    short_description?: string;
-    description?: string;
-  }
-
-  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  // "Google Analytics 4 (GA4)" matches as the whole label, without the brackets, and as the bracketed part.
-  const variants = (label: string) => {
-    const out = new Set([norm(label)]);
-    out.add(norm(label.replace(/\(.*?\)/g, "")));
-    for (const m of label.matchAll(/\((.*?)\)/g)) out.add(norm(m[1]));
-    out.delete("");
-    return out;
-  };
-
-  function summary(skill: IndexedSkill): string {
-    if (skill.short_description) return skill.short_description;
-    // Descriptions start with trigger phrasing ("Use for ..."); keep the first sentence only.
-    const text = (skill.description ?? "").replace(/\s+/g, " ").trim();
-    const end = text.search(/[.!?](\s|$)/);
-    return end > 0 ? text.slice(0, end + 1) : text;
-  }
-
-  // Skill descriptions are written for Claude to route on. People scan the quoted example
-  // questions inside them, so surface up to three of those.
-  function questions(skill: IndexedSkill): string[] {
-    const text = (skill.description ?? "").replace(/[\u201c\u201d]/g, '"');
-    // Double quotes, or single quotes that are not apostrophes ("isn't").
-    const found = [...text.matchAll(/"([^"]{8,90})"|(?<![A-Za-z])'(.{8,90}?)'(?![A-Za-z])/g)].map((m) => (m[1] ?? m[2]).trim());
-    return [...new Set(found)].slice(0, 3).map((q) => q.charAt(0).toUpperCase() + q.slice(1));
-  }
-
-  const ACRONYMS: Record<string, string> = { ppc: "PPC", pmax: "PMax", gaql: "GAQL", ga4: "GA4", seo: "SEO", roas: "ROAS", ads: "Ads" };
-
-  // "google-ads-budget-pacing" -> "Budget pacing" on the Google Ads page.
-  function title(slug: string, names: string[]): string {
-    let rest = slug;
-    for (const n of names) {
-      const prefix = norm(n).replace(/ /g, "-") + "-";
-      if (rest.startsWith(prefix) && rest.length > prefix.length) rest = rest.slice(prefix.length);
-    }
-    const words = rest.split("-").map((w) => ACRONYMS[w] ?? w);
-    const text = words.join(" ");
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  }
+  // Related skills: read the live coupler-io/skills index in the browser and list the skills for
+  // this source. The matching and labelling rules are shared with the generated Markdown guides.
+  import {
+    CATEGORY_LABELS,
+    matchSkills,
+    otherSources,
+    skillQuestions,
+    skillSummary,
+    skillTitle,
+    skillUrl,
+    type IndexedSkill,
+  } from "../../../scripts/lib/skills.ts";
 
   async function loadSkills() {
     const box = document.querySelector<HTMLElement>(".sp-skills");
@@ -140,32 +102,17 @@ import Default from "@astrojs/starlight/components/Head.astro";
     };
     try {
       const names: string[] = JSON.parse(box.dataset.skillsNames ?? "[]");
-      const wanted = new Set(names.flatMap((n) => [...variants(n)]));
       const res = await fetch(box.dataset.skillsIndex ?? "", { headers: { Accept: "application/json" } });
       if (!res.ok) return fail();
       const index = (await res.json()) as { skills?: IndexedSkill[] };
-      const matches = (index.skills ?? [])
-        .filter((skill) => (skill.sources ?? []).some((s) => [...variants(s)].some((v) => wanted.has(v))))
-        .sort((a, b) => a.name.localeCompare(b.name));
-      if (matches.length === 0) {
+      // Skills for this source alone come first; cross-source skills follow.
+      const ordered = matchSkills(index.skills ?? [], names);
+      if (ordered.length === 0) {
         if (status) status.textContent = "No source-specific skill listed yet.";
         return;
       }
       const current = box.dataset.skillsSource ?? "";
-      const ownVariants = new Set(names.flatMap((n) => [...variants(n)]));
-      // Skills for this source alone come first; cross-source skills follow.
-      const ordered = [...matches].sort(
-        (a, b) => Number((a.sources ?? []).length > 1) - Number((b.sources ?? []).length > 1) || a.name.localeCompare(b.name),
-      );
       const PAGE = 4;
-      const CATEGORIES: Record<string, string> = {
-        "marketing-and-ads": "Marketing & Ads",
-        ecommerce: "E-commerce",
-        finance: "Finance",
-        sales: "Sales",
-        capability: "Capability",
-        utilities: "Utilities",
-      };
       const make = (tag: string, className: string, text?: string) => {
         const el = document.createElement(tag);
         el.className = className;
@@ -179,26 +126,26 @@ import Default from "@astrojs/starlight/components/Head.astro";
         if (i >= PAGE) li.hidden = true;
 
         const h = make("h3", "sk-name");
-        const a = make("a", "sk-title", title(skill.name, names)) as HTMLAnchorElement;
-        a.href = `${repo}/tree/main/${skill.path.split("/").map(encodeURIComponent).join("/")}`;
+        const a = make("a", "sk-title", skillTitle(skill.name, names)) as HTMLAnchorElement;
+        a.href = skillUrl(skill, repo);
         a.title = skill.name;
         h.append(a);
         li.append(h);
 
-        const asks = questions(skill).slice(0, 2);
+        const asks = skillQuestions(skill).slice(0, 2);
         if (asks.length > 0) {
           const ul = make("ul", "sk-asks");
           ul.setAttribute("aria-label", "Example questions");
           for (const ask of asks) ul.append(make("li", "", ask));
           li.append(ul);
         } else {
-          li.append(make("p", "sk-desc", summary(skill)));
+          li.append(make("p", "sk-desc", skillSummary(skill)));
         }
 
         const foot = make("div", "sk-foot");
         const tags = make("span", "sk-tags");
-        tags.append(make("span", "sp-badge", CATEGORIES[(skill as { category?: string }).category ?? ""] ?? "Skill"));
-        const others = (skill.sources ?? []).filter((s) => ![...variants(s)].some((v) => ownVariants.has(v)));
+        tags.append(make("span", "sp-badge", CATEGORY_LABELS[skill.category ?? ""] ?? "Skill"));
+        const others = otherSources(skill, names);
         if (others.length > 0) tags.append(make("span", "sp-badge sp-badge--muted", `+ ${others.length} more ${others.length === 1 ? "source" : "sources"}`));
         foot.append(tags, make("span", "sk-view", "View skill"));
         li.append(foot);
