@@ -1,0 +1,110 @@
+site/src/content/docs/methodology.md
+  s_387b6fd99fec2f::t_812a06de653a9e 3,18-19,28,30-31
+README.md
+  s_387b6fd99fec2f::t_4483e5feeca3f3 3,11,13,15,17-19,21,23,30
+scripts/lib/render-site.ts
+  s_387b6fd99fec2f::t_1b7d20a9e9e7c8 194-195,248,254,286,290
+  s_387b6fd99fec2f::t_780a018571291c 216,242-243
+  s_387b6fd99fec2f::t_40e63489d6af16 72,304,362,366,368,378,390,394-395
+  s_387b6fd99fec2f::t_555af27d6e13bc 332,347,363
+  s_387b6fd99fec2f::t_bd48199d3c5e97 119,124,171,289
+scripts/lib/model.ts
+  s_387b6fd99fec2f::t_82d24898f090e8 6,85,157
+  s_387b6fd99fec2f::t_bd48199d3c5e97 36,79,87,98-101,153
+  s_387b6fd99fec2f::t_555af27d6e13bc 151
+.github/workflows/deploy.yml
+  s_387b6fd99fec2f::t_919e3e508350e4 19,39
+schemas/json/site.schema.json
+  s_387b6fd99fec2f::t_fc07dd9791473e 80
+data/sources/quickbooks-online.yaml
+  s_387b6fd99fec2f::t_780a018571291c 17
+  s_387b6fd99fec2f::t_fa68fbaf51a071 1
+  s_387b6fd99fec2f::t_91fa4d53eaca08 168,174,179,194,198,203,208,213,224,243,252,259,275,284,337,343,349,361,366,371,378,384,395,428,442,451,486,495,520,531,541,574,583,590,598,640,645,668,684,693,725,735,742,751
+tests/build.test.ts
+  s_387b6fd99fec2f::t_00d360b7b70d51 5,24,31-32,55
+scripts/lib/generate.ts
+  s_387b6fd99fec2f::t_40e63489d6af16 24,34,41,47,62-63,66-67
+scripts/generate.ts
+  s_387b6fd99fec2f::t_40e63489d6af16 6,8
+data/site.yaml
+  s_387b6fd99fec2f::t_555af27d6e13bc 4
+AGENTS.md
+  s_387b6fd99fec2f::t_919e3e508350e4 3,21-22,31,38,44
+package.json
+  s_387b6fd99fec2f::t_1b7d20a9e9e7c8 21
+scripts/lib/render-github.ts
+  s_387b6fd99fec2f::t_bd48199d3c5e97 40,96,110,210
+  s_387b6fd99fec2f::t_555af27d6e13bc 45
+  s_387b6fd99fec2f::t_1b7d20a9e9e7c8 50,152-154,170,177-178,186,201,203-205,216,225,227,229,231,233,240
+tests/model.test.ts
+  s_387b6fd99fec2f::t_f45ad98d7131cd 21-24,26,66,94-97,99,102,109
+  s_387b6fd99fec2f::t_43699aea568d82 5,30,44,67,76,103,110,123,130
+  s_387b6fd99fec2f::t_555af27d6e13bc 6,32,34-35,49-50,55-56,71,79,111
+tests/schema.test.ts
+  s_387b6fd99fec2f::t_f45ad98d7131cd 23-24,29
+  s_387b6fd99fec2f::t_bd48199d3c5e97 30,34
+  s_387b6fd99fec2f::t_555af27d6e13bc 4,19
+scripts/lib/markdown.ts
+  s_387b6fd99fec2f::t_555af27d6e13bc 28,60
+  s_387b6fd99fec2f::t_780a018571291c 59
+  s_387b6fd99fec2f::t_f3aa1ed0b0e923 25-26,63
+tests/validate.test.ts
+  s_387b6fd99fec2f::t_da6bc021a65ab8 3,7,19-20,24,87,90,97,103,121,141,146,151,164,200
+  s_387b6fd99fec2f::t_43699aea568d82 4,105,110,122,137,147,156,165,190
+  s_387b6fd99fec2f::t_92a12db8857173 201
+  s_387b6fd99fec2f::t_555af27d6e13bc 5,31,37,95,157
+tests/fixtures/content.ts
+  s_387b6fd99fec2f::t_00d360b7b70d51 24-26
+guides/quickbooks-online.md
+  s_387b6fd99fec2f::t_4483e5feeca3f3 1-271
+tests/render-github.test.ts
+  s_387b6fd99fec2f::t_43699aea568d82 8,12,134,141,148,172
+  s_387b6fd99fec2f::t_555af27d6e13bc 9,53,71,89,91
+  s_387b6fd99fec2f::t_d5036ebee52ede 51,57,99,101,128-130,133,136,154-155,157
+schemas/common.ts
+  s_387b6fd99fec2f::t_555af27d6e13bc 102,104
+  s_387b6fd99fec2f::t_bd48199d3c5e97 89,101,116
+scripts/lib/public-export.ts
+  s_387b6fd99fec2f::t_1b7d20a9e9e7c8 176
+  s_387b6fd99fec2f::t_bd48199d3c5e97 13
+scripts/lib/validate.ts
+  s_387b6fd99fec2f::t_85f0bc3c186cd5 55
+  s_387b6fd99fec2f::t_bd48199d3c5e97 17-18,21,24,29,132,148,210,218,221
+  s_387b6fd99fec2f::t_a77eb1df9ad797 16,149,165,172,177,179,182,219,222,230,255-256
+tests/render-site.test.ts
+  s_387b6fd99fec2f::t_43699aea568d82 7,11,65,114
+  s_387b6fd99fec2f::t_4483e5feeca3f3 8,50,55,74-75,77,82,85,88-91,94-98,102,109,117,136
+  s_387b6fd99fec2f::t_555af27d6e13bc 115
+site/src/components/Directory.astro
+  s_387b6fd99fec2f::t_555af27d6e13bc 57
+  s_387b6fd99fec2f::t_812a06de653a9e 40
+scripts/validate.ts
+  s_387b6fd99fec2f::t_40e63489d6af16 2,16
+site/src/content/docs/404.md
+  s_387b6fd99fec2f::t_780a018571291c 19
+tests/fixtures/factory.ts
+  s_387b6fd99fec2f::t_bd48199d3c5e97 12
+  s_387b6fd99fec2f::t_f3aa1ed0b0e923 11
+  s_387b6fd99fec2f::t_555af27d6e13bc 24,26,30-31,35-36,38,40,42,57
+  s_387b6fd99fec2f::t_00d360b7b70d51 74
+schemas/json/source.schema.json
+  s_387b6fd99fec2f::t_fc07dd9791473e 154,212,257,311,356,401,446,500,545,590,643,696,749,802,855,908,961
+site/astro.config.mjs
+  s_387b6fd99fec2f::t_1b7d20a9e9e7c8 24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e9a571b819d9cdf8472737eae5fdf8b8b40450ab",
+  "prompts": {},
+  "sessions": {
+    "s_387b6fd99fec2f": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "73f5e999-69fc-42ea-a775-53a63a4521c5",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
