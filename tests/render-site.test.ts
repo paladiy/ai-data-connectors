@@ -135,16 +135,6 @@ describe("source page structure", () => {
     expect(page).toContain("No related connectors listed yet.");
   });
 
-  it("lists each capability under its route", () => {
-    const page = pageFor({
-      options: [
-        fixtureOption({ capabilities: [{ text: "Read fixture invoices.", evidence_ids: ["fx-docs"] }] }),
-        fixtureOurOption(),
-      ],
-    });
-    expect(page).toContain("<li>Read fixture invoices.</li>");
-  });
-
   it("renders related skills as a live placeholder, not from recorded data", () => {
     const page = pageFor();
     expect(page).toContain("data-skills-names=");

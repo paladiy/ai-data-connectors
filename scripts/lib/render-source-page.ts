@@ -5,7 +5,7 @@ import { SURFACE_LABELS, type ModelOption, type ModelSource } from "./model.ts";
 
 /**
  * Body of a source page: what this is, then one route switcher whose selected route shows how to
- * install it, what it can do, and what data it reaches, then where to go next.
+ * install it, then where to go next.
  *
  * Every block is emitted as HTML with no blank lines inside it, so Markdown never re-parses the
  * content. All record text goes through escapeHtml; only https URLs from validated records reach
@@ -72,10 +72,6 @@ function claimBlock(claim: Claim<unknown>): string {
   }
   const label = claim.status === "not_applicable" ? "Not applicable" : "Unknown";
   return `<p class="sp-muted">${label}${claim.note ? `. ${e(claim.note)}` : ""}</p>`;
-}
-
-function fact(label: string, claim: Claim<unknown>): string {
-  return `<div class="sp-fact"><dt>${e(label)}</dt><dd>${claimBlock(claim)}</dd></div>`;
 }
 
 /* ---------- Description ---------- */
@@ -182,44 +178,7 @@ function installBody(option: ModelOption): string[] {
   return out.filter((part) => part !== "");
 }
 
-function limitsBlock(option: ModelOption): string {
-  if (option.limits.status !== "known") return "";
-  const value = option.limits.value;
-  const items = Array.isArray(value) ? value : [value];
-  return `<p class="sp-label">Limits to know</p>${list(items.map((item) => e(String(item))))}`;
-}
-
-function canDoBody(option: ModelOption): string[] {
-  const out: string[] = [];
-  if (option.access.status === "known" && option.access.note) {
-    out.push(`<p class="sp-note">${e(option.access.note)}</p>`);
-  }
-  if (option.capabilities.length > 0) {
-    out.push(`<p class="sp-label">Ask Claude to</p>`, list(option.capabilities.map((item) => e(item.text))));
-  } else {
-    out.push(`<p class="sp-muted">The actions this route supports are not itemised yet.</p>`);
-  }
-  if (option.sample_query) {
-    out.push(`<p class="sp-label">A good first question</p>`, `<blockquote>${e(option.sample_query)}</blockquote>`);
-  }
-  out.push(limitsBlock(option));
-  return out.filter((part) => part !== "");
-}
-
-function dataBody(option: ModelOption): string[] {
-  return [
-    `<p class="sp-label">Data available</p>`,
-    claimBlock(option.data_available),
-    `<dl class="sp-facts">`,
-    fact("How far back", option.history),
-    fact("How fresh", option.refresh),
-    fact("Where queries run", option.data_path),
-    fact("Several sources at once", option.multi_source),
-    `</dl>`,
-  ];
-}
-
-function section(option: ModelOption, kind: "works" | "install" | "can-do" | "data", title: string, body: string[]): string {
+function section(option: ModelOption, kind: "works" | "install", title: string, body: string[]): string {
   return (
     `<section class="sp-route"><div class="sp-route-head"><h3 id="${kind}-${e(option.id)}">${e(title)}</h3></div>` +
     `<div class="sp-route-body">${body.join("")}</div></section>`
@@ -250,8 +209,6 @@ function panel(option: ModelOption): string {
     intro +
     section(option, "works", "Works with", [worksIn(option)]) +
     section(option, "install", "How to install", installBody(option)) +
-    section(option, "can-do", "What it can do", canDoBody(option)) +
-    section(option, "data", "What data it has access to", dataBody(option)) +
     `</div>`
   );
 }
@@ -268,7 +225,7 @@ export function routesSection(source: ModelSource): string[] {
   const pills = options.map((option, i) => compactTab(option, i + 1)).join("");
   return [
     "## Connection routes",
-    `<p>${options.length === 1 ? "One route is recorded." : `Choose a route. ${options.length} are recorded.`} Each one shows what you need first, the steps, what Claude can then do, and which data it reaches.</p>`,
+    `<p>${options.length === 1 ? "One route is recorded." : `Choose a route. ${options.length} are recorded.`} Each one shows which Claude apps it works with and how to install it.</p>`,
     `<div class="sp-switch not-content">${radios}<div class="sp-tabs">${cards}</div>` +
       `<div class="sp-pillbar" aria-label="Switch route">${pills}</div>` +
       options.map((option) => panel(option)).join("") +

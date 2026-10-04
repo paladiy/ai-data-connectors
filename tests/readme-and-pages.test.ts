@@ -58,7 +58,7 @@ describe("connector page rendering", () => {
     const guide = guideFor({
       options: [
         fixtureOption({
-          history: {
+          pricing: {
             status: "unknown",
             value: null,
             evidence_ids: [],
@@ -75,7 +75,7 @@ describe("connector page rendering", () => {
     const guide = guideFor({
       options: [
         fixtureOption({
-          history: { status: "not_applicable", value: null, evidence_ids: [], note: "The API returns live data only." },
+          pricing: { status: "not_applicable", value: null, evidence_ids: [], note: "The API returns live data only." },
         }),
         fixtureOurOption(),
       ],
