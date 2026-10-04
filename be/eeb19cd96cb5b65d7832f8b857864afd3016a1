@@ -1,0 +1,41 @@
+scripts/lib/validate.ts
+  s_b909ef1ccfa9a7::t_af9a231649baed 245-247
+  s_b909ef1ccfa9a7::t_df4a54ab20f246 211
+  s_b909ef1ccfa9a7::t_114c2dcfa20b64 59,61-65,68
+  s_b909ef1ccfa9a7::t_e02cf8865bd7a4 1-31,33,37-58,60,66-67,69-113,115-202,204-210,212-244,248-314
+  s_b909ef1ccfa9a7::t_b576656dc2b1af 32,34-36
+  s_b909ef1ccfa9a7::t_ec5757b79b170d 114
+  s_b909ef1ccfa9a7::t_11b54c567fd3a8 203
+scripts/lib/load.ts
+  s_b909ef1ccfa9a7::t_d3b39e951b9119 1-128
+scripts/validate.ts
+  s_b909ef1ccfa9a7::t_467d2e28e2a035 1-33
+data/categories.yaml
+  s_b909ef1ccfa9a7::t_4c14dcb80c287f 1-51
+scripts/lib/hash.ts
+  s_b909ef1ccfa9a7::t_43ab4e741ec16e 1-33
+data/site.yaml
+  s_b909ef1ccfa9a7::t_3d7c6e5ba93f07 1-39
+tests/fixtures/content.ts
+  s_b909ef1ccfa9a7::t_7f3de09f675cc2 1-59
+tests/validate.test.ts
+  s_b909ef1ccfa9a7::t_6995d3c68e275b 1-10,17-138,145-147,151-231
+  s_b909ef1ccfa9a7::t_4230f2e93eea67 11-16
+  s_b909ef1ccfa9a7::t_c33f020783a262 139-144,148-150
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "beeeb19cd96cb5b65d7832f8b857864afd3016a1",
+  "prompts": {},
+  "sessions": {
+    "s_b909ef1ccfa9a7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "8c0c0417-2d62-499b-b9de-ef3413a26c3e",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
