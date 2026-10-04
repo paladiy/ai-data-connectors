@@ -1,0 +1,40 @@
+guides/google-analytics-4.md
+  s_1a94978dc8420b::t_1d621e65b50402 366
+  s_1a94978dc8420b::t_e473cc2f735887 365
+LICENSE
+  s_1a94978dc8420b::t_7d9ef9fa19c503 1-20
+guides/google-search-console.md
+  s_1a94978dc8420b::t_1d621e65b50402 360
+  s_1a94978dc8420b::t_e473cc2f735887 359
+README.md
+  s_1a94978dc8420b::t_1d621e65b50402 116
+guides/pipedrive.md
+  s_1a94978dc8420b::t_1d621e65b50402 356
+  s_1a94978dc8420b::t_e473cc2f735887 355
+guides/quickbooks-online.md
+  s_1a94978dc8420b::t_e473cc2f735887 350
+  s_1a94978dc8420b::t_1d621e65b50402 351
+guides/google-ads.md
+  s_1a94978dc8420b::t_e473cc2f735887 283
+  s_1a94978dc8420b::t_1d621e65b50402 284
+data/site.yaml
+  s_1a94978dc8420b::t_b65a7d3412d132 6
+llms.txt
+  s_1a94978dc8420b::t_1d621e65b50402 13-17,21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "70878be32ca8fd1eb9c97af6d931d7ea2974b385",
+  "prompts": {},
+  "sessions": {
+    "s_1a94978dc8420b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c0c836c0-016a-4114-a1cb-601d046187bd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
