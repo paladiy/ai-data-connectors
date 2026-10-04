@@ -1,0 +1,25 @@
+tests/render-site.test.ts
+  s_da9ce55c125f24::t_865bbda5bb455c 138,146-151
+  s_da9ce55c125f24::t_69ad2f02b4105d 133
+site/src/components/Head.astro
+  s_da9ce55c125f24::t_6a8fa7f916b8b0 48-82,88-124
+  s_da9ce55c125f24::t_e259589740414f 83-87
+scripts/lib/render-source-page.ts
+  s_da9ce55c125f24::t_5b87ab33fbcddc 260-267,269-276
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "bf62410b6ae7b2520fd69c52ebb06865d9371fc6",
+  "prompts": {},
+  "sessions": {
+    "s_da9ce55c125f24": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "3507b18a-756b-44e8-be3a-e544a51a36f0",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
