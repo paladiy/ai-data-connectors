@@ -1,0 +1,38 @@
+tests/build.test.ts
+  s_9445182594ebae::t_2604319e41b053 124,128,134-136
+scripts/lib/render-source-page.ts
+  s_9445182594ebae::t_e09b3730700a19 7-8,55,61,92-100,173,202-255
+  s_9445182594ebae::t_cc52ba4ba917f8 88
+scripts/lib/render-site.ts
+  s_9445182594ebae::t_e09b3730700a19 10,127
+site/astro.config.mjs
+  s_9445182594ebae::t_ce972d08163d31 9,20-24,42
+tests/render-site.test.ts
+  s_9445182594ebae::t_971bb67869a6c3 54-57
+  s_9445182594ebae::t_e09b3730700a19 120,124
+tests/readme-and-pages.test.ts
+  s_9445182594ebae::t_971bb67869a6c3 99,102-103
+site/src/components/Head.astro
+  s_9445182594ebae::t_271765e166aadf 33-43
+  s_9445182594ebae::t_ce972d08163d31 6-32,44-47
+site/src/styles/custom.css
+  s_9445182594ebae::t_271765e166aadf 418-424
+  s_9445182594ebae::t_ce972d08163d31 456,470,484,498,512,526
+  s_9445182594ebae::t_0a24112fd89ee5 355-417,425-455,457-469,471-483,485-497,499-511,513-525,527-545
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "41412d3ace610fa4f9116c8c33df13c47e737c91",
+  "prompts": {},
+  "sessions": {
+    "s_9445182594ebae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f66b8b2e-6d74-43bc-a6e8-b22202e81f92",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
