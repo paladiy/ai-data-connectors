@@ -1,0 +1,852 @@
+# Every known claim below cites evidence that was read on the recorded date. Anything that the
+# cited documentation does not state is left as status: unknown with a null value.
+schema_version: 1
+id: google-analytics-4
+slug: google-analytics-4
+name: Google Analytics 4
+aliases:
+  - GA4
+  - Google Analytics
+summary: >-
+  Google publishes an official GA4 server for Claude, but it is experimental, read-only, and the
+  only Claude app its documentation names is Claude Code. The other routes trade that friction for
+  scheduling, blending, or plain CSV. This guide compares what each exposes and the GA4 limits that
+  follow you down every path.
+
+meta_description: Compare ways to connect Google Analytics 4 to Claude, with evidence for every capability claim.
+
+research:
+  searched_on: "2026-10-04"
+  checked_urls:
+    - https://docs.coupler.io/sources/category/ppc/google-analytics
+    - https://docs.coupler.io/sources/category/ppc/google-analytics/data-overview
+    - https://docs.coupler.io/sources/category/ppc/google-analytics/faq
+    - https://docs.coupler.io/sources/category/ppc/google-analytics/common-issues
+    - https://docs.coupler.io/destinations/categories/ai/claude
+    - https://docs.coupler.io/destinations/categories/ai/claude/faq
+    - https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    - https://docs.coupler.io/ai/mcp
+    - https://claude.com/connectors/coupler-io
+    - https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
+    - https://support.claude.com/en/articles/8241126-upload-files-to-claude
+    - https://github.com/googleanalytics/google-analytics-mcp
+    - https://developers.google.com/analytics/devguides/MCP
+    - https://github.com/zapier/connectors/tree/main/apps/google-analytics
+    - https://support.google.com/analytics/answer/9317657
+  coverage_note: >-
+    Four routes were researched on 4 October 2026: the Coupler.io data platform, Google's own
+    experimental MCP server, Zapier's independent connector package, and a manual report export
+    uploaded into a conversation. No dedicated GA4 entry was reachable in Claude's connector
+    directory at the obvious addresses, though several multi-source connectors list GA4 among the
+    platforms they cover; the directory cannot be searched exhaustively, so no claim is made that
+    none exists.
+
+evidence:
+  - id: cpl-claude-destination
+    url: https://docs.coupler.io/destinations/categories/ai/claude
+    title: Claude destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-faq
+    url: https://docs.coupler.io/destinations/categories/ai/claude/faq
+    title: Claude destination FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-issues
+    url: https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    title: Claude destination common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-free-pro
+    url: https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans
+    title: Claude connector tools do not load on Free and Pro plans
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-mcp
+    url: https://docs.coupler.io/ai/mcp
+    title: What the Coupler.io MCP server can and cannot do
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-refresh
+    url: https://docs.coupler.io/functionality/flow-settings/how-to-set-up-automatic-data-refresh
+    title: How to set up automatic data refresh
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ga4-overview
+    url: https://docs.coupler.io/sources/category/ppc/google-analytics
+    title: Google Analytics 4 source overview
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ga4-data
+    url: https://docs.coupler.io/sources/category/ppc/google-analytics/data-overview
+    title: Google Analytics 4 data overview
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ga4-faq
+    url: https://docs.coupler.io/sources/category/ppc/google-analytics/faq
+    title: Google Analytics 4 source FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ga4-issues
+    url: https://docs.coupler.io/sources/category/ppc/google-analytics/common-issues
+    title: Google Analytics 4 source common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ga4-claude-page
+    url: https://www.coupler.io/claude-integrations/google-analytics-to-claude
+    title: Connect Google Analytics 4 to Claude
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: dir-coupler-io
+    url: https://claude.com/connectors/coupler-io
+    title: Coupler.io in the Claude connectors directory
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: directory
+    public: true
+  - id: claude-connectors-help
+    url: https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
+    title: Use connectors to extend Claude's capabilities
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: claude-upload-files
+    url: https://support.claude.com/en/articles/8241126-upload-files-to-claude
+    title: Upload files to Claude
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: google-ga4-mcp-repo
+    url: https://github.com/googleanalytics/google-analytics-mcp
+    title: Google Analytics MCP Server (Experimental)
+    publisher: Google
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: google-ga4-mcp-docs
+    url: https://developers.google.com/analytics/devguides/MCP
+    title: Google Analytics MCP server
+    publisher: Google
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: zapier-ga4-connector
+    url: https://github.com/zapier/connectors/tree/main/apps/google-analytics
+    title: Zapier Google Analytics connector
+    publisher: Zapier
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: ga4-export-help
+    url: https://support.google.com/analytics/answer/9317657
+    title: "[GA4] Share and export reports"
+    publisher: Google
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+
+options:
+  - id: coupler-io
+    name: Coupler.io
+    provider: Coupler.io
+    method: data_platform
+    description: >-
+      Coupler.io runs a GA4 report you define, on a schedule, and exposes the result to Claude
+      through its own MCP server. Claude queries the stored dataset, so a long date range does not
+      have to fit into the conversation.
+
+    maintainer:
+      status: known
+      value: third_party
+      evidence_ids: [cpl-mcp, cpl-claude-destination]
+      note: Coupler.io builds and runs this connector and its MCP server.
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [cpl-claude-destination, cpl-ga4-claude-page]
+
+    directory_listing:
+      status: known
+      value: https://claude.com/connectors/coupler-io
+      evidence_ids: [dir-coupler-io]
+      note: >-
+        The entry is marked Anthropic verified, credited to Coupler.io, added in November 2025, and
+        records sign-in as required. It lists four tools: get-data, get-schema, list-dataflows, and
+        get-dataflow
+
+    links:
+      overview: https://docs.coupler.io/sources/category/ppc/google-analytics
+      setup: https://docs.coupler.io/destinations/categories/ai/claude
+
+    # The Claude destination page names each of these surfaces for a single web connector.
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination, cpl-claude-faq]
+      claude_desktop:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+        note: Local use with Claude Desktop is also described through a Desktop Extension
+      claude_code:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+        note: Connected with the /mcp command rather than the web connector
+      cowork:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [cpl-mcp, dir-coupler-io]
+      note: >-
+        Queries against imported data are read-only, and nothing in either source describes writing
+        back to GA4. Coupler.io's own documentation also describes tools that change your Coupler.io
+        workspace, such as creating a data flow or triggering a run
+
+    data_available:
+      status: known
+      value:
+        - "One flexible report type that you build from your own choice of metrics and dimensions, loaded dynamically from the GA4 API for your property"
+        - "Traffic metrics: Views, Sessions, Total users, New users, Active users, Bounce rate, Engagement rate, Average session duration, Views per session, Sessions per user, Event count, Key events"
+        - "Ecommerce metrics: Purchase revenue, Total revenue, Ecommerce purchases, Add-to-carts, Checkouts, Item revenue, Transactions, Average purchase revenue"
+        - "Advertising metrics: Ads cost, Ads clicks, Ads impressions, Return on ad spend, Cost per key event"
+        - "Dimensions: date and time splits, session source, medium, campaign and default channel group, country, city, region, device, browser, operating system, page path, page title, landing page, hostname, and item-level ecommerce fields"
+      evidence_ids: [cpl-ga4-data]
+
+    history:
+      status: known
+      value:
+        - "GA4 properties have a configurable retention period of either 2 months or 14 months, and only data inside that window can be pulled"
+        - "You set a start and end date for the report; no hard limit on the range is stated, but long ranges with many dimensions are slow"
+      evidence_ids: [cpl-ga4-faq]
+      note: >-
+        Preserving data beyond GA4's retention window means exporting it before it expires, which is
+        an argument for scheduling an import rather than querying on demand
+
+    refresh:
+      status: known
+      value:
+        - A successful manual run is required before a schedule can be set
+        - Scheduled refresh is described as hourly, daily, or a custom interval
+        - The platform supports intervals from every 15 minutes to monthly, depending on plan
+      evidence_ids: [cpl-claude-faq, cpl-refresh]
+      note: Which intervals each plan allows is not documented
+
+    multi_source:
+      status: known
+      value:
+        - One data flow can take several sources and combine them with Join or Append before the data reaches Claude
+        - GA4 is documented as merging with Google Ads, Facebook Ads, CRM, or e-commerce data for a full-funnel view
+        - "Running several reports and joining them is the documented workaround for GA4's 10-metric ceiling"
+      evidence_ids: [cpl-claude-faq, cpl-ga4-overview, cpl-ga4-data]
+
+    prerequisites:
+      status: known
+      value:
+        - A Google account with access to at least one GA4 property
+        - Viewer permissions or higher on the GA4 property
+        - "The analytics.readonly permission must be granted during the OAuth flow"
+        - A Coupler.io account and a Claude account
+        - On a Claude Team or Enterprise plan, admin access is needed to add the connector
+      evidence_ids: [cpl-ga4-overview, cpl-ga4-issues, cpl-claude-destination]
+      note: no GA4 plan tier, such as standard versus 360, is named
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no pricing page was checked for this record
+
+    data_path:
+      status: known
+      value: >-
+        Coupler.io reads the GA4 Data API, stores the result as a dataset, and serves it to Claude
+        over its MCP server. Queries run on Coupler.io's side, so a large dataset does not have to
+        fit into the model's context. Claude sees only datasets from data flows that have Claude as
+        their destination.
+      evidence_ids: [cpl-mcp]
+
+    limits:
+      status: known
+      value:
+        - "Up to 10 metrics and 9 dimensions per data flow, which is a GA4 API limit rather than a Coupler.io one"
+        - "Not all metric and dimension pairs are compatible; an invalid combination returns a 400 error"
+        - "The GA4 Data API applies request quotas per property, so several flows pulling the same property at once can hit them"
+        - "GA4 may withhold rows representing too few users through thresholding, especially when Google Signals is enabled"
+        - "Data is typically available within a few hours, but some metrics take 24 to 48 hours to finish processing"
+        - "Total users broken down by a dimension will not sum to the overall total"
+        - "On the free plan only the first 1,000 rows are exported, which shows up as gaps in dates"
+        - The Claude destination replaces data on each run; append mode is not supported
+        - "On individual Claude Free and Pro plans the official connector may connect but fail to load its tools; a custom connector URL is documented as a workaround"
+      evidence_ids: [cpl-ga4-data, cpl-ga4-issues, cpl-claude-destination, cpl-claude-issues, cpl-claude-free-pro]
+      note: Data is pulled through the GA4 Data API, which returns unsampled results
+
+    setup_steps:
+      - text: In Coupler.io, create a data flow and select Google Analytics 4 as the source.
+        evidence_ids: [cpl-ga4-overview]
+      - text: Choose your property, then pick up to 10 metrics and 9 dimensions and set the date range.
+        evidence_ids: [cpl-ga4-data]
+      - text: Choose Claude as the destination in the data flow's destination step.
+        evidence_ids: [cpl-claude-destination]
+      - text: Give the data flow a clear name, because Claude refers to the dataset by that name.
+        evidence_ids: [cpl-claude-destination]
+      - text: Run the data flow manually once and wait for it to finish successfully.
+        evidence_ids: [cpl-claude-destination]
+      - text: Set a refresh schedule once that first run has succeeded.
+        evidence_ids: [cpl-claude-faq]
+
+    claude_configuration:
+      - text: Install the Coupler.io connector in Claude and click Connect, then connect again from the Connectors menu to authenticate.
+        evidence_ids: [cpl-claude-destination]
+      - text: For Claude Code, start a session, paste the connection command shown in the destination step, restart the session, then run /mcp and authorise in the browser.
+        evidence_ids: [cpl-claude-destination]
+      - text: Approve the tool request the first time Claude fetches data in a session.
+        evidence_ids: [cpl-claude-faq]
+      - text: On a Claude Team or Enterprise plan, ask a workspace admin to add the connector if the option is unavailable.
+        evidence_ids: [cpl-claude-issues]
+
+    sample_query: Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?
+
+    success_check:
+      text: >-
+        Open a new Claude chat and ask it to list the datasets it can see; the GA4 data flow should
+        appear under the name you gave it. Then compare the row count Claude reports with the run in
+        Coupler.io, because the preview alone does not confirm what Claude received.
+      evidence_ids: [cpl-claude-destination, cpl-claude-issues]
+
+  - id: google-analytics-mcp
+    name: Google Analytics MCP server
+    provider: Google
+    method: local_mcp
+    description: >-
+      Google's own MCP server, run as a local process against your Google Cloud credentials. It is
+      read-only and labelled experimental, and Claude Code is the only Claude app its documentation
+      sets up.
+
+    maintainer:
+      status: known
+      value: source_vendor
+      evidence_ids: [google-ga4-mcp-repo, google-ga4-mcp-docs]
+      note: Published in Google's googleanalytics GitHub organisation and documented on developers.google.com
+
+    route_status:
+      status: known
+      value: limited
+      evidence_ids: [google-ga4-mcp-repo]
+      note: Google titles the server Experimental, so its behaviour and tool surface may change
+
+    directory_listing:
+      status: not_applicable
+      value: null
+      evidence_ids: [google-ga4-mcp-repo]
+      note: A local server is configured by hand in your MCP client, not added from Claude's directory
+
+    links:
+      overview: https://developers.google.com/analytics/devguides/MCP
+      setup: https://github.com/googleanalytics/google-analytics-mcp
+
+    surfaces:
+      claude_web:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Claude on the web
+      claude_desktop:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Claude Desktop
+      claude_code:
+        status: known
+        value: supported
+        evidence_ids: [google-ga4-mcp-repo]
+        note: The README has a Configure Claude Code section with a claude mcp add command
+      cowork:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Cowork
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [google-ga4-mcp-docs, google-ga4-mcp-repo]
+      note: >-
+        Google states the server is available for read requests only and cannot edit your Google
+        Analytics configuration or settings. Credentials must carry the analytics.readonly scope
+
+    data_available:
+      status: known
+      value:
+        - "get_account_summaries: your Google Analytics accounts and properties"
+        - "get_property_details: details about one property"
+        - "run_report: a Google Analytics report through the Data API"
+        - "run_realtime_report: a realtime report through the Data API"
+        - "run_funnel_report: a funnel report through the Data API"
+        - "get_custom_dimensions_and_metrics: the custom dimensions and metrics for a property"
+        - "list_google_ads_links: links to Google Ads accounts for a property"
+      evidence_ids: [google-ga4-mcp-repo]
+      note: The server is built on the Google Analytics Admin API and the Google Analytics Data API
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        the documentation states no retention or backfill window; GA4's own property-level retention
+        setting still applies to anything the Data API returns
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [google-ga4-mcp-repo]
+      note: >-
+        There is no import to schedule. The server calls the GA4 APIs when Claude uses a tool, so
+        each answer reflects what the API returns at that moment
+
+    multi_source:
+      status: not_applicable
+      value: null
+      evidence_ids: [google-ga4-mcp-repo]
+      note: >-
+        This server reaches Google Analytics only. It can list a property's Google Ads links, but
+        combining with another system means adding that system's own connector
+
+    prerequisites:
+      status: known
+      value:
+        - A Google Cloud project with the Google Analytics Admin API and the Google Analytics Data API enabled
+        - "Application Default Credentials configured for a user with access to your Analytics accounts or properties"
+        - "Credentials carrying the https://www.googleapis.com/auth/analytics.readonly scope"
+        - "pipx on the machine that runs the server, and your Google Cloud project ID"
+      evidence_ids: [google-ga4-mcp-repo]
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no price is stated for the server itself
+
+    data_path:
+      status: known
+      value: >-
+        The server runs on your own machine and calls the Google Analytics Admin and Data APIs with
+        your Application Default Credentials, so the request path is your machine to Google.
+        Results come back into the conversation.
+      evidence_ids: [google-ga4-mcp-repo]
+
+    limits:
+      status: known
+      value:
+        - "Google labels the server Experimental"
+        - "Read-only: it cannot edit your Google Analytics configuration or settings"
+        - "Claude Code is the only Claude app the documentation configures; no remote-connector path is described"
+        - "Results arrive in the conversation rather than in a queryable store, so a wide report competes with the rest of the context"
+      evidence_ids: [google-ga4-mcp-repo, google-ga4-mcp-docs]
+
+    setup_steps:
+      - text: In your Google Cloud project, enable the Google Analytics Admin API and the Google Analytics Data API.
+        evidence_ids: [google-ga4-mcp-repo]
+      - text: Configure Application Default Credentials for an account that can reach your GA4 properties, including the analytics.readonly scope.
+        evidence_ids: [google-ga4-mcp-repo]
+
+    claude_configuration:
+      - text: "Register the server with Claude Code using claude mcp add analytics-mcp at user scope, passing GOOGLE_APPLICATION_CREDENTIALS and GOOGLE_PROJECT_ID, and running it with pipx."
+        evidence_ids: [google-ga4-mcp-repo]
+
+    sample_query: Run a funnel report for the checkout steps over the last 28 days and tell me where the biggest drop-off is.
+
+    success_check:
+      text: >-
+        Ask Claude to list your Analytics accounts and properties. A reply naming your own
+        properties confirms the credentials reach the right account.
+      evidence_ids: [google-ga4-mcp-repo]
+
+  - id: zapier-google-analytics
+    name: Zapier Google Analytics connector
+    provider: Zapier
+    method: local_mcp
+    description: >-
+      An independent connector package run as a local MCP server. Unlike Google's own server it can
+      write as well as read, managing key events and custom definitions and sending events, which is
+      a meaningful difference in risk.
+
+    maintainer:
+      status: known
+      value: third_party
+      evidence_ids: [zapier-ga4-connector]
+      note: >-
+        The package describes itself as an independent, unofficial connector, not affiliated with,
+        endorsed by, or sponsored by Google Analytics
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [zapier-ga4-connector]
+
+    directory_listing:
+      status: not_applicable
+      value: null
+      evidence_ids: [zapier-ga4-connector]
+      note: A local stdio server is configured by hand in your MCP client, not added from Claude's directory
+
+    links:
+      overview: https://github.com/zapier/connectors/tree/main/apps/google-analytics
+
+    surfaces:
+      claude_web:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the connector runs over stdio, and no remote-connector path for Claude on the web is described
+      claude_desktop:
+        status: known
+        value: supported
+        evidence_ids: [zapier-ga4-connector]
+        note: Claude Desktop is named as an MCP-aware client, with claude_desktop_config.json given as the example config file
+      claude_code:
+        status: known
+        value: supported
+        evidence_ids: [zapier-ga4-connector]
+        note: Claude Code is named among the clients that auto-discover the scripts as tools
+      cowork:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Cowork
+
+    access:
+      status: known
+      value: read_write
+      evidence_ids: [zapier-ga4-connector]
+      note: >-
+        Alongside reporting it manages key events and custom dimensions and metrics, and can send
+        server-side events, so it can change your GA4 configuration and your data
+
+    data_available:
+      status: known
+      value:
+        - "Reporting: runReport, runRealtimeReport, getMetadata, checkCompatibility"
+        - "Account structure: listAccountSummaries, getProperty, listDataStreams"
+        - "Key events: listKeyEvents, getKeyEvent, createKeyEvent, deleteKeyEvent"
+        - "Custom definitions: listCustomDimensions, createCustomDimension, archiveCustomDimension, listCustomMetrics, createCustomMetric, archiveCustomMetric"
+        - "Measurement Protocol: listMeasurementProtocolSecrets, createMeasurementProtocolSecret, sendEvent"
+      evidence_ids: [zapier-ga4-connector]
+
+    history:
+      status: known
+      value:
+        - "runRealtimeReport covers roughly the last 30 minutes of activity"
+      evidence_ids: [zapier-ga4-connector]
+      note: no retention or backfill window is stated for the standard reporting tools
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [zapier-ga4-connector]
+      note: There is no import to schedule; the connector calls the GA4 API when Claude uses a tool
+
+    multi_source:
+      status: not_applicable
+      value: null
+      evidence_ids: [zapier-ga4-connector]
+      note: This connector reaches Google Analytics only
+
+    prerequisites:
+      status: known
+      value:
+        - "Google OAuth 2.0 authentication with a bearer access token, either Zapier-managed or supplied directly"
+        - "sendEvent additionally needs a per-stream Measurement Protocol secret"
+        - A GA4 property; Universal Analytics is not supported
+      evidence_ids: [zapier-ga4-connector]
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no price is stated; the package is licensed under the Elastic License 2.0
+
+    data_path:
+      status: known
+      value: >-
+        The connector runs as an MCP server over stdio on your own machine, so an MCP-aware client
+        starts it locally and it calls the GA4 API with your bearer token. Results come back into
+        the conversation.
+      evidence_ids: [zapier-ga4-connector]
+
+    limits:
+      status: known
+      value:
+        - "GA4 only: it does not read Universal Analytics data or UA tracking ids, which are fully sunset"
+        - "Funnel, pivot, cohort, and audience-export reports are not exposed, nor is audience or calculated-metric management"
+        - "It is an unofficial connector, not affiliated with or endorsed by Google"
+        - "Write tools can change GA4 configuration and send events, so a read-only setup means not registering or not using them"
+      evidence_ids: [zapier-ga4-connector]
+
+    setup_steps:
+      - text: Obtain a Google OAuth 2.0 bearer access token for the GA4 property, either Zapier-managed or direct.
+        evidence_ids: [zapier-ga4-connector]
+      - text: For sendEvent, also obtain the Measurement Protocol secret for the data stream you want to write to.
+        evidence_ids: [zapier-ga4-connector]
+
+    claude_configuration:
+      - text: Run the connector as an MCP server over stdio and add it to your client's MCP configuration file, for example claude_desktop_config.json, so the scripts are discovered as tools.
+        evidence_ids: [zapier-ga4-connector]
+
+    sample_query: List the key events configured on this property and check whether the dimensions I want to report on are compatible.
+
+    success_check:
+      text: >-
+        Ask Claude to list your account summaries, then to check compatibility for a metric and
+        dimension pair. Both answering confirms the token reaches the property and the tools loaded.
+      evidence_ids: [zapier-ga4-connector]
+
+  - id: manual-export
+    name: Manual export and upload
+    provider: Google
+    method: file_upload
+    description: >-
+      Download a GA4 report as CSV and attach it to a conversation. No credentials, no Cloud
+      project, and a generous row ceiling, but it is a snapshot of one report as configured.
+
+    maintainer:
+      status: known
+      value: manual
+      evidence_ids: [ga4-export-help, claude-upload-files]
+      note: There is no connector in this route; you move the file yourself
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [ga4-export-help, claude-upload-files]
+
+    directory_listing:
+      status: not_applicable
+      value: null
+      evidence_ids: [claude-upload-files]
+      note: A file upload is a built-in part of the Claude interface, not a connector you add
+
+    links:
+      overview: https://support.google.com/analytics/answer/9317657
+      setup: https://support.claude.com/en/articles/8241126-upload-files-to-claude
+
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [claude-upload-files]
+        note: >-
+          Anthropic documents uploading through the + button in the chat box and through a project's
+          Files section; the article does not name individual Claude apps
+      claude_desktop:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Claude Desktop
+      claude_code:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Claude Code
+      cowork:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Cowork
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [ga4-export-help]
+      note: An export is a one-way copy; nothing in this route writes back to GA4
+
+    data_available:
+      status: known
+      value:
+        - "Whatever a GA4 report currently shows, exported as Google Sheets, PDF, or CSV"
+        - "Google names Looker Studio and the Analytics Data API as the other export routes"
+      evidence_ids: [ga4-export-help]
+      note: >-
+        The article refers generically to a report rather than naming which standard reports are
+        exportable, and states that Explorations work differently
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        the article states no date-range cap on an export; GA4's property retention setting of 2 or
+        14 months still governs what a report can show
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [ga4-export-help]
+      note: >-
+        An export is a point-in-time file. Nothing in this article describes scheduling an export
+        into Claude, so keeping Claude current means exporting and uploading again
+
+    multi_source:
+      status: known
+      value:
+        - Up to 20 files can be attached to a single chat, so several reports can be compared in one conversation
+      evidence_ids: [claude-upload-files]
+
+    prerequisites:
+      status: known
+      value:
+        - The Viewer role at the property level to share or export a report
+        - A Claude account, and code execution and file creation enabled if you upload XLSX rather than CSV
+      evidence_ids: [ga4-export-help, claude-upload-files]
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no pricing page was checked for this record
+
+    data_path:
+      status: known
+      value: >-
+        You download the report from GA4 and attach it to a conversation. The contents sit in the
+        model's context rather than in a queryable store, so a wide export competes with the rest of
+        the conversation.
+      evidence_ids: [ga4-export-help, claude-upload-files]
+
+    limits:
+      status: known
+      value:
+        - "A CSV or Google Sheets download includes up to 100,000 rows"
+        - "You cannot share a report while you are customising it"
+        - "Explorations are exported through a different route than standard reports"
+        - "Chat uploads are capped at 500MB per file and 20 files per chat; project files are capped at 30MB each"
+      evidence_ids: [ga4-export-help, claude-upload-files]
+
+    setup_steps:
+      - text: "In GA4, select Reports from the left menu and open the report you want."
+        evidence_ids: [ga4-export-help]
+      - text: "Click Share this report in the top right, then Download File, then Download CSV."
+        evidence_ids: [ga4-export-help]
+
+    claude_configuration:
+      - text: In Claude, click the + button in the lower left of the chat box, choose Add files or photos, and select the export, or drag it into the chat window.
+        evidence_ids: [claude-upload-files]
+      - text: For a file you want to reuse across conversations, add it to a project's Files section instead of a single chat.
+        evidence_ids: [claude-upload-files]
+
+    sample_query: Here is our traffic acquisition export. Which channels grew, and which lost engagement rate while gaining sessions?
+
+    success_check:
+      text: >-
+        Ask Claude how many rows the file contains and to name the columns. A reply matching your
+        export confirms the whole file was read rather than truncated.
+      evidence_ids: [claude-upload-files]
+
+recommendations:
+  - job: Tracking GA4 trends over time or alongside ad spend
+    option_id: coupler-io
+    reason: >-
+      Scheduled imports keep a copy of data that GA4 itself deletes after 2 or 14 months, queries run
+      against the stored dataset rather than the API, and one data flow can join GA4 with Google Ads
+      or CRM data before Claude sees it.
+    evidence_ids: [cpl-ga4-faq, cpl-mcp, cpl-ga4-overview]
+  - job: Asking live GA4 questions without a third party in the path
+    option_id: google-analytics-mcp
+    reason: >-
+      It is Google's own server, read-only by design, and it calls the Analytics APIs directly from
+      your machine. Expect a Google Cloud project, Application Default Credentials, and Claude Code.
+    evidence_ids: [google-ga4-mcp-docs, google-ga4-mcp-repo]
+  - job: Managing GA4 key events or custom definitions from a conversation
+    option_id: zapier-google-analytics
+    reason: >-
+      It is the only researched route that can create and archive custom dimensions and metrics,
+      manage key events, and send server-side events, which Google's own read-only server cannot do.
+    evidence_ids: [zapier-ga4-connector]
+  - job: A one-off question about a report you can already see
+    option_id: manual-export
+    reason: >-
+      Nothing to install or authorise, and a CSV download carries up to 100,000 rows, which covers
+      most single reports.
+    evidence_ids: [ga4-export-help, claude-upload-files]
+
+faq:
+  - question: Is there an official Google Analytics connector in Claude's directory?
+    answer: >-
+      No dedicated GA4 entry was reachable at the obvious directory addresses on the research date.
+      Google does publish its own MCP server, but it runs locally and its documentation sets up
+      Claude Code only. Several multi-source connectors list Google Analytics among the platforms
+      they cover. Claude's directory cannot be searched exhaustively, so this is a "not found at the
+      expected address" rather than a claim that no entry exists.
+    evidence_ids: [google-ga4-mcp-repo, google-ga4-mcp-docs]
+  - question: Can Claude change my GA4 configuration?
+    answer: >-
+      Only on one route. Google's own server is read-only and states it cannot edit your Analytics
+      configuration or settings. Coupler.io is read-only against GA4. The Zapier connector is the
+      exception: it can create and archive custom dimensions and metrics, manage key events, and
+      send server-side events.
+    evidence_ids: [google-ga4-mcp-docs, cpl-mcp, zapier-ga4-connector]
+  - question: Why can I only pick 10 metrics?
+    answer: >-
+      That ceiling is the GA4 Data API's, not any one tool's: up to 10 metrics and 9 dimensions per
+      report. The documented workaround is to run more than one report and join them, which is
+      easier on a route that stores the results than one that answers inside a conversation.
+    evidence_ids: [cpl-ga4-data]
+  - question: How far back can Claude see my analytics?
+    answer: >-
+      As far as GA4 keeps it. A GA4 property retains data for either 2 or 14 months depending on its
+      setting, and no route can read past that. If you need longer history, the documented approach
+      is to export on a schedule and store the results before they expire.
+    evidence_ids: [cpl-ga4-faq]
+  - question: Will the numbers Claude reports match the GA4 interface?
+    answer: >-
+      Usually, with two documented caveats. GA4 may withhold rows representing too few users through
+      thresholding, especially when Google Signals is on, and Total users broken down by a dimension
+      will not sum to the overall total. Data pulled through the Data API is unsampled, and most
+      metrics settle within a few hours, though some take 24 to 48 hours.
+    evidence_ids: [cpl-ga4-data]
+  - question: My export has missing dates. What happened?
+    answer: >-
+      Two documented causes. On the free plan only the first 1,000 rows are exported, which shows up
+      as gaps. The other is an incompatible metric and dimension pair, which returns a 400 error
+      rather than partial data. GA4's per-property API quotas can also bite when several flows pull
+      the same property at once.
+    evidence_ids: [cpl-ga4-issues]
+  - question: The connector shows as connected but Claude cannot see my data. Why?
+    answer: >-
+      On individual Claude Free and Pro plans there is a documented defect where the official
+      Coupler.io connector connects but its tools never load, so Claude cannot query the datasets.
+      Coupler.io documents a custom connector URL as a workaround and reports that it works on all
+      plans.
+    evidence_ids: [cpl-claude-free-pro]
+
+related_source_ids: []
