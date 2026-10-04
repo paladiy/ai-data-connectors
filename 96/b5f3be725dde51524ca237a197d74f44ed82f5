@@ -1,0 +1,33 @@
+site/tsconfig.json
+  s_53f30fc51d1d96::t_6171db37cba5a6 3
+site/src/styles/custom.css
+  s_53f30fc51d1d96::t_df67eaa6af7ec9 21-22,42-54,57-59,62-65,68-69,72-79,83,87,90-91,96,98-99,102,113-114,117,120-121,124-126,128-130,132-134,137-147,150-155,158-159,163,175
+site/src/components/Directory.tsx
+  s_53f30fc51d1d96::t_8a589402ec9c36 1-367
+site/astro.config.mjs
+  s_53f30fc51d1d96::t_8714802a79f407 24
+  s_53f30fc51d1d96::t_afed254319f656 32
+  s_53f30fc51d1d96::t_7dc6c4ec34964b 5
+scripts/lib/render-site.ts
+  s_53f30fc51d1d96::t_22552cea7748a1 281-282
+package.json
+  s_53f30fc51d1d96::t_b5c24f4aa31ea1 24,26-27,29-30,36-37
+package-lock.json
+  s_53f30fc51d1d96::t_00675c4647390e 11,13-14,16-17,23-24,326-353,1316-1368,1897-1924,2504-2523,2885-2913,3435-3440,3537-3542,3845-3853,5639-5740,5915-5920,6105-6122,6243,6265-6279,6569-6611
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "96b5f3be725dde51524ca237a197d74f44ed82f5",
+  "prompts": {},
+  "sessions": {
+    "s_53f30fc51d1d96": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "b4056a10-97f5-4107-8ec9-53b6a512b671",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
