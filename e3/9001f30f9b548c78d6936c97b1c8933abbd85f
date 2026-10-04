@@ -1,0 +1,36 @@
+data/sources/quickbooks-online.yaml
+  s_12e2ab7e3188f2::t_dc57ed0a5448eb 23,25,40,324-326
+data/sources/google-ads.yaml
+  s_12e2ab7e3188f2::t_882dbac9931b8d 13,15,31-33,300-302,320
+data/sources/google-analytics-4.yaml
+  s_12e2ab7e3188f2::t_dc57ed0a5448eb 310
+  s_45f1e84597699c::t_11b93b0df3f2e9 12-13,15,30-32,305-307,311
+data/sources/google-search-console.yaml
+  s_12e2ab7e3188f2::t_dc57ed0a5448eb 14,16,32-34,333-335
+data/sources/pipedrive.yaml
+  s_12e2ab7e3188f2::t_8ebe03b60e511d 11-12,14,29-30,304-306,335-336
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e39001f30f9b548c78d6936c97b1c8933abbd85f",
+  "prompts": {},
+  "sessions": {
+    "s_12e2ab7e3188f2": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "e9630ace-dc44-4f6c-97fc-4ec9307ad324",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    },
+    "s_45f1e84597699c": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "4578cda4-6f04-472a-a2bd-4c3558489f6b",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
