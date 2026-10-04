@@ -129,7 +129,7 @@ function worksIn(option: ModelOption): string {
       `<span class="sp-surf-state">${text}</span></li>`
     );
   });
-  return `<p class="sp-label">Works in</p><ul class="sp-surfaces">${tiles.join("")}</ul>`;
+  return `<ul class="sp-surfaces">${tiles.join("")}</ul>`;
 }
 
 function setupTime(option: ModelOption): string {
@@ -142,7 +142,6 @@ function setupTime(option: ModelOption): string {
 
 function installBody(option: ModelOption): string[] {
   const out: string[] = [];
-  out.push(worksIn(option));
 
   if (option.prerequisites.status === "known") {
     const value = option.prerequisites.value;
@@ -157,7 +156,13 @@ function installBody(option: ModelOption): string[] {
     );
   }
   if (option.claude_configuration.length > 0) {
-    out.push(`<p class="sp-label">In Claude</p>`, list(option.claude_configuration.map((step) => e(step.text))));
+    // With no separate setup, the Claude steps are the whole install, so show them as numbered steps.
+    const standalone = option.setup_steps.length === 0;
+    const items = option.claude_configuration.map((step) => `<li>${e(step.text)}</li>`).join("");
+    out.push(
+      `<p class="sp-label">${standalone ? "Steps" : "In Claude"}</p>`,
+      standalone ? `<ol>${items}</ol>` : `<ul>${items}</ul>`,
+    );
   }
   if (option.success_check) {
     out.push(`<p class="sp-label">Check it worked</p>`, `<p>${e(option.success_check.text)}</p>`);
@@ -214,7 +219,7 @@ function dataBody(option: ModelOption): string[] {
   ];
 }
 
-function section(option: ModelOption, kind: "install" | "can-do" | "data", title: string, body: string[]): string {
+function section(option: ModelOption, kind: "works" | "install" | "can-do" | "data", title: string, body: string[]): string {
   return (
     `<section class="sp-route"><div class="sp-route-head"><h3 id="${kind}-${e(option.id)}">${e(title)}</h3></div>` +
     `<div class="sp-route-body">${body.join("")}</div></section>`
@@ -243,6 +248,7 @@ function panel(option: ModelOption): string {
   return (
     `<div class="sp-panel${limited ? " sp-panel--limited" : ""}" data-option="${e(option.id)}">` +
     intro +
+    section(option, "works", "Works with", [worksIn(option)]) +
     section(option, "install", "How to install", installBody(option)) +
     section(option, "can-do", "What it can do", canDoBody(option)) +
     section(option, "data", "What data it has access to", dataBody(option)) +
