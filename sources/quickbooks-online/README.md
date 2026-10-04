@@ -343,7 +343,7 @@ Every claim above was read from one of these pages on the date shown.
 
 Something here wrong or out of date? [Open a correction issue](https://github.com/paladiy/ai-data-connectors/issues/new?template=correction.yml&labels=correction&title=Correction%3A+QuickBooks+Online&source=quickbooks-online).
 
-This guide is also published at [https://paladiy.github.io/ai-data-connectors/sources/quickbooks-online/](https://paladiy.github.io/ai-data-connectors/sources/quickbooks-online/).
+This guide is also published at [https://ai-data-connector.com/sources/quickbooks-online/](https://ai-data-connector.com/sources/quickbooks-online/).
 
 ---
 

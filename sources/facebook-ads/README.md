@@ -374,7 +374,7 @@ Every claim above was read from one of these pages on the date shown.
 
 Something here wrong or out of date? [Open a correction issue](https://github.com/paladiy/ai-data-connectors/issues/new?template=correction.yml&labels=correction&title=Correction%3A+Facebook+Ads&source=facebook-ads).
 
-This guide is also published at [https://paladiy.github.io/ai-data-connectors/sources/facebook-ads/](https://paladiy.github.io/ai-data-connectors/sources/facebook-ads/).
+This guide is also published at [https://ai-data-connector.com/sources/facebook-ads/](https://ai-data-connector.com/sources/facebook-ads/).
 
 ---
 

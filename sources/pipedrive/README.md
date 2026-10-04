@@ -346,7 +346,7 @@ Every claim above was read from one of these pages on the date shown.
 
 Something here wrong or out of date? [Open a correction issue](https://github.com/paladiy/ai-data-connectors/issues/new?template=correction.yml&labels=correction&title=Correction%3A+Pipedrive&source=pipedrive).
 
-This guide is also published at [https://paladiy.github.io/ai-data-connectors/sources/pipedrive/](https://paladiy.github.io/ai-data-connectors/sources/pipedrive/).
+This guide is also published at [https://ai-data-connector.com/sources/pipedrive/](https://ai-data-connector.com/sources/pipedrive/).
 
 ---
 

@@ -352,7 +352,7 @@ Every claim above was read from one of these pages on the date shown.
 
 Something here wrong or out of date? [Open a correction issue](https://github.com/paladiy/ai-data-connectors/issues/new?template=correction.yml&labels=correction&title=Correction%3A+Google+Search+Console&source=google-search-console).
 
-This guide is also published at [https://paladiy.github.io/ai-data-connectors/sources/google-search-console/](https://paladiy.github.io/ai-data-connectors/sources/google-search-console/).
+This guide is also published at [https://ai-data-connector.com/sources/google-search-console/](https://ai-data-connector.com/sources/google-search-console/).
 
 ---
 
