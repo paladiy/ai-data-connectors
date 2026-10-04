@@ -1,0 +1,21 @@
+data/sources/google-ads.yaml
+  s_12e2ab7e3188f2::t_8ed1e543657e78 263
+  s_12e2ab7e3188f2::t_4ef091267478f4 295-297,300,302
+  s_12e2ab7e3188f2::t_5a865093ece70b 311-313
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "58d78965144404e2e88cdbb274de6457b4fcd707",
+  "prompts": {},
+  "sessions": {
+    "s_12e2ab7e3188f2": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "e9630ace-dc44-4f6c-97fc-4ec9307ad324",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
