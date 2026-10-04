@@ -1,0 +1,24 @@
+scripts/lib/render-source-page.ts
+  s_1a94978dc8420b::t_2953bfa0f923a1 93-94,97,99,101,103-104,107-108,110-111,113-114
+  s_1a94978dc8420b::t_bf7725a19e127c 165-166,171
+  s_1a94978dc8420b::t_35b51f7d4fd00b 1
+  s_1a94978dc8420b::t_4d99d34ae50a00 127-133,135-136
+scripts/lib/install.ts
+  s_1a94978dc8420b::t_854d711aafe1ad 1-99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ecd396885d1e6543235a99ceb215dc8f90ca090c",
+  "prompts": {},
+  "sessions": {
+    "s_1a94978dc8420b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c0c836c0-016a-4114-a1cb-601d046187bd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
