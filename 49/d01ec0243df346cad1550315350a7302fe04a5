@@ -1,0 +1,80 @@
+scripts/lib/paths.ts
+  s_0da191e15f1dcc::t_587c197f507e15 1-14
+tests/model.test.ts
+  s_0da191e15f1dcc::t_f2c12db8870ffe 85,109
+tests/readme-and-pages.test.ts
+  s_0da191e15f1dcc::t_d8e3c6036949a5 228
+  s_0da191e15f1dcc::t_15699803a09cea 229-230,233-236
+  s_0da191e15f1dcc::t_ac9cf80197d089 7
+  s_0da191e15f1dcc::t_f2c12db8870ffe 158,165
+scripts/lib/render-guide.ts
+  s_0da191e15f1dcc::t_b0da7a1081d765 232
+  s_0da191e15f1dcc::t_e0421943a34630 5
+  s_0da191e15f1dcc::t_d222dd4f97e6f9 238-239
+tests/fixtures/content.ts
+  s_0da191e15f1dcc::t_6c21fb6e799837 25
+  s_0da191e15f1dcc::t_2e901c91fd79c4 6
+sources/quickbooks-online/README.md
+  s_0da191e15f1dcc::t_5d0cc6bdaf5da0 1-354
+tests/private.test.ts
+  s_0da191e15f1dcc::t_f2c12db8870ffe 15,22,39-40,46
+tests/render-site.test.ts
+  s_0da191e15f1dcc::t_f2c12db8870ffe 108
+scripts/lib/private.ts
+  s_0da191e15f1dcc::t_677317c9465508 24
+scripts/lib/generate.ts
+  s_0da191e15f1dcc::t_34e9f3f6b57cb3 66-70,81-82,87,91,103,107-110,115-122
+  s_0da191e15f1dcc::t_d94db42fa422ee 18-23,27,37
+  s_0da191e15f1dcc::t_a63018c91758e6 1,5
+  s_0da191e15f1dcc::t_5b26e41d311a80 146-151
+  s_0da191e15f1dcc::t_00949849f4c062 123
+scripts/lib/load.ts
+  s_0da191e15f1dcc::t_b305cb8806e697 95-106,108-109,111-113
+  s_0da191e15f1dcc::t_989c1a30383886 9
+scripts/lib/render-github.ts
+  s_0da191e15f1dcc::t_381abb48c8d96c 209,211
+  s_0da191e15f1dcc::t_1de9f947b7685a 4
+  s_0da191e15f1dcc::t_03a57eee91c632 115
+tests/source-layout.test.ts
+  s_0da191e15f1dcc::t_f3f0773ff8e3ed 1-70
+README.md
+  s_0da191e15f1dcc::t_5d0cc6bdaf5da0 50-54,88,90
+tests/build.test.ts
+  s_0da191e15f1dcc::t_9dcf8dd304cd5a 46-48
+  s_0da191e15f1dcc::t_13572bb88154b6 133
+sources/google-analytics-4/README.md
+  s_0da191e15f1dcc::t_5d0cc6bdaf5da0 1-369
+sources/google-search-console/README.md
+  s_0da191e15f1dcc::t_5d0cc6bdaf5da0 1-363
+tests/render-guide.test.ts
+  s_0da191e15f1dcc::t_15ceca64f69eb5 94-98
+  s_0da191e15f1dcc::t_f2c12db8870ffe 128,132,214,221,228
+.github/workflows/sync-skills.yml
+  s_0da191e15f1dcc::t_ef82e819eedc8b 59
+llms.txt
+  s_0da191e15f1dcc::t_5d0cc6bdaf5da0 13-17
+sources/google-ads/README.md
+  s_0da191e15f1dcc::t_5d0cc6bdaf5da0 1-287
+sources/pipedrive/README.md
+  s_0da191e15f1dcc::t_5d0cc6bdaf5da0 1-359
+tests/validate.test.ts
+  s_0da191e15f1dcc::t_f2c12db8870ffe 27
+scripts/lib/validate.ts
+  s_0da191e15f1dcc::t_9442565aeb6c8a 308
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "49d01ec0243df346cad1550315350a7302fe04a5",
+  "prompts": {},
+  "sessions": {
+    "s_0da191e15f1dcc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ec8c60db-4427-49dc-a986-ce8931e0f67e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
