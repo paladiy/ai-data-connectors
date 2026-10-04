@@ -1,0 +1,42 @@
+{
+  "name": "ai-data-connectors",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static editorial directory of ways to connect data sources to Claude.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.11.1 <25"
+  },
+  "scripts": {
+    "validate": "tsx scripts/validate.ts",
+    "generate": "tsx scripts/generate.ts",
+    "check:generated": "tsx scripts/check-generated.ts",
+    "check:private": "tsx scripts/check-private.ts",
+    "check:freshness": "tsx scripts/check-freshness.ts",
+    "check:links": "tsx scripts/check-links.ts site/dist",
+    "schemas:export": "tsx scripts/export-json-schemas.ts",
+    "review:hash": "tsx scripts/review.ts hash",
+    "review:approve": "tsx scripts/review.ts approve",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run check:private && vitest run",
+    "build": "npm run validate && npm run generate && astro build --root site && npm run check:links",
+    "preview": "astro preview --root site",
+    "dev": "npm run generate && astro dev --root site",
+    "dev:drafts": "npm run generate -- --drafts && DRAFTS=1 astro dev --root site",
+    "build:drafts": "tsx scripts/generate.ts --drafts && DRAFTS=1 astro build --root site --outDir dist-drafts",
+    "preview:drafts": "npm run build:drafts && DRAFTS=1 astro preview --root site --outDir dist-drafts"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.42.5",
+    "astro": "7.3.5",
+    "yaml": "2.9.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1",
+    "jsdom": "30.1.1",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.0.3"
+  }
+}
