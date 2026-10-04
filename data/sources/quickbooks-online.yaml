@@ -1,3 +1,12 @@
+# Page layout. The source page reads top to bottom as six sections, each fed by these fields:
+#   Description          summary, aliases, options[].name/description/maintainer, recommendations
+#   How to install       options[].prerequisites, setup_steps, claude_configuration, surfaces, success_check, sample_query
+#   What it can do       options[].capabilities, access, limits, sample_query
+#   What data it has     options[].data_available, history, refresh, multi_source, data_path
+#   Related skills       related_skills
+#   Related connectors   related_source_ids
+# Faq, evidence, and corrections follow as a quiet footer.
+#
 # Every known claim below cites evidence that was read on the recorded date. Anything that the
 # cited documentation does not state is left as status: unknown with a null value.
 schema_version: 1
@@ -9,9 +18,11 @@ aliases:
   - QuickBooks
   - Intuit QuickBooks
 summary: >-
-  QuickBooks Online holds the transactions behind your financial reports, and the practical question
-  is how much of that detail Claude can actually reach. This guide compares each route on the data it
-  exposes, the Claude apps it works in, the access it asks for, and the limits that bite at month end.
+  QuickBooks Online holds the transactions behind your financial reports. Claude can reach them
+  four ways: through Intuit's connector in Claude's directory, through Intuit's open-source server
+  that runs on your machine, through scheduled Coupler.io imports, or, by invitation only, through
+  Intuit's hosted pilot. The routes differ in how much of QuickBooks they expose, whether Claude can
+  change anything, and how much setup they ask for.
 
 meta_description: Compare ways to connect QuickBooks Online to Claude, with evidence for every capability claim.
 
@@ -292,6 +303,15 @@ options:
         - "On individual Claude Free and Pro plans the official connector may connect but fail to load its tools; a custom connector URL is documented as a workaround"
       evidence_ids: [cpl-qbo-data, cpl-qbo-faq, cpl-qbo-issues, cpl-claude-destination, cpl-claude-issues, cpl-claude-free-pro]
 
+    capabilities:
+      - text: Ask questions about imported QuickBooks entities and pre-built reports, such as invoices, bills, customers, profit and loss, balance sheet, and A/R and A/P aging.
+        evidence_ids: [cpl-qbo-data, cpl-mcp]
+      - text: Keep the data current with a refresh schedule once a first manual run has succeeded.
+        evidence_ids: [cpl-claude-faq, cpl-refresh]
+      - text: Combine QuickBooks with other sources in one data flow, using Join or Append, before Claude sees the result.
+        evidence_ids: [cpl-claude-faq, cpl-mcp]
+      - text: Run SQL against a dataset on Coupler.io's side, so a large dataset does not have to fit into Claude's context.
+        evidence_ids: [cpl-mcp]
     setup_steps:
       - text: In Coupler.io, create a data flow and add QuickBooks as the source, choosing either an entity or a pre-built report.
         evidence_ids: [cpl-claude-destination, cpl-qbo-data]
@@ -454,6 +474,19 @@ options:
         - "Results arrive in the conversation rather than in a queryable store, so a wide report competes with the rest of the context"
       evidence_ids: [dir-intuit-quickbooks]
 
+    capabilities:
+      - text: Read profit and loss, cash flow, balance sheet, A/R aging, and sales by customer or product reports.
+        evidence_ids: [dir-intuit-quickbooks]
+      - text: Create, update, duplicate, send, and schedule invoices and estimates, with a preview and your confirmation before anything is sent.
+        evidence_ids: [dir-intuit-quickbooks]
+      - text: Search and add customers and products, and send payment links and reminders.
+        evidence_ids: [dir-intuit-quickbooks]
+      - text: Compare your performance with similar businesses by industry and region.
+        evidence_ids: [dir-intuit-quickbooks]
+      - text: Look up payroll details and QuickBooks Capital loan details.
+        evidence_ids: [dir-intuit-quickbooks]
+      - text: Import transactions from uploaded CSVs, PDFs, or images, or from pasted text, and check the import status.
+        evidence_ids: [dir-intuit-quickbooks]
     setup_steps:
       - text: Open the connector's directory entry and choose Add to Claude.
         evidence_ids: [dir-intuit-quickbooks]
@@ -603,6 +636,13 @@ options:
         - "The README's clone command points at a repository path that differs from the published one"
       evidence_ids: [intuit-local-mcp-readme]
 
+    capabilities:
+      - text: Create, read, update, delete, and search across most of 29 QuickBooks entity types, including customers, invoices, bills, vendors, and journal entries.
+        evidence_ids: [intuit-local-mcp-readme]
+      - text: Run 11 financial reports, including balance sheet, profit and loss, cash flow, trial balance, general ledger, and aged receivables.
+        evidence_ids: [intuit-local-mcp-readme]
+      - text: Switch the write, update, and delete tool groups off to keep a session read-only.
+        evidence_ids: [intuit-local-mcp-readme]
     setup_steps:
       - text: Register an app on the Intuit Developer Portal and note its client ID and client secret.
         evidence_ids: [intuit-local-mcp-readme]
@@ -755,6 +795,17 @@ options:
         - "Restricted MCP scopes are granted case by case by an Intuit solution engineer"
       evidence_ids: [intuit-hosted-mcp-pilot]
 
+    capabilities:
+      - text: Search and create customers and products.
+        evidence_ids: [intuit-hosted-mcp-pilot]
+      - text: Read sales orders, create them through a workflow, and close them.
+        evidence_ids: [intuit-hosted-mcp-pilot]
+      - text: Read, create, update, delete, duplicate, and send invoices and estimates.
+        evidence_ids: [intuit-hosted-mcp-pilot]
+      - text: Read and update sales settings.
+        evidence_ids: [intuit-hosted-mcp-pilot]
+      - text: Separate read from write per object, because each tool is gated by its own OAuth scope.
+        evidence_ids: [intuit-hosted-mcp-pilot]
     setup_steps:
       - text: Share your agent's IP range, primary agentic use case, LLM model, and Intuit Developer Portal AppID with your assigned Intuit solution engineer.
         evidence_ids: [intuit-hosted-mcp-pilot]
@@ -852,4 +903,10 @@ faq:
       documents a custom connector URL as a workaround and reports that it works on all plans.
     evidence_ids: [cpl-claude-free-pro]
 
+# Skills that help Claude work with this source once it is connected. Add an entry only after the
+# skill itself has been read; a skill instructs the agent and is not a data connection, so list any
+# other system it needs under also_needs.
+related_skills: []
+
+# Other directory records worth reading next (ids of files in data/sources/).
 related_source_ids: []
