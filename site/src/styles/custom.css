@@ -111,14 +111,13 @@
 }
 
 /* List: one row per source, columns aligned so rows can be compared. */
-.dx-list-list > .dx-item {
+.dx-list > .dx-item {
   border-block-start: 1px solid var(--dx-line);
 }
-.dx-list-list > .dx-item:first-child {
+.dx-list > .dx-item:first-child {
   border-block-start: 0;
 }
-.dx-list-list > .dx-item:hover,
-.dx-item-index:hover {
+.dx-list > .dx-item:hover {
   background: var(--dx-surface);
 }
 .dx-col-name {
@@ -145,25 +144,6 @@
   .dx-col-routes {
     text-align: start;
   }
-}
-
-/* Grid: tiles for browsing. */
-.dx-item.mantine-Card-root {
-  background: var(--dx-surface);
-}
-.dx-item.mantine-Card-root:hover {
-  border-color: var(--sl-color-accent-high);
-}
-
-/* Index: names only, in columns: the densest way to scan 200+ entries. */
-.dx-list-index {
-  columns: 13rem;
-  column-gap: 1.5rem;
-}
-.dx-item-index {
-  padding: 0.3rem 0.4rem;
-  border-radius: 0.25rem;
-  break-inside: avoid;
 }
 
 @media (max-width: 30rem) {

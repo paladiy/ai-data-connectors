@@ -4,13 +4,10 @@ import {
   Badge,
   Box,
   Button,
-  Card,
   Chip,
   Group,
   Kbd,
   MantineProvider,
-  SegmentedControl,
-  SimpleGrid,
   Stack,
   Text,
   TextInput,
@@ -20,9 +17,6 @@ import {
 import directory from "../generated/directory.json";
 
 type Source = (typeof directory.sources)[number];
-type View = "list" | "grid" | "index";
-
-const VIEWS: View[] = ["list", "grid", "index"];
 
 const METHOD_LABELS: Record<string, string> = {
   native_connector: "Native connector",
@@ -73,10 +67,10 @@ function ThemeBridge() {
   return null;
 }
 
-function SourceItem({ source, view }: { source: Source; view: View }) {
+function SourceItem({ source }: { source: Source }) {
   const href = `/sources/${source.slug}/`;
   const name = (
-    <Anchor className="dx-name" href={href} fw={view === "index" ? 500 : 600} underline="hover">
+    <Anchor className="dx-name" href={href} fw={600} underline="hover">
       {source.name}
     </Anchor>
   );
@@ -97,30 +91,6 @@ function SourceItem({ source, view }: { source: Source; view: View }) {
       ))}
     </Group>
   );
-
-  if (view === "index") {
-    return (
-      <Group className="dx-item dx-item-index" justify="space-between" wrap="nowrap" gap="xs">
-        {name}
-        {routes}
-      </Group>
-    );
-  }
-
-  if (view === "grid") {
-    return (
-      <Card className="dx-item" withBorder radius="md" padding="md" h="100%">
-        <Stack gap={6} h="100%">
-          {name}
-          <Text size="sm" lineClamp={3} c="var(--sl-color-text)">
-            {source.summary}
-          </Text>
-          <Box mt="auto">{badges}</Box>
-          {routes}
-        </Stack>
-      </Card>
-    );
-  }
 
   return (
     <Group className="dx-item dx-item-list" align="flex-start" wrap="nowrap" gap="lg" py="md" px="sm">
@@ -146,19 +116,12 @@ function SourceItem({ source, view }: { source: Source; view: View }) {
 function DirectoryApp() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState<string[]>([]);
-  const [view, setView] = useState<View>("list");
   const inputRef = useRef<HTMLInputElement>(null);
   const restored = useRef(false);
 
-  // Restore state after hydration: URL first, then the last layout the reader chose.
+  // Restore state from the URL after hydration.
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    let stored: string | null = null;
-    try {
-      stored = localStorage.getItem("dx-view");
-    } catch {}
-    const wanted = params.get("view") ?? stored;
-    if (wanted && (VIEWS as string[]).includes(wanted)) setView(wanted as View);
     setQuery(params.get("q") ?? "");
     setActive((params.get("method") ?? "").split(",").filter((id) => methodCounts.has(id)));
     restored.current = true;
@@ -186,13 +149,6 @@ function DirectoryApp() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
-
-  const changeView = (next: string) => {
-    setView(next as View);
-    try {
-      localStorage.setItem("dx-view", next);
-    } catch {}
-  };
 
   const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const filtered = terms.length > 0 || active.length > 0;
@@ -230,7 +186,7 @@ function DirectoryApp() {
     : `${sources.length} ${plural(sources.length)}`;
 
   return (
-    <section className="dx" data-view={view} aria-labelledby="dx-heading">
+    <section className="dx" aria-labelledby="dx-heading">
       <Stack gap="sm" className="dx-toolbar">
         <Title order={2} id="dx-heading" className="sr-only">
           Find a data source
@@ -258,16 +214,6 @@ function DirectoryApp() {
             }}
             rightSection={query ? null : <Kbd aria-hidden="true">/</Kbd>}
             rightSectionWidth={36}
-          />
-          <SegmentedControl
-            aria-label="Layout"
-            value={view}
-            onChange={changeView}
-            data={[
-              { value: "list", label: "List" },
-              { value: "grid", label: "Grid" },
-              { value: "index", label: "Index" },
-            ]}
           />
         </Group>
 
@@ -322,19 +268,11 @@ function DirectoryApp() {
               <Title order={3} className="dx-letter">
                 {group.letter}
               </Title>
-              {view === "grid" ? (
-                <SimpleGrid cols={{ base: 1, xs: 2, md: 3 }} spacing="sm" className="dx-list">
-                  {group.items.map((s) => (
-                    <SourceItem key={s.slug} source={s} view={view} />
-                  ))}
-                </SimpleGrid>
-              ) : (
-                <div className={`dx-list dx-list-${view}`}>
-                  {group.items.map((s) => (
-                    <SourceItem key={s.slug} source={s} view={view} />
-                  ))}
-                </div>
-              )}
+              <div className="dx-list">
+                {group.items.map((s) => (
+                  <SourceItem key={s.slug} source={s} />
+                ))}
+              </div>
             </section>
           ))}
         </div>
