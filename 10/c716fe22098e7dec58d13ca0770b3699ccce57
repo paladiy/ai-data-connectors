@@ -1,0 +1,33 @@
+scripts/lib/render-guide.ts
+  s_1a94978dc8420b::t_e7b1951b17a335 5
+  s_1a94978dc8420b::t_0098a39b2f4650 204-267
+scripts/lib/generate.ts
+  s_1a94978dc8420b::t_f468d0d59a55cc 23-26
+  s_1a94978dc8420b::t_6370e6870b54d8 5
+  s_1a94978dc8420b::t_cc5f6b42bdf2c6 71-72
+scripts/lib/private.ts
+  s_1a94978dc8420b::t_4a99fd2f056613 22-28
+llms.txt
+  s_1a94978dc8420b::t_0813511531b22a 1-21
+tests/readme-and-pages.test.ts
+  s_1a94978dc8420b::t_617e95a7ae5487 223
+tests/render-guide.test.ts
+  s_1a94978dc8420b::t_f527ab4dd7de41 136-175
+  s_1a94978dc8420b::t_a965ce8e6323ea 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "10c716fe22098e7dec58d13ca0770b3699ccce57",
+  "prompts": {},
+  "sessions": {
+    "s_1a94978dc8420b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c0c836c0-016a-4114-a1cb-601d046187bd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
