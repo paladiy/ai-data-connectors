@@ -1,0 +1,19 @@
+site/src/content/docs/methodology.md
+  s_516dc6ce68b8a5::t_34697f95f25ac4 3,9-10,12,15,18-19,23-26,30-32,34-35,39,43-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c98d06066048a965ad7a26d74cbf6a1073b6736a",
+  "prompts": {},
+  "sessions": {
+    "s_516dc6ce68b8a5": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "1dbc9967-8bf3-4699-a118-c52e2feaa754",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
