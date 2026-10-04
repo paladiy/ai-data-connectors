@@ -1,0 +1,21 @@
+README.md
+  s_387b6fd99fec2f::t_043b935311702e 17-18
+scripts/lib/render-github.ts
+  s_387b6fd99fec2f::t_efd2b9deb095e3 34-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ddb3785b982f5aad0b64c2004980fc3d89850c37",
+  "prompts": {},
+  "sessions": {
+    "s_387b6fd99fec2f": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "73f5e999-69fc-42ea-a775-53a63a4521c5",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
