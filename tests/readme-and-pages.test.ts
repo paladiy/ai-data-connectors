@@ -108,11 +108,12 @@ describe("connector page rendering", () => {
     expect(guide).not.toMatch(/\{(tool|destination)\}/);
   });
 
-  it("renders each tool's own prerequisites, setups, notes, and links", () => {
+  it("renders each tool's own setups, notes, and links", () => {
     const guide = guideFor({ options: [fixtureOurOption()], recommendations: [] });
     const chat = guide.match(/<div class="sp-tool-panel" data-tool="fx-chat">.*?<\/div>/)![0];
     const agent = guide.match(/<div class="sp-tool-panel" data-tool="fx-agent">.*?<\/div>/)![0];
-    expect(chat).toContain("<li>A fixture account</li><li>A Fixture Chat account.</li>");
+    expect(chat).not.toContain("Before you start");
+    expect(chat).not.toContain("A Fixture Chat account.");
     expect(chat).toContain('<p class="sp-label">In Fixture web</p>');
     expect(chat).toContain("<li>Run <code>/mcp</code> and authorize.</li>");
     expect(chat).toContain("Works in Fixture web, Fixture desktop.");

@@ -113,14 +113,6 @@ function toolPanel(option: ModelOption, tool: ModelAiTool): string {
   ].filter((part): part is string => Boolean(part));
   if (intro.length > 0) out.push(`<p class="sp-tool-intro">${intro.map(e).join(" ")}</p>`);
 
-  const prerequisites: string[] = [];
-  if (option.prerequisites.status === "known") {
-    const value = option.prerequisites.value;
-    prerequisites.push(...(Array.isArray(value) ? value : [value]).map((item) => e(String(item))));
-  }
-  prerequisites.push(...tool.prerequisites.map((item) => richText(item.text)));
-  if (prerequisites.length > 0) out.push(`<p class="sp-label">Before you start</p>`, list(prerequisites));
-
   if (option.setup_steps.length > 0) {
     out.push(
       `<p class="sp-label">In Coupler.io</p>`,
