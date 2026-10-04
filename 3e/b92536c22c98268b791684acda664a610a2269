@@ -1,0 +1,34 @@
+data/skill-overrides.yaml
+  s_b909ef1ccfa9a7::t_9a3aae00552fff 26-32
+tests/render-github.test.ts
+  s_b909ef1ccfa9a7::t_e4833b5ae3063b 131-134
+data/sources/quickbooks-online.yaml
+  s_b909ef1ccfa9a7::t_933a105120515a 1-335
+scripts/lib/skills.ts
+  s_b909ef1ccfa9a7::t_fa3412d7280e97 74-76
+tests/skills.test.ts
+  s_b909ef1ccfa9a7::t_3d034b79c178ac 87-90
+  s_b909ef1ccfa9a7::t_c11f1b2c794c91 24
+  s_b909ef1ccfa9a7::t_87bf763b20234b 85-86
+scripts/lib/render-github.ts
+  s_b909ef1ccfa9a7::t_bde2254c3edc69 152
+  s_b909ef1ccfa9a7::t_fa7d5cac0d92b7 160,162-165
+scripts/lib/render-site.ts
+  s_b909ef1ccfa9a7::t_2163e1fbbd2611 209,211-214
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "3eb92536c22c98268b791684acda664a610a2269",
+  "prompts": {},
+  "sessions": {
+    "s_b909ef1ccfa9a7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "8c0c0417-2d62-499b-b9de-ef3413a26c3e",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
