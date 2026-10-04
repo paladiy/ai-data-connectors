@@ -1,0 +1,25 @@
+.github/workflows/check-upstream.yml
+  s_b909ef1ccfa9a7::t_c87935f4382dd8 1-47
+.github/ISSUE_TEMPLATE/correction.yml
+  s_b909ef1ccfa9a7::t_203231353b83fe 1-73
+.github/workflows/deploy.yml
+  s_b909ef1ccfa9a7::t_a04a9fb7e73416 1-60
+.github/workflows/ci.yml
+  s_b909ef1ccfa9a7::t_52f07bddf67cf4 1-54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "dc377c8fbd00ee8b51b0b1a5c7b8f0df7a7aa651",
+  "prompts": {},
+  "sessions": {
+    "s_b909ef1ccfa9a7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "8c0c0417-2d62-499b-b9de-ef3413a26c3e",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
