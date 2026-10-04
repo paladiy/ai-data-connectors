@@ -1,6 +1,6 @@
-# Claude Data Connections
+# AI Data Connectors
 
-Compare ways to connect a data source to Claude.
+Compare ways to connect your business data to AI assistants and agents, through native connectors, MCP servers, data platforms, and file export.
 
 _Maintained by Olexander Paladiy, who works at Coupler.io, one of the services listed here. Not affiliated with Anthropic._
 
@@ -8,7 +8,7 @@ The public website URL is not configured yet.
 
 ## What this is
 
-This repository holds one maintained dataset describing ways to get data from a business source into Claude, and generates the website and a public JSON dataset from it.
+This repository holds one maintained dataset describing ways to get data from a business source into AI assistants and agents, and generates the website and a public JSON dataset from it.
 
 It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a route appears once it is documented with cited evidence.
 

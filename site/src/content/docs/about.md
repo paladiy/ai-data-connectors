@@ -11,9 +11,10 @@ not affiliated with Anthropic.
 
 ## What it covers
 
-Each connector page answers one question: how can the data in a given business source be analysed in Claude?
-A route is included when it moves or exposes that source's data to Claude, whether through a native
-connector, an MCP server, a data platform, an automation tool, or a manual file export.
+Each connector page answers one question: how can the data in a given business source be used by an
+AI assistant or agent? A route is included when it moves or exposes that source's data to an AI tool,
+whether through a native connector, an MCP server, a data platform, an automation tool, or a manual
+file export. The route details recorded so far, such as supported apps and setup steps, are for Claude.
 
 Coverage is not exhaustive. A route appears once it is documented with the sources cited on the
 page.

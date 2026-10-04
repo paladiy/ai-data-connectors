@@ -52,7 +52,7 @@ export function renderReadme(model: Model): string {
     home ? `Website: ${link(site.name, home)}` : "The public website URL is not configured yet.",
     "## What this is",
     [
-      "This repository holds one maintained dataset describing ways to get data from a business source into Claude, and generates the website and a public JSON dataset from it.",
+      "This repository holds one maintained dataset describing ways to get data from a business source into AI assistants and agents, and generates the website and a public JSON dataset from it.",
       "",
       "It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a route appears once it is documented with cited evidence.",
     ].join("\n"),
