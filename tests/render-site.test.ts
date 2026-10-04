@@ -149,6 +149,44 @@ describe("source page structure", () => {
     expect(page).not.toContain("Compare the options");
   });
 
+  it("shows each route's data, data path, and limits after the install steps", () => {
+    const page = pageFor();
+    const order = [
+      '<h3 id="install-fx-ours">How to install</h3>',
+      '<h3 id="data-fx-ours">What Fixture Ours SYNTHETIC-FIXTURE gives you from Fixture Source SYNTHETIC-FIXTURE</h3>',
+      '<h3 id="path-fx-ours">How the data reaches the AI tool</h3>',
+      '<h3 id="limits-fx-ours">Limits to expect</h3>',
+    ].map((heading) => page.indexOf(heading));
+    expect(order.every((index) => index > -1)).toBe(true);
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+    expect(page).toContain("<p>Claude calls the vendor API directly.</p>");
+    expect(page).toContain("<blockquote>Show last month&#39;s fixture totals.</blockquote>");
+  });
+
+  it("labels an undocumented fact as not documented, with its note", () => {
+    const page = pageFor({
+      options: [
+        fixtureOption({ history: { status: "unknown", value: null, evidence_ids: [], note: "no window <stated>" } }),
+        fixtureOurOption(),
+      ],
+    });
+    expect(page).toContain('<dt>Historical data</dt><dd><p class="sp-muted">Not documented (no window &lt;stated&gt;)</p></dd>');
+  });
+
+  it("lists several known values and each capability", () => {
+    const page = pageFor({
+      options: [
+        fixtureOption({
+          limits: known(["First limit", "Second limit"]),
+          capabilities: [{ text: "Read fixture invoices.", evidence_ids: ["fx-docs"] }],
+        }),
+        fixtureOurOption(),
+      ],
+    });
+    expect(page).toContain("<ul><li>First limit</li><li>Second limit</li></ul>");
+    expect(page).toContain("<li>Read fixture invoices.</li>");
+  });
+
   it("says plainly when no related connector is listed", () => {
     const page = pageFor();
     expect(page).toContain("No related connectors listed yet.");

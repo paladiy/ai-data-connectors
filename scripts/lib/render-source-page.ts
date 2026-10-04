@@ -1,3 +1,4 @@
+import type { Claim } from "../../schemas/common.ts";
 import { buildInstall, type InstallLink, type OptionInstall, type ToolInstall } from "./install.ts";
 import { formatValue } from "./markdown.ts";
 import type { ModelAiTool, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
@@ -139,7 +140,48 @@ function installBody(install: OptionInstall): string[] {
   return out;
 }
 
-function section(option: ModelOption, kind: "works" | "install", title: string, body: string[]): string {
+/** Unknown is always "Not documented", so a missing fact can never read as a "no". */
+function claimHtml(claim: Claim<unknown>): string {
+  if (claim.status !== "known") {
+    const label = claim.status === "not_applicable" ? "Not applicable" : "Not documented";
+    return `<p class="sp-muted">${label}${claim.note ? ` (${e(claim.note)})` : ""}</p>`;
+  }
+  const values = Array.isArray(claim.value) ? claim.value : [claim.value];
+  const body =
+    values.length > 1 ? list(values.map((value) => e(formatValue(value)))) : `<p>${e(formatValue(values[0]))}</p>`;
+  return claim.note ? `${body}<p class="sp-muted">Note: ${e(claim.note)}</p>` : body;
+}
+
+function fact(label: string, claim: Claim<unknown>): string {
+  return `<div class="sp-fact"><dt>${e(label)}</dt><dd>${claimHtml(claim)}</dd></div>`;
+}
+
+function dataBody(option: ModelOption): string[] {
+  const out = [claimHtml(option.data_available)];
+  if (option.capabilities.length > 0) {
+    out.push(`<p class="sp-label">What you can do</p>`, list(option.capabilities.map((item) => e(item.text))));
+  }
+  if (option.sample_query) {
+    out.push(`<p class="sp-label">An example question you can ask</p>`, `<blockquote>${e(option.sample_query)}</blockquote>`);
+  }
+  return out;
+}
+
+function pathBody(option: ModelOption): string[] {
+  return [
+    claimHtml(option.data_path),
+    `<dl class="sp-facts">` +
+      fact("Historical data", option.history) +
+      fact("Refresh", option.refresh) +
+      fact("Combining several sources", option.multi_source) +
+      fact("Prerequisites", option.prerequisites) +
+      `</dl>`,
+  ];
+}
+
+type SectionKind = "works" | "install" | "data" | "path" | "limits";
+
+function section(option: ModelOption, kind: SectionKind, title: string, body: string[]): string {
   return (
     `<section class="sp-route"><div class="sp-route-head"><h3 id="${kind}-${e(option.id)}">${e(title)}</h3></div>` +
     `<div class="sp-route-body">${body.join("")}</div></section>`
@@ -162,7 +204,7 @@ function compactTab(option: ModelOption, index: number): string {
   return `<label class="sp-pill" for="route-${index}-${e(option.id)}">${e(option.name)}</label>`;
 }
 
-function panel(option: ModelOption, aiTools: ModelAiTools): string {
+function panel(source: ModelSource, option: ModelOption, aiTools: ModelAiTools): string {
   const limited = option.route_status.status === "known" && option.route_status.value !== "available";
   const intro = option.description ? `<p class="sp-panel-intro">${e(option.description)}</p>` : "";
   const install = buildInstall(option, aiTools);
@@ -172,6 +214,9 @@ function panel(option: ModelOption, aiTools: ModelAiTools): string {
     intro +
     section(option, "works", "Works with", toolTiles(option, tools, aiTools)) +
     section(option, "install", "How to install", installBody(install)) +
+    section(option, "data", `What ${option.name} gives you from ${source.name}`, dataBody(option)) +
+    section(option, "path", "How the data reaches the AI tool", pathBody(option)) +
+    section(option, "limits", "Limits to expect", [claimHtml(option.limits)]) +
     `</div>`
   );
 }
@@ -190,10 +235,10 @@ export function routesSection(source: ModelSource, aiTools: ModelAiTools): strin
     options.length === 1 ? "## How to connect" : "## Connection routes",
     options.length === 1
       ? `<p>Connect ${e(source.name)} to your AI tool with ${e(options[0]!.name)}. Pick the tool you use to see how to install it.</p>`
-      : `<p>Choose a route. ${options.length} are recorded. Each one shows which AI tools it works with and how to install it.</p>`,
+      : `<p>Choose a route. ${options.length} are recorded. Each one shows which AI tools it works with, how to install it, what data it brings, and its limits.</p>`,
     `<div class="sp-switch not-content${options.length === 1 ? " sp-switch--single" : ""}">${radios}<div class="sp-tabs">${cards}</div>` +
       `<div class="sp-pillbar" aria-label="Switch route">${pills}</div>` +
-      options.map((option) => panel(option, aiTools)).join("") +
+      options.map((option) => panel(source, option, aiTools)).join("") +
       `</div>`,
   ];
 }

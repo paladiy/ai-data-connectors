@@ -132,7 +132,8 @@ describe("production build", () => {
     expect(html).toContain('class="sp-switch');
     expect(html).toContain(">How to install</h3>");
     expect(html).toContain(">Works with</h3>");
-    expect(html).not.toContain(">What data it has access to</h3>");
+    expect(html).toContain(">How the data reaches the AI tool</h3>");
+    expect(html).toContain(">Limits to expect</h3>");
     expect(html).not.toContain("<table>");
     expect(html).not.toContain("utm_");
   });
