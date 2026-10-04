@@ -129,7 +129,7 @@ describe("production build", () => {
 
   it("ships the search UI", () => {
     const html = readFileSync(path.join(dist, "index.html"), "utf8");
-    expect(html).toContain('id="directory-search"');
+    expect(html).toContain('id="dx-search-input"');
     expect(existsSync(path.join(dist, "guides"))).toBe(false);
   });
 

@@ -275,14 +275,13 @@ export function renderIndexPage(model: Model): string {
     frontmatter({
       title: site.name,
       description: site.tagline,
+      template: "splash",
       tableOfContents: false,
       head,
     }),
     `import Directory from "../../components/Directory.astro";`,
     `_${escapeText(site.affiliation_statement)}_`,
-    escapeText(site.tagline),
     "<Directory />",
-    `[About](/about/)`,
   ]);
 }
 
@@ -294,6 +293,8 @@ export interface DirectoryData {
     aliases: string[];
     routes: number;
     providers: string[];
+    /** Distinct connection methods across the usable routes, in a stable order. */
+    methods: string[];
   }>;
 }
 
@@ -306,6 +307,9 @@ export function buildDirectoryData(model: Model): DirectoryData {
       aliases: source.aliases,
       routes: source.options.filter((option) => option.is_usable_route).length,
       providers: source.options.map((option) => option.provider),
+      methods: [
+        ...new Set(source.options.filter((option) => option.is_usable_route).map((option) => option.method)),
+      ].sort(),
     })),
   };
 }
