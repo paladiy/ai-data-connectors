@@ -66,7 +66,7 @@ function itemList(site: SiteConfig, sources: ModelSource[]): unknown {
     itemListElement: sources.map((source, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: `${source.name} to Claude`,
+      name: source.name,
       url: absolute(site, `/sources/${source.slug}/`),
     })),
   };
@@ -215,7 +215,7 @@ export function renderLlmsTxt(model: Model): string {
   if (model.sources.length > 0) {
     lines.push("## Connectors", "");
     for (const source of model.sources) {
-      lines.push(`- [${source.name} to Claude](${absolute(site, `/sources/${source.slug}/`)}): ${source.summary}`);
+      lines.push(`- [${pageTitle(source)}](${absolute(site, `/sources/${source.slug}/`)}): ${source.summary}`);
     }
     lines.push("");
   }

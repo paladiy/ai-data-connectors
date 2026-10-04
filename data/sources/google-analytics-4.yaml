@@ -7,10 +7,10 @@ aliases:
   - Google Analytics
 summary: >-
   Google Analytics 4 (GA4) is Google's web and app analytics product. Its data covers traffic,
-  users, sessions, events, conversions, and acquisition sources. To analyze it in Claude, use
-  scheduled Coupler.io imports.
+  users, sessions, events, conversions, and acquisition sources. To analyze it in ChatGPT, Claude,
+  Gemini, or another LLM, use scheduled Coupler.io imports.
 
-meta_description: "Connect Google Analytics 4 traffic, event, and conversion data to Claude with scheduled Coupler.io imports."
+meta_description: "Connect Google Analytics 4 traffic, event, and conversion data to ChatGPT, Claude, Gemini, and other LLMs with scheduled Coupler.io imports."
 
 research:
   searched_on: "2026-10-04"

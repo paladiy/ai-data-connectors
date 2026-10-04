@@ -9,9 +9,9 @@ aliases:
 summary: >-
   QuickBooks Online is Intuit's cloud accounting software. It stores invoices, customers, vendors,
   transactions, and financial reports such as profit and loss and A/R aging. To analyze that data in
-  Claude, use scheduled Coupler.io imports.
+  ChatGPT, Claude, Gemini, or another LLM, use scheduled Coupler.io imports.
 
-meta_description: "Connect QuickBooks Online invoices, customers, and financial reports to Claude with scheduled Coupler.io imports."
+meta_description: "Connect QuickBooks Online invoices, customers, and reports to ChatGPT, Claude, Gemini, and other LLMs with scheduled Coupler.io imports."
 
 research:
   searched_on: "2026-10-04"

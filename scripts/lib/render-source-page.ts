@@ -247,7 +247,7 @@ export function connectorsSection(source: ModelSource): string[] {
   }
   out.push(
     list(
-      source.related.map((related) => `<a class="sp-route-link" href="/sources/${e(related.slug)}/">${e(related.name)} to Claude</a>`),
+      source.related.map((related) => `<a class="sp-route-link" href="/sources/${e(related.slug)}/">${e(related.name)}</a>`),
       "sp-routes not-content",
     ),
   );

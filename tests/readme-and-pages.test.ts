@@ -43,8 +43,10 @@ describe("markdown escaping", () => {
 });
 
 describe("connector page rendering", () => {
-  it("uses the documented title pattern", () => {
-    const guide = guideFor();
+  it("titles the page for any LLM, not Claude alone", () => {
+    expect(guideFor()).toContain(
+      "title: Connect Fixture Source SYNTHETIC-FIXTURE to ChatGPT, Claude, Gemini, and other LLMs",
+    );
   });
 
   it("leaves cost out of the install steps", () => {

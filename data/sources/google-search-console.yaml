@@ -9,9 +9,10 @@ aliases:
 summary: >-
   Google Search Console is Google's free tool for monitoring how a website performs in Google
   Search. Its data covers queries, clicks, impressions, average position, pages, and URL index
-  status. To analyze it in Claude, use scheduled Coupler.io imports.
+  status. To analyze it in ChatGPT, Claude, Gemini, or another LLM, use scheduled Coupler.io
+  imports.
 
-meta_description: "Connect Google Search Console queries, clicks, impressions, and index status to Claude with scheduled Coupler.io imports."
+meta_description: "Connect Google Search Console queries, clicks, and index status to ChatGPT, Claude, Gemini, and other LLMs with scheduled Coupler.io imports."
 
 research:
   searched_on: "2026-10-04"

@@ -26,7 +26,7 @@ describe("source page", () => {
 
   it("uses the documented title pattern and a unique description", () => {
     const frontmatter = frontmatterOf(pageFor());
-    expect(frontmatter.title).toBe("Fixture Source SYNTHETIC-FIXTURE to Claude: connection options and setup");
+    expect(frontmatter.title).toBe("Connect Fixture Source SYNTHETIC-FIXTURE to ChatGPT, Claude, Gemini, and other LLMs");
     expect(frontmatter.description).toBe("Fixture meta description.");
   });
 

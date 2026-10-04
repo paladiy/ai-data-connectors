@@ -8,9 +8,9 @@ aliases:
 summary: >-
   Google Ads is Google's advertising platform for search, display, and video campaigns. Its data
   covers campaigns, ad groups, ads, keywords, spend, clicks, impressions, and conversions. To
-  analyze it in Claude, use scheduled Coupler.io imports.
+  analyze it in ChatGPT, Claude, Gemini, or another LLM, use scheduled Coupler.io imports.
 
-meta_description: "Connect Google Ads campaign, spend, and conversion data to Claude with scheduled Coupler.io imports."
+meta_description: "Connect Google Ads campaign, spend, and conversion data to ChatGPT, Claude, Gemini, and other LLMs with scheduled Coupler.io imports."
 
 research:
   searched_on: "2026-10-04"

@@ -6,10 +6,10 @@ aliases:
   - Pipedrive CRM
 summary: >-
   Pipedrive is a sales CRM that stores deals, contacts, organizations, and activities. To analyze
-  that data in Claude, use scheduled Coupler.io imports, which load one entity at a time into a
-  queryable dataset.
+  that data in ChatGPT, Claude, Gemini, or another LLM, use scheduled Coupler.io imports, which load
+  one entity at a time into a queryable dataset.
 
-meta_description: "Connect Pipedrive deals, contacts, and activities to Claude with scheduled Coupler.io imports."
+meta_description: "Connect Pipedrive deals, contacts, and activities to ChatGPT, Claude, Gemini, and other LLMs with scheduled Coupler.io imports."
 
 research:
   searched_on: "2026-10-04"
