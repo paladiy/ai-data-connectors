@@ -1,0 +1,60 @@
+name: Deploy
+
+# Manual only. Hosting is not selected yet, so this workflow validates and builds the
+# artifact but does not publish it. The owner must choose a host whose terms permit this
+# promotional use, then add the publish step and configure production metadata.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type "deploy" to confirm this is an authorised release.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  artifact:
+    # Only the reviewed main branch may produce a release artifact.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the confirmation
+        run: |
+          if [ "${{ inputs.confirm }}" != "deploy" ]; then
+            echo "Confirmation text did not match." >&2
+            exit 1
+          fi
+
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Fails while site metadata is a placeholder or nothing has been reviewed.
+      - name: Production readiness
+        run: npm run validate -- --production
+
+      - run: npm test
+
+      - name: Build the artifact
+        run: npm run build
+
+      - name: Upload the validated artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: site/dist
+          retention-days: 30
+
+      - name: Publishing is not configured
+        run: |
+          echo "A validated artifact was produced but not published."
+          echo "Owner actions still required: select a host, configure the domain and"
+          echo "production metadata, add the publish step, and keep the previous"
+          echo "deployment available for rollback."

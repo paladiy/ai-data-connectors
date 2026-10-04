@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Read-only by default. No job here needs to write to the repository.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: No private or internal content is tracked
+        run: npm run check:private
+
+      - name: Types
+        run: npm run typecheck
+
+      - name: Content validation
+        run: npm run validate
+
+      - name: Tests
+        run: npm test
+
+      - name: Committed generated files are current
+        run: npm run check:generated
+
+      # Builds must be reproducible and offline: nothing below may fetch content.
+      - name: Production build, search index, and internal links
+        run: npm run build
+
+      # Unreviewed records are the only pages that emit "noindex, nofollow"; the 404 page uses a
+      # plain "noindex". Checking the directive rather than page prose keeps this guard stable
+      # when editorial wording changes.
+      - name: Unreviewed records never reach the production build
+        run: |
+          if grep -rl 'noindex, nofollow' site/dist >/dev/null 2>&1; then
+            echo "An unreviewed page reached site/dist:" >&2
+            grep -rl 'noindex, nofollow' site/dist >&2
+            exit 1
+          fi
+          echo "site/dist contains reviewed pages only."

@@ -1,0 +1,73 @@
+name: Correction
+description: Report something inaccurate, out of date, or missing an important caveat.
+title: "Correction: "
+labels: [correction]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting this. Please point at the specific claim rather than the page as a
+        whole, so the record and its evidence can be corrected precisely.
+
+        Do not include credentials, account identifiers, or private business data in this issue.
+
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: The source slug or name, for example `google-analytics-4`.
+      placeholder: google-analytics-4
+    validations:
+      required: true
+
+  - type: input
+    id: option
+    attributes:
+      label: Connection option
+      description: Which option on the page is wrong, if it applies to one in particular.
+      placeholder: Coupler.io, or the vendor's native connector
+
+  - type: textarea
+    id: claim
+    attributes:
+      label: What the page currently says
+      description: Quote the sentence or table cell.
+    validations:
+      required: true
+
+  - type: textarea
+    id: correction
+    attributes:
+      label: What it should say
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: >-
+        Links to current vendor documentation, a directory entry, or a description of what you
+        observed and when. Claims are only published when they can be traced to evidence.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: basis
+    attributes:
+      label: How do you know?
+      options:
+        - I read it in the provider's documentation
+        - I tested it myself
+        - I maintain this connector
+        - Other
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: Disclosure
+      options:
+        - label: I have disclosed above if I am affiliated with any product mentioned.
+          required: true
