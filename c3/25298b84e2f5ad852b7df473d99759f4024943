@@ -1,0 +1,21 @@
+scripts/lib/private.ts
+  s_45f1e84597699c::t_5cc559a191f7c8 18-19
+scripts/lib/links.ts
+  s_45f1e84597699c::t_5cc559a191f7c8 19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c325298b84e2f5ad852b7df473d99759f4024943",
+  "prompts": {},
+  "sessions": {
+    "s_45f1e84597699c": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "4578cda4-6f04-472a-a2bd-4c3558489f6b",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
