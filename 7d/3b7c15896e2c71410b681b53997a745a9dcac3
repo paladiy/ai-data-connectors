@@ -1,0 +1,58 @@
+scripts/lib/render-site.ts
+  s_b909ef1ccfa9a7::t_5569a53779b5fe 449-450,454,456
+  s_b909ef1ccfa9a7::t_954c37826f0daa 283-284
+  s_b909ef1ccfa9a7::t_5b6548b74afe9a 369
+  s_b909ef1ccfa9a7::t_e2b5f7c6266c6b 314
+  s_b909ef1ccfa9a7::t_93eecd1d31725e 11-17
+  s_b909ef1ccfa9a7::t_b49af349a1de12 258-259
+  s_b909ef1ccfa9a7::t_8d52066ae89c8c 321,325
+README.md
+  s_b909ef1ccfa9a7::t_256396292aadc7 17
+  s_b909ef1ccfa9a7::t_bf2805a438c33a 43
+tests/render-github.test.ts
+  s_b909ef1ccfa9a7::t_69827a7151ffec 113-123
+  s_b909ef1ccfa9a7::t_2c343711f02c3f 155,157
+tests/render-site.test.ts
+  s_b909ef1ccfa9a7::t_a09775343e52fb 139
+  s_b909ef1ccfa9a7::t_e8e6d93819cf4c 119,121-123
+  s_b909ef1ccfa9a7::t_c14bb59740138d 79-80
+  s_b909ef1ccfa9a7::t_ece0b3a48f9ebd 52,55,61-72
+  s_b909ef1ccfa9a7::t_56581670cffca2 73-74
+scripts/lib/render-github.ts
+  s_b909ef1ccfa9a7::t_b7fa3d63a299e6 200
+  s_b909ef1ccfa9a7::t_eb34e5fcdc6570 306
+  s_b909ef1ccfa9a7::t_8a9b199c9f2ebd 266
+  s_b909ef1ccfa9a7::t_3f24afdc45a43e 211
+data/sources/quickbooks-online.yaml
+  s_b909ef1ccfa9a7::t_2ea52e74b390db 19-21
+  s_b909ef1ccfa9a7::t_45735884b649cf 38-41
+scripts/lib/validate.ts
+  s_b909ef1ccfa9a7::t_c154dc10f8c159 256-258
+  s_b909ef1ccfa9a7::t_1de4a07101f878 20-33
+  s_b909ef1ccfa9a7::t_616a94633feb5a 14-19
+tests/validate.test.ts
+  s_b909ef1ccfa9a7::t_e480a18b556c28 144-167
+site/src/components/Directory.astro
+  s_b909ef1ccfa9a7::t_bf6c04f1e6f45c 59
+  s_b909ef1ccfa9a7::t_2c36dc53da9dda 40
+.github/workflows/ci.yml
+  s_b909ef1ccfa9a7::t_d8cfedea2755ec 48-51,53-55,58
+scripts/lib/markdown.ts
+  s_b909ef1ccfa9a7::t_64cd2bf3b92e9d 31-50,52,54-55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7d3b7c15896e2c71410b681b53997a745a9dcac3",
+  "prompts": {},
+  "sessions": {
+    "s_b909ef1ccfa9a7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "8c0c0417-2d62-499b-b9de-ef3413a26c3e",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
