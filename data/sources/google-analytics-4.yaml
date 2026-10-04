@@ -1,5 +1,3 @@
-# Every known claim below cites evidence that was read on the recorded date. Anything that the
-# cited documentation does not state is left as status: unknown with a null value.
 schema_version: 1
 id: google-analytics-4
 slug: google-analytics-4
@@ -150,7 +148,6 @@ options:
       overview: https://docs.coupler.io/sources/category/ppc/google-analytics
       setup: https://docs.coupler.io/destinations/categories/ai/claude
 
-    # The Claude destination page names each of these surfaces for a single web connector.
     surfaces:
       claude_web:
         status: known

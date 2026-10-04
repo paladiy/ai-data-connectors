@@ -1,17 +1,12 @@
-# Site metadata. Values marked PLACEHOLDER must be replaced by the owner before launch;
-# `npm run validate -- --production` fails while any of them remain.
 name: AI Data Connectors
 tagline: Connect your business data to Claude with Coupler.io, source by source.
 
-# PLACEHOLDER: local-development URL until the owner selects a domain.
 url: http://localhost:4321
 
-# PLACEHOLDER: null until the owner confirms the repository location.
 repo: null
 
 maintainer:
   name: Olexander Paladiy
-  # PLACEHOLDER: set to true once the owner confirms the current role wording.
   relationship_confirmed: false
 
 publisher:
