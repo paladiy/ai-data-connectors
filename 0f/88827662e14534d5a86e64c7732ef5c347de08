@@ -1,0 +1,33 @@
+scripts/check-freshness.ts
+  s_b909ef1ccfa9a7::t_f9903f46704d1a 1-14
+scripts/lib/freshness.ts
+  s_b909ef1ccfa9a7::t_692fb6b46f0435 1-77
+scripts/sync-skills.ts
+  s_b909ef1ccfa9a7::t_059cf5e5a957bf 1-7,9-96,98-106
+  s_b909ef1ccfa9a7::t_994b3dcdbcb9cb 8
+  s_b909ef1ccfa9a7::t_50d3a15bbe815f 97
+scripts/review.ts
+  s_b909ef1ccfa9a7::t_72f78e8bfc30ca 1-96
+scripts/lib/sync-skills.ts
+  s_b909ef1ccfa9a7::t_8d626b2c5bbe25 1-147
+tests/ops.test.ts
+  s_b909ef1ccfa9a7::t_1340ddf4b35603 1-9,12-113,115-155
+  s_b909ef1ccfa9a7::t_5c0b6810658d13 10-11
+  s_b909ef1ccfa9a7::t_1b83310c1cc871 114
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0f88827662e14534d5a86e64c7732ef5c347de08",
+  "prompts": {},
+  "sessions": {
+    "s_b909ef1ccfa9a7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "8c0c0417-2d62-499b-b9de-ef3413a26c3e",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
