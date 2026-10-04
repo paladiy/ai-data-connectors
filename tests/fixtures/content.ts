@@ -1,4 +1,3 @@
-/** Builds in-memory Content for tests. Synthetic only; never written to public output. */
 import { SiteConfig } from "../../schemas/site.ts";
 import { Source } from "../../schemas/source.ts";
 import type { Content, SourceBundle } from "../../scripts/lib/load.ts";
@@ -13,7 +12,6 @@ export const fixtureSite = SiteConfig.parse({
   publisher: { name: "Fixture Maintainer", type: "Person" },
 });
 
-/** Parses a fixture record. */
 export function fixtureRecord(overrides: Record<string, unknown> = {}): Source {
   return Source.parse(fixtureSource(overrides));
 }

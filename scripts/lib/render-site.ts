@@ -22,7 +22,6 @@ function absolute(site: SiteConfig, path: string): string {
   return new URL(path, site.url).toString();
 }
 
-/** Starlight frontmatter. Serialized through YAML so record text cannot break the document. */
 function frontmatter(data: Record<string, unknown>): string {
   return `---\n${stringify(data, { lineWidth: 0 }).trimEnd()}\n---`;
 }
@@ -31,7 +30,6 @@ function jsonLd(value: unknown): HeadTag {
   return {
     tag: "script",
     attrs: { type: "application/ld+json" },
-    // Closing-tag sequences are the only way JSON-LD can escape its script element.
     content: JSON.stringify(value).replace(/<\//g, "<\\/"),
   };
 }
@@ -82,11 +80,6 @@ function headFor(site: SiteConfig, path: string, structuredData: unknown[]): Hea
 
 const TROUBLESHOOTING = /\b(why|slow|timing out|time out|error|fail|cannot|can't|not (?:see|load|work)|stuck|missing)\b/i;
 
-/**
- * Order questions so decision-making ones lead: those where Coupler.io is part of the answer come
- * first, other comparison questions next, and troubleshooting last. Order within a tier is kept
- * as written, and no answer text is changed.
- */
 function faqRank(entry: ModelSource["faq"][number]): number {
   if (TROUBLESHOOTING.test(entry.question)) return 2;
   return /coupler\.io/i.test(entry.answer) ? 0 : 1;
@@ -188,7 +181,6 @@ export interface DirectoryData {
     aliases: string[];
     routes: number;
     providers: string[];
-    /** Distinct connection methods across the usable routes, in a stable order. */
     methods: string[];
   }>;
 }

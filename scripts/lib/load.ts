@@ -30,9 +30,7 @@ function parseFile<T extends z.ZodType>(schema: T, file: string, label: string):
 }
 
 export interface SourceBundle {
-  /** Record as committed, without private evidence. */
   record: Source;
-  /** Private evidence from the git-ignored data/private tree, used for validation only. */
   privateEvidence: Evidence[];
   file: string;
 }
@@ -85,7 +83,6 @@ export function loadContent(root: string = process.cwd()): Content {
   return { root, site, sources };
 }
 
-/** All evidence available for validating a record, public and private. */
 export function allEvidence(bundle: SourceBundle): Evidence[] {
   return [...bundle.record.evidence, ...bundle.privateEvidence];
 }

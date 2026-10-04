@@ -34,7 +34,6 @@ export function isLocalDevelopmentUrl(value: string): boolean {
   }
 }
 
-/** https, or an explicit http://localhost / http://127.0.0.1 development URL. */
 export const SiteUrl = z
   .string()
   .refine(

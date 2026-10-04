@@ -1,7 +1,3 @@
-/**
- * Synthetic fixtures for tests only. Every value is fictional and marked SYNTHETIC-FIXTURE so
- * leakage tests can prove fixtures never reach public outputs.
- */
 import type { Source } from "../../schemas/source.ts";
 
 export const FIXTURE_MARKER = "SYNTHETIC-FIXTURE";

@@ -1,4 +1,3 @@
-/* Wide comparison tables stay reachable on narrow screens without losing the header row. */
 .sl-markdown-content table {
   display: block;
   max-width: 100%;
@@ -16,9 +15,6 @@
 .sl-markdown-content table td:first-child {
   min-width: 11rem;
 }
-
-/* ---------- Related skills ----------
-   Cards in the spirit of coupler.io/ai-agent-skills: a task name, what you would ask, a category. */
 
 .sk-grid {
   list-style: none;
@@ -58,7 +54,6 @@
   font-weight: 600;
   text-decoration: none;
 }
-/* The whole card is the click target. */
 .sk-title::after {
   content: "";
   position: absolute;
@@ -155,10 +150,6 @@
   }
 }
 
-/* ---------- Directory (home page) ----------
-   The directory UI is a React island built from Mantine components (components/Directory.tsx).
-   This section only bridges Mantine to Starlight's theme and handles page-level layout. */
-
 [data-page-template="splash"] .sl-markdown-content,
 [data-page-template="splash"] main > .content-panel {
   --sl-content-width: 64rem;
@@ -178,7 +169,6 @@
 }
 
 .dx {
-  /* Map Mantine tokens onto Starlight's so both themes follow the site palette. */
   --mantine-font-family: inherit;
   --mantine-color-body: transparent;
   --mantine-color-text: var(--sl-color-text);
@@ -192,7 +182,6 @@
   margin-block-start: 1.5rem;
 }
 
-/* Starlight spaces siblings with a top margin; Mantine layouts manage their own gaps. */
 .dx :where(.mantine-Stack-root, .mantine-Group-root, .mantine-SimpleGrid-root) > * {
   margin-top: 0;
 }
@@ -222,7 +211,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Alphabetical groups with a letter gutter. */
 .dx-group {
   display: grid;
   grid-template-columns: 3rem minmax(0, 1fr);
@@ -237,7 +225,6 @@
   color: var(--sl-color-gray-3);
 }
 
-/* The whole entry is the click target. */
 .dx-item {
   position: relative;
 }
@@ -248,7 +235,6 @@
   inset: 0;
 }
 
-/* List: one row per source, columns aligned so rows can be compared. */
 .dx-list > .dx-item {
   border-block-start: 1px solid var(--dx-line);
 }
@@ -292,10 +278,6 @@
   }
 }
 
-/* ---------- Source page ----------
-   Six sections, each repeating the same route blocks. The route name sits in a left gutter
-   (as the letter does on the directory) so a reader can scan one route down the whole page. */
-
 .sp-badges {
   display: flex;
   flex-wrap: wrap;
@@ -328,7 +310,6 @@
   font-size: var(--sl-text-sm);
 }
 
-/* Description: the routes at a glance. */
 .sp-routes {
   list-style: none;
   margin: 1.25rem 0 0;
@@ -365,7 +346,6 @@
   color: var(--sl-color-gray-2);
 }
 
-/* Route blocks in install / can do / data. */
 .sp-route {
   display: grid;
   grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
@@ -428,7 +408,6 @@
   margin-block-start: 0.25rem !important;
 }
 
-/* Works in: one tile per Claude surface. */
 .sp-route-body ul.sp-surfaces {
   list-style: none;
   padding: 0;
@@ -489,7 +468,6 @@
   font-size: var(--sl-text-sm);
 }
 
-/* Data facts: a label column and a value column. */
 .sp-facts {
   margin: 1.25rem 0 0;
   border-block-start: 1px solid var(--sl-color-hairline);
@@ -538,10 +516,6 @@
   }
 }
 
-/* ---------- Route switcher ----------
-   Radios come first, then the cards that pick a route, then one panel per route. Selection is CSS
-   only (nth-of-type pairs radio n with card n and panel n), so it works without JavaScript. */
-
 .sp-switch {
   margin-block-start: 1rem;
 }
@@ -587,8 +561,6 @@
   margin-block: 0.125rem;
 }
 
-/* Small screens: the routes become one compact row (three fit side by side, more scroll sideways).
-   Provider, method, and "best for" move out of the card; the panel below still explains the route. */
 @media (max-width: 40rem) {
   .sp-tabs {
     grid-template-columns: none;
@@ -625,7 +597,6 @@
   }
 }
 
-/* Compact switcher that stays in view while a long panel scrolls. */
 .sp-pillbar {
   position: sticky;
   top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height, 0px));
@@ -675,7 +646,6 @@
   border-inline-start: 2px dashed var(--sl-color-gray-4);
 }
 
-/* Radio n selects card n, pill n, and panel n. Up to six routes. */
 .sp-switch:has(> .sp-radio:nth-of-type(1):checked) > .sp-panel:nth-of-type(3) { display: block; }
 .sp-switch:has(> .sp-radio:nth-of-type(1):checked) .sp-tab:nth-of-type(1) {
   border-color: var(--sl-color-accent);
@@ -810,13 +780,11 @@
   margin: 0 0 1rem;
 }
 
-/* One route only: nothing to choose between, so the route cards and the sticky switcher are hidden. */
 .sp-switch--single .sp-tabs,
 .sp-switch--single .sp-pillbar {
   display: none !important;
 }
 
-/* One route only: nothing to choose between, so the route cards and the sticky switcher are hidden. */
 .sp-switch--single .sp-tabs,
 .sp-switch--single .sp-pillbar {
   display: none !important;

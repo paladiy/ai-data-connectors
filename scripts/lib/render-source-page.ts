@@ -3,15 +3,6 @@ import type { Claim } from "../../schemas/common.ts";
 import { formatValue } from "./markdown.ts";
 import { SURFACE_LABELS, type ModelOption, type ModelSource } from "./model.ts";
 
-/**
- * Body of a source page: what this is, then one route switcher whose selected route shows how to
- * install it, then where to go next.
- *
- * Every block is emitted as HTML with no blank lines inside it, so Markdown never re-parses the
- * content. All record text goes through escapeHtml; only https URLs from validated records reach
- * an href.
- */
-
 export function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -61,7 +52,6 @@ function badgesFor(option: ModelOption, tag: "p" | "span" = "p"): string {
   return `<${tag} class="sp-badges">${parts.join("")}</${tag}>`;
 }
 
-/** Plain text of a claim, with a stated reason when there is nothing to show. */
 function claimBlock(claim: Claim<unknown>): string {
   if (claim.status === "known") {
     const value = claim.value;
@@ -74,8 +64,6 @@ function claimBlock(claim: Claim<unknown>): string {
   return `<p class="sp-muted">${label}${claim.note ? `. ${e(claim.note)}` : ""}</p>`;
 }
 
-/* ---------- Description ---------- */
-
 export function descriptionSection(source: ModelSource): string[] {
   const out = ["## Description", `<p>${e(source.summary)}</p>`];
   if (source.aliases.length > 0) {
@@ -85,32 +73,21 @@ export function descriptionSection(source: ModelSource): string[] {
   return out;
 }
 
-/* ---------- Connection routes ----------
-   One switcher for the whole source. A route is chosen once, with a radio input, and its install
-   steps, capabilities, and data show together. Without JavaScript the radios still work (CSS only);
-   a small script in Head.astro adds deep links (#install-notfair opens that route). */
-
 function bestFor(source: ModelSource, option: ModelOption): string | null {
   const jobs = source.recommendations.filter((recommendation) => recommendation.option_id === option.id);
   return jobs.length > 0 ? jobs.map((job) => job.job).join("; ") : null;
 }
 
-/** Decorative 24px line icons, one per Claude surface. */
 const svg = (paths: string) =>
   `<svg class="sp-surf-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${paths}</svg>`;
 
 const SURFACE_ICONS: Record<(typeof SURFACES)[number], string> = {
-  // Browser window.
   claude_web: svg(`<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9h18"/><circle cx="6.2" cy="6.8" r=".5"/><circle cx="8.6" cy="6.8" r=".5"/>`),
-  // Desktop monitor.
   claude_desktop: svg(`<rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M9 20h6M12 16.5V20"/>`),
-  // Terminal prompt.
   claude_code: svg(`<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="m7.5 10 3 2.5-3 2.5M13 15h3.5"/>`),
-  // Shared workspace: two people.
   cowork: svg(`<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.4-3 2.6-4.8 5.5-4.8s5.1 1.8 5.5 4.8"/><path d="M15.5 5.7a3 3 0 0 1 0 5.6M17.2 14.5c2 .6 3.1 2.2 3.3 4.5"/>`),
 };
 
-/** One tile per surface, so support reads at a glance; the state is also written out, never colour alone. */
 function worksIn(option: ModelOption): string {
   const tiles = SURFACES.map((surface) => {
     const claim = option.surfaces[surface] as Claim<string>;
@@ -152,7 +129,6 @@ function installBody(option: ModelOption): string[] {
     );
   }
   if (option.claude_configuration.length > 0) {
-    // With no separate setup, the Claude steps are the whole install, so show them as numbered steps.
     const standalone = option.setup_steps.length === 0;
     const items = option.claude_configuration.map((step) => `<li>${e(step.text)}</li>`).join("");
     out.push(
@@ -235,16 +211,9 @@ export function routesSection(source: ModelSource): string[] {
   ];
 }
 
-/* ---------- Related skills and connectors ---------- */
-
-/** Live skills index. Skills are never indexed in this repository; the browser reads this file. */
 export const SKILLS_INDEX_URL = "https://raw.githubusercontent.com/coupler-io/skills/main/skills-index.json";
 export const SKILLS_REPO_URL = "https://github.com/coupler-io/skills";
 
-/**
- * Renders only a placeholder carrying the names to match on. The script in
- * site/src/components/Head.astro fills it from the live coupler-io/skills index.
- */
 export function skillsSection(source: ModelSource): string[] {
   const names = JSON.stringify([source.name, ...source.aliases]);
   return [

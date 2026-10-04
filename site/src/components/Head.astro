@@ -5,7 +5,6 @@ import Default from "@astrojs/starlight/components/Head.astro";
 <Default><slot /></Default>
 
 <script>
-  // Route switcher on source pages: open the route a link points to, and keep the choice in the URL.
   const radios = () => Array.from(document.querySelectorAll<HTMLInputElement>(".sp-radio"));
 
   function openFromHash() {
@@ -31,7 +30,6 @@ import Default from "@astrojs/starlight/components/Head.astro";
     }
     window.addEventListener("hashchange", openFromHash);
 
-    // The compact bar only appears once the full route cards have scrolled out of view.
     const tabs = document.querySelector(".sp-tabs");
     const wrap = document.querySelector(".sp-switch");
     if (tabs && wrap && "IntersectionObserver" in window) {

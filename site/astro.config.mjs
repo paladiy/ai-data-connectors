@@ -17,7 +17,6 @@ try {
   );
 }
 
-// Every connector in the sidebar, so any source page can move to any other.
 const sources = JSON.parse(readFileSync(directoryPath, "utf8")).sources
   .map((entry) => ({ label: entry.name, link: `/sources/${entry.slug}/` }))
   .sort((a, b) => a.label.localeCompare(b.label, "en", { sensitivity: "base", numeric: true }));

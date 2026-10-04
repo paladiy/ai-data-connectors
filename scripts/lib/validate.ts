@@ -13,7 +13,6 @@ const PLACEHOLDER_TEXT = /\b(TODO|TBD|FIXME|XXX|lorem ipsum|coming soon)\b/i;
 
 const PLACEHOLDER_HOST = /(^|\.)(example\.(com|org|net|test)|test\.test|localhost)$/i;
 
-/** A route whose availability is known and not "unavailable". */
 export function isUsableRoute(option: Option): boolean {
   return option.route_status.status === "known" && option.route_status.value !== "unavailable";
 }
@@ -39,7 +38,6 @@ function placeholderUrl(url: string, allowReservedHosts: boolean): boolean {
   }
 }
 
-/** Options referenced by the opening answer, setup instructions, or recommendations. */
 function loadBearingOptionIds(source: Source): Set<string> {
   const ids = new Set(source.recommendations.map((r) => r.option_id));
   for (const option of source.options) {
@@ -50,10 +48,6 @@ function loadBearingOptionIds(source: Source): Set<string> {
 
 export interface ValidateOptions {
   production?: boolean;
-  /**
-   * Accept reserved documentation/test hostnames such as example.test. Only tests set this, so
-   * synthetic fixtures can exercise the record rules without using a real domain.
-   */
   allowReservedHosts?: boolean;
 }
 
@@ -76,7 +70,6 @@ export function validateContent(content: Content, options: ValidateOptions = {})
     if (previousSlug) add(file, "slug", `duplicate slug "${record.slug}" (also in ${previousSlug})`);
     seenSlugs.set(record.slug, file);
 
-    // Evidence identity and references.
     const evidence = allEvidence(bundle);
     const evidenceIds = new Set<string>();
     for (const item of evidence) {
@@ -234,7 +227,6 @@ function recordProblems(bundle: SourceBundle, options: ValidateOptions): Problem
     }
   }
 
-  // Public pages must be able to cite at least one public source for their recommendations.
   for (const [index, recommendation] of record.recommendations.entries()) {
     if (recommendation.evidence_ids.length > 0 && !recommendation.evidence_ids.some((id) => publicEvidence.has(id))) {
       add(`recommendations.${index}.evidence_ids`, "cites only private evidence; add a public citation");

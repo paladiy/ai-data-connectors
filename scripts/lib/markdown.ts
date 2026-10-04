@@ -1,10 +1,5 @@
 import type { Claim } from "../../schemas/common.ts";
 
-/**
- * Escapes text that came from YAML records or the upstream snapshot so it is rendered as prose.
- * Imported text must never become executable MDX, raw HTML, a script, or a shell command, so
- * MDX expression braces and HTML angle brackets are neutralised along with Markdown syntax.
- */
 export function escapeText(value: string): string {
   return value
     .replace(/\\/g, "\\\\")
@@ -13,7 +8,6 @@ export function escapeText(value: string): string {
     .trim();
 }
 
-/** Escapes text for a Markdown table cell, where a newline would break the row. */
 export function escapeCell(value: string): string {
   return escapeText(value) || "—";
 }
@@ -28,10 +22,6 @@ export function claimText(claim: Claim<unknown>, { known }: { known: (value: unk
   return "Unknown";
 }
 
-/**
- * Human labels for the schema's enum values, so a page reads "Read-only" rather than "read".
- * Applied only on an exact match against this closed vocabulary, never to free text.
- */
 const ENUM_LABELS: Record<string, string> = {
   read: "Read-only",
   write: "Write",
@@ -54,10 +44,6 @@ export function formatValue(value: unknown): string {
   return ENUM_LABELS[text] ?? text;
 }
 
-/**
- * Renders a claim as plain text. An unknown claim keeps its note, so a page can say what was
- * checked and why the answer is still unknown rather than leaving a bare "Unknown".
- */
 export function renderClaim(claim: Claim<unknown>): string {
   const text = claimText(claim, { known: (value) => formatValue(value) });
   if (claim.note && claim.status !== "not_applicable") return `${text} (${claim.note})`;

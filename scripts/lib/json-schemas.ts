@@ -8,7 +8,6 @@ const SCHEMAS: Record<string, z.ZodType> = {
   "private-evidence.schema.json": PrivateEvidenceFile,
 };
 
-/** JSON Schema files for editors. Cross-field rules are enforced by `npm run validate`. */
 export function jsonSchemas(): Record<string, string> {
   const out: Record<string, string> = {};
   for (const name of Object.keys(SCHEMAS).sort()) {

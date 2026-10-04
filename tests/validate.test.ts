@@ -10,7 +10,6 @@ function messages(content: Parameters<typeof validateContent>[0], production = f
   return validateContent(content, { production, allowReservedHosts: true }).map((p) => `${p.path}: ${p.message}`);
 }
 
-/** Reserved hostnames are rejected for real records; this proves the rule is active. */
 function messagesWithHostCheck(content: Parameters<typeof validateContent>[0]): string[] {
   return validateContent(content).map((p) => `${p.path}: ${p.message}`);
 }

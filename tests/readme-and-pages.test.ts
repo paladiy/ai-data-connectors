@@ -14,7 +14,6 @@ const guideFor = (overrides: Record<string, unknown> = {}, site = fixtureSite) =
   return renderSourcePage(model.sources[0]!, model.site);
 };
 
-/** Matches syntax that is still active, i.e. not preceded by a backslash. */
 function unescaped(pattern: string): RegExp {
   return new RegExp(`(^|[^\\\\])${pattern}`);
 }

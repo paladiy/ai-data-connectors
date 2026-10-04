@@ -53,7 +53,6 @@ const haystacks = new Map<string, string>(
   ]),
 );
 
-/** Keeps Mantine in step with Starlight's theme switch (`<html data-theme>`). */
 function ThemeBridge() {
   const { setColorScheme } = useMantineColorScheme();
   useEffect(() => {
@@ -109,7 +108,6 @@ function DirectoryApp() {
   const inputRef = useRef<HTMLInputElement>(null);
   const restored = useRef(false);
 
-  // Restore state from the URL after hydration.
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     setQuery(params.get("q") ?? "");
@@ -125,7 +123,6 @@ function DirectoryApp() {
     history.replaceState(null, "", url);
   }, [query, active]);
 
-  // Press "/" anywhere outside a field to start searching.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement | null;

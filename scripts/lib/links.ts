@@ -16,7 +16,7 @@ function htmlFiles(root: string): string[] {
 
 function resolveTarget(root: string, pagePath: string, href: string): string | null {
   const withoutHash = href.split("#")[0]!;
-  if (withoutHash === "") return null; // Same-page anchor.
+  if (withoutHash === "") return null;
 
   const fromDirectory = path.dirname(path.join(root, pagePath));
   const target = withoutHash.startsWith("/")
@@ -30,7 +30,6 @@ function resolveTarget(root: string, pagePath: string, href: string): string | n
   return null;
 }
 
-/** Checks every site-relative href and src in the built output resolves to a file. */
 export function findBrokenLinks(distRoot: string): BrokenLink[] {
   const broken: BrokenLink[] = [];
   for (const page of htmlFiles(distRoot)) {

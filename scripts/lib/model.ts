@@ -63,10 +63,6 @@ export interface Model {
   sources: ModelSource[];
 }
 
-/**
- * A route a reader cannot use today never leads the comparison, however official it is: an
- * invitation-only pilot is interesting context, not the answer to "how do I connect this?".
- */
 function availabilityRank(option: Option): number {
   if (option.route_status.status !== "known") return 1;
   if (option.route_status.value === "available") return 0;
@@ -74,12 +70,10 @@ function availabilityRank(option: Option): number {
   return 3;
 }
 
-/** Coupler.io is the recommended route and always leads. */
 function isRecommended(option: Option): number {
   return option.provider === "Coupler.io" ? 0 : 1;
 }
 
-/** Ordering: vendor/Anthropic routes, other managed routes by provider, community. */
 function rank(option: Option): number {
   if (option.maintainer.status === "known") {
     if (option.maintainer.value === "source_vendor" || option.maintainer.value === "anthropic") return 0;
@@ -99,7 +93,6 @@ function badges(option: Option): string[] {
   return list;
 }
 
-/** Public evidence only. Private references never reach a rendered artifact or an export. */
 function publicEvidence(source: Source): Evidence[] {
   return source.evidence.filter((item) => item.public).sort((a, b) => a.id.localeCompare(b.id));
 }

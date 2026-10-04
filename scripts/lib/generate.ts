@@ -13,19 +13,15 @@ import {
 } from "./render-site.ts";
 
 export interface Outputs {
-  /** Relative path to file contents. Byte-identical for identical inputs. */
   files: Map<string, string>;
-  /** Directories this generation owns and may clear. Nothing outside them is touched. */
   ownedDirectories: string[];
 }
 
-/** Committed, public-facing GitHub output. */
 function githubOutputs(model: Model): Map<string, string> {
   const files = new Map<string, string>([["README.md", renderReadme(model)]]);
   return files;
 }
 
-/** Site content and public exports. Regenerated on every build and never committed. */
 function siteOutputs(model: Model): Map<string, string> {
   const files = new Map<string, string>([
     ["site/src/content/docs/index.mdx", renderIndexPage(model)],
@@ -57,7 +53,6 @@ export function generateOutputs(content: Content): Outputs {
   return { files: sortFiles(files), ownedDirectories: [...SITE_OUTPUT_DIRECTORIES] };
 }
 
-/** Only these outputs are committed; everything else is rebuilt from the records. */
 export function committedOutputs(outputs: Outputs): Outputs {
   const files = new Map(
     [...outputs.files].filter(([file]) => file === "README.md"),
@@ -97,7 +92,6 @@ export interface Difference {
   reason: "missing" | "stale" | "unexpected";
 }
 
-/** Compares committed files with a fresh generation without writing anything. */
 export function diffOutputs(root: string, outputs: Outputs): Difference[] {
   const differences: Difference[] = [];
   for (const [file, contents] of outputs.files) {

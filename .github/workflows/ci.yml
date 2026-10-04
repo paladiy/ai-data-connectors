@@ -5,7 +5,6 @@ on:
     branches: [main]
   pull_request:
 
-# Read-only by default. No job here needs to write to the repository.
 permissions:
   contents: read
 
@@ -41,6 +40,5 @@ jobs:
       - name: Committed generated files are current
         run: npm run check:generated
 
-      # Builds must be reproducible and offline: nothing below may fetch content.
       - name: Production build, search index, and internal links
         run: npm run build

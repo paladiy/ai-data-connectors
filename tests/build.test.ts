@@ -1,9 +1,3 @@
-/**
- * Integration test for the production build and its search index.
- *
- * It builds a throwaway copy of the application in a temporary directory, with a single synthetic
- * record, so the test does not depend on the real records.
- */
 import { execFileSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -19,7 +13,6 @@ import { validateContent } from "../scripts/lib/validate.ts";
 
 const repo = process.cwd();
 
-/** A record that exercises alias search: the name and the alias differ. */
 function analyticsFixture(): Source {
   return Source.parse(
     fixtureSource({
@@ -38,7 +31,6 @@ let root: string;
 let dist: string;
 
 beforeAll(() => {
-  // Inside the repository (git-ignored) so Node resolves the installed packages normally.
   mkdirSync(path.join(repo, ".tmp"), { recursive: true });
   root = mkdtempSync(path.join(repo, ".tmp", "build-"));
   dist = path.join(root, "site", "dist");
@@ -51,7 +43,6 @@ beforeAll(() => {
   cpSync(path.join(repo, "site", "public"), path.join(root, "site", "public"), { recursive: true });
   cpSync(path.join(repo, "data"), path.join(root, "data"), { recursive: true });
 
-  // Replace the real records with one synthetic record.
   const sources = path.join(root, "data", "sources");
   rmSync(sources, { recursive: true, force: true });
   mkdirSync(sources, { recursive: true });
@@ -68,7 +59,6 @@ beforeAll(() => {
   });
 }, 180_000);
 
-/** Pagefind stores its fragments and inverted index as gzip chunks. */
 function pagefindChunks(kind: "fragment" | "index"): string {
   const dir = path.join(dist, "pagefind", kind);
   return readdirSync(dir)
@@ -92,7 +82,6 @@ describe("production build", () => {
     const fragments = pagefindChunks("fragment");
     expect(fragments).toContain("GA4");
     expect(/"url":"\/sources\/fixture-analytics\/","content":"[^"]*Fixture Analytics 4/.test(fragments)).toBe(true);
-    // The term must also be in the inverted index, which is what a query actually matches against.
     expect(pagefindChunks("index").toLowerCase()).toContain("ga4");
   });
 

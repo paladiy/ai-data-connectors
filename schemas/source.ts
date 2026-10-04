@@ -60,7 +60,6 @@ export const Option = z.strictObject({
       basis: NonEmptyText,
     }),
   ).optional(),
-  /** What a person can ask Claude to do through this route, one plain-language action per item. */
   capabilities: z.array(EvidencedText).default([]),
   setup_steps: z.array(EvidencedText),
   claude_configuration: z.array(EvidencedText).default([]),
@@ -70,10 +69,6 @@ export const Option = z.strictObject({
 
 export type Option = z.infer<typeof Option>;
 
-/**
- * A skill that helps Claude work with this source once it is connected. A skill instructs the
- * agent; it is not a data connection, so `also_needs` names any other system it depends on.
- */
 export const RelatedSkill = z.strictObject({
   name: NonEmptyText,
   description: NonEmptyText,

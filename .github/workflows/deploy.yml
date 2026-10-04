@@ -1,8 +1,5 @@
 name: Deploy
 
-# Manual only. Hosting is not selected yet, so this workflow validates and builds the
-# artifact but does not publish it. The owner must choose a host whose terms permit this
-# promotional use, then add the publish step and configure production metadata.
 on:
   workflow_dispatch:
     inputs:
@@ -16,7 +13,6 @@ permissions:
 
 jobs:
   artifact:
-    # Only the main branch may produce a release artifact.
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +32,6 @@ jobs:
 
       - run: npm ci
 
-      # Fails while site metadata is a placeholder or there are no sources.
       - name: Production readiness
         run: npm run validate -- --production
 

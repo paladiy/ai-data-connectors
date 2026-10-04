@@ -2,7 +2,6 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
-/** Anchored at the repository root, matching the .gitignore rules. */
 export const PRIVATE_PATH_PATTERNS: RegExp[] = [
   /^docs\//,
   /^briefs\//,
@@ -16,15 +15,10 @@ export const PRIVATE_PATH_PATTERNS: RegExp[] = [
 ];
 
 const PRIVATE_CONTENT_MARKERS: RegExp[] = [
-  /^\s*-?\s*internal_ref\s*:/m, // YAML
-  /"internal_ref"\s*:/, // JSON
+  /^\s*-?\s*internal_ref\s*:/m,
+  /"internal_ref"\s*:/,
 ];
 
-/**
- * Content inputs and public outputs. Markers are scanned here only: source code legitimately
- * declares field names such as `internal_ref`, while a record or a rendered page must never
- * carry an actual value.
- */
 const CONTENT_PATHS: RegExp[] = [/^data\//, /^site\/(src|public)\//, /^README\.md$/];
 
 export function isPrivatePath(file: string): boolean {

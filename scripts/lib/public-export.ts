@@ -5,10 +5,6 @@ import type { Model, ModelOption, ModelSource } from "./model.ts";
 
 export const PUBLIC_SCHEMA_VERSION = 1;
 
-/**
- * Public dataset contract. Serialization is an explicit allowlist: a field reaches connectors.json
- * only because it is named here, so new internal fields cannot leak by default.
- */
 const PublicClaim = z.strictObject({
   status: z.enum(["known", "unknown", "not_applicable"]),
   value: z.unknown().nullable(),
