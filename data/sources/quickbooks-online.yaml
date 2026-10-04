@@ -19,9 +19,8 @@ aliases:
   - Intuit QuickBooks
 summary: >-
   QuickBooks Online holds the transactions behind your financial reports. Claude can reach them
-  four ways: through Intuit's connector in Claude's directory, through Intuit's open-source server
-  that runs on your machine, through scheduled Coupler.io imports, or, by invitation only, through
-  Intuit's hosted pilot. The routes differ in how much of QuickBooks they expose, whether Claude can
+  three ways: through scheduled Coupler.io imports, through Intuit's connector in Claude's
+  directory, or through Intuit's open-source server that runs on your machine. The routes differ in how much of QuickBooks they expose, whether Claude can
   change anything, and how much setup they ask for.
 
 meta_description: Compare ways to connect QuickBooks Online to Claude, with evidence for every capability claim.
@@ -41,14 +40,10 @@ research:
     - https://claude.com/connectors/quickbooks
     - https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
     - https://github.com/intuit/quickbooks-online-mcp-server
-    - https://intuitdeveloper.github.io/intuit-3p-ai-pilot/
   coverage_note: >-
-    Four routes were researched on 4 October 2026: the Coupler.io data platform, Intuit's connector
-    in Claude's directory, Intuit's open-source local MCP server, and Intuit's invitation-only
-    hosted MCP pilot. Each route's own documentation was read in full, covering the data available,
-    prerequisites, access, and limits. Manual export of QuickBooks reports is a fifth route that is
-    missing here: every Intuit help-centre page for it returned a server error on the day of
-    research, so no export facts are recorded rather than guessed.
+    Three routes are covered, researched on 4 October 2026: the Coupler.io data platform, Intuit's
+    connector in Claude's directory, and Intuit's open-source local MCP server. Each route's own
+    documentation was read in full, covering the data available, prerequisites, access, and limits.
 
 evidence:
   - id: cpl-claude-destination
@@ -156,14 +151,6 @@ evidence:
     checked_on: "2026-10-04"
     kind: vendor_docs
     public: true
-  - id: intuit-hosted-mcp-pilot
-    url: https://intuitdeveloper.github.io/intuit-3p-ai-pilot/
-    title: Intuit AI Pilot — Hosted MCP Server
-    publisher: Intuit
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-
 options:
   - id: coupler-io
     name: Coupler.io
@@ -667,165 +654,6 @@ options:
         server is authenticated to the realm you intended rather than to the sandbox.
       evidence_ids: [intuit-local-mcp-readme]
 
-  - id: intuit-hosted-mcp-pilot
-    name: Intuit AI Pilot hosted MCP server
-    provider: Intuit
-    method: remote_mcp
-    description: >-
-      Intuit's hosted MCP endpoint for partners building their own agents. It is open by invitation
-      only, so it is a route to know about rather than one you can set up today.
-
-    maintainer:
-      status: known
-      value: source_vendor
-      evidence_ids: [intuit-hosted-mcp-pilot]
-
-    route_status:
-      status: known
-      value: limited
-      evidence_ids: [intuit-hosted-mcp-pilot]
-      note: >-
-        Described as a pilot, by invitation only, for AI pilot partners under the Intuit App Partner
-        Program, and provided as is for testing
-
-    directory_listing:
-      status: not_applicable
-      value: null
-      evidence_ids: [intuit-hosted-mcp-pilot]
-      note: Access is arranged with an assigned Intuit solution engineer, not through Claude's directory
-
-    links:
-      overview: https://intuitdeveloper.github.io/intuit-3p-ai-pilot/
-
-    surfaces:
-      claude_web:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the overview does not name Claude on the web
-      claude_desktop:
-        status: known
-        value: supported
-        evidence_ids: [intuit-hosted-mcp-pilot]
-        note: Claude Desktop is named as an example of an MCP-compatible client that can use the server
-      claude_code:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the overview names Claude Desktop, Cursor, and custom agents without naming Claude Code
-      cowork:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the overview does not name Cowork
-
-    access:
-      status: known
-      value: read_write
-      evidence_ids: [intuit-hosted-mcp-pilot]
-      note: >-
-        Each tool is gated by its own OAuth scope, so read and write can be separated per object;
-        for example sales.tools.invoice.read covers reading invoices while sales.tools.invoice
-        covers creating, updating, deleting, duplicating, and sending them
-
-    data_available:
-      status: known
-      value:
-        - "Customers: search and create"
-        - "Products: catalogue search and create"
-        - "Sales orders: read, create through a workflow, and close"
-        - "Invoices: read, create, update, delete, duplicate, and send"
-        - "Estimates: read, create, update, delete, duplicate, and send"
-        - "Sales settings: read and update"
-      evidence_ids: [intuit-hosted-mcp-pilot]
-      note: a curated set of QuickBooks Online capabilities rather than the full API
-
-    history:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: the overview does not state how far back the server can reach
-
-    refresh:
-      status: not_applicable
-      value: null
-      evidence_ids: [intuit-hosted-mcp-pilot]
-      note: >-
-        There is no import to schedule. The overview describes stateless mode with no session id
-        requirement, so each request stands alone
-
-    multi_source:
-      status: not_applicable
-      value: null
-      evidence_ids: [intuit-hosted-mcp-pilot]
-      note: An access token is tied to one QuickBooks company realm
-
-    prerequisites:
-      status: known
-      value:
-        - "Membership of the Intuit App Partner Program and an invitation to the pilot"
-        - "An AppID from the Intuit Developer Portal, onboarded with MCP scopes by your assigned Intuit solution engineer"
-        - "Your agent's IP range whitelisted by Intuit"
-        - "The com.intuit.quickbooks.accounting scope plus restricted MCP scopes granted case by case"
-        - "A User-Agent header of the form partner_app_[AppName] on every request"
-      evidence_ids: [intuit-hosted-mcp-pilot]
-
-    pricing:
-      status: known
-      value:
-        - No charge is associated with participation in the pilot programme
-      evidence_ids: [intuit-hosted-mcp-pilot]
-      note: Intuit reserves the right to change functionality or to charge for MCP server functionality in future
-
-    data_path:
-      status: known
-      value: >-
-        Requests go to Intuit's hosted endpoint at https://mcp.quickbooks.intuit.com/mcp over MCP
-        Streamable HTTP, which is JSON-RPC 2.0 over POST, at protocol version 2025-11-25 in
-        stateless mode. Authorisation uses the same OAuth 2.0 flow as the QuickBooks Online REST
-        API, with a token tied to one company realm.
-      evidence_ids: [intuit-hosted-mcp-pilot]
-
-    limits:
-      status: known
-      value:
-        - "By invitation only, and provided as is for testing purposes"
-        - "Access requires Intuit to whitelist your agent's IP range"
-        - "Intuit directs deterministic, code-driven integrations to the QuickBooks Online REST API instead, and positions this server for agentic use where the model chooses the action"
-        - "Restricted MCP scopes are granted case by case by an Intuit solution engineer"
-      evidence_ids: [intuit-hosted-mcp-pilot]
-
-    capabilities:
-      - text: Search and create customers and products.
-        evidence_ids: [intuit-hosted-mcp-pilot]
-      - text: Read sales orders, create them through a workflow, and close them.
-        evidence_ids: [intuit-hosted-mcp-pilot]
-      - text: Read, create, update, delete, duplicate, and send invoices and estimates.
-        evidence_ids: [intuit-hosted-mcp-pilot]
-      - text: Read and update sales settings.
-        evidence_ids: [intuit-hosted-mcp-pilot]
-      - text: Separate read from write per object, because each tool is gated by its own OAuth scope.
-        evidence_ids: [intuit-hosted-mcp-pilot]
-    setup_steps:
-      - text: Share your agent's IP range, primary agentic use case, LLM model, and Intuit Developer Portal AppID with your assigned Intuit solution engineer.
-        evidence_ids: [intuit-hosted-mcp-pilot]
-      - text: Have the solution engineer onboard that AppID with the MCP scopes your use case needs.
-        evidence_ids: [intuit-hosted-mcp-pilot]
-      - text: Complete the OAuth 2.0 authorisation code flow with your existing client ID and secret to obtain a token for the company realm.
-        evidence_ids: [intuit-hosted-mcp-pilot]
-
-    claude_configuration:
-      - text: Point your MCP client at the hosted endpoint and set the User-Agent header to partner_app_[AppName].
-        evidence_ids: [intuit-hosted-mcp-pilot]
-
-    sample_query: List the open sales orders from this month and the invoices they produced.
-
-    success_check:
-      text: >-
-        Once connected, the client calls tools/list on its own. Seeing tools such as
-        qbo_sales_get_invoices confirms your AppID carries the MCP scopes.
-      evidence_ids: [intuit-hosted-mcp-pilot]
-
 recommendations:
   - job: Analysing QuickBooks figures alongside other systems
     option_id: coupler-io
@@ -847,13 +675,6 @@ recommendations:
       licence, and the write, update, and delete tool groups can each be switched off while read
       tools stay available.
     evidence_ids: [intuit-local-mcp-readme]
-  - job: Building your own agent product on QuickBooks data
-    option_id: intuit-hosted-mcp-pilot
-    reason: >-
-      Intuit offers this hosted endpoint to App Partner Program members specifically for agentic
-      use, with per-object OAuth scopes, while directing code-driven integrations to the REST API.
-    evidence_ids: [intuit-hosted-mcp-pilot]
-
 faq:
   - question: Does this work with QuickBooks Desktop?
     answer: >-
@@ -865,10 +686,9 @@ faq:
     answer: >-
       It depends on the route. Intuit's directory connector describes creating, updating, sending,
       duplicating, and scheduling invoices and estimates, with a preview and your confirmation
-      before anything is sent, and Intuit's local server and hosted pilot both expose write tools
-      too. Coupler.io is read-only against QuickBooks: Claude queries an imported dataset, and
+      before anything is sent, and Intuit's local server exposes write tools too. Coupler.io is read-only against QuickBooks: Claude queries an imported dataset, and
       nothing in its documentation describes writing back to your books.
-    evidence_ids: [dir-intuit-quickbooks, intuit-local-mcp-readme, intuit-hosted-mcp-pilot, cpl-mcp]
+    evidence_ids: [dir-intuit-quickbooks, intuit-local-mcp-readme, cpl-mcp]
   - question: Which route gets me the most QuickBooks data?
     answer: >-
       Measured by API coverage, Intuit's local MCP server is the widest: 145 tools across 29 entity

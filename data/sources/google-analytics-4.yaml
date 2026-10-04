@@ -10,7 +10,7 @@ aliases:
 summary: >-
   Google publishes an official GA4 server for Claude, but it is experimental, read-only, and the
   only Claude app its documentation names is Claude Code. The other routes trade that friction for
-  scheduling, blending, or plain CSV. This guide compares what each exposes and the GA4 limits that
+  scheduling or blending. This guide compares what each exposes and the GA4 limits that
   follow you down every path.
 
 meta_description: Compare ways to connect Google Analytics 4 to Claude, with evidence for every capability claim.
@@ -28,15 +28,12 @@ research:
     - https://docs.coupler.io/ai/mcp
     - https://claude.com/connectors/coupler-io
     - https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
-    - https://support.claude.com/en/articles/8241126-upload-files-to-claude
     - https://github.com/googleanalytics/google-analytics-mcp
     - https://developers.google.com/analytics/devguides/MCP
     - https://github.com/zapier/connectors/tree/main/apps/google-analytics
-    - https://support.google.com/analytics/answer/9317657
   coverage_note: >-
-    Four routes were researched on 4 October 2026: the Coupler.io data platform, Google's own
-    experimental MCP server, Zapier's independent connector package, and a manual report export
-    uploaded into a conversation. No dedicated GA4 entry was reachable in Claude's connector
+    Three routes are covered, researched on 4 October 2026: the Coupler.io data platform, Google's
+    own experimental MCP server, and Zapier's independent connector package. No dedicated GA4 entry was reachable in Claude's connector
     directory at the obvious addresses, though several multi-source connectors list GA4 among the
     platforms they cover; the directory cannot be searched exhaustively, so no claim is made that
     none exists.
@@ -133,13 +130,6 @@ evidence:
     checked_on: "2026-10-04"
     kind: vendor_docs
     public: true
-  - id: claude-upload-files
-    url: https://support.claude.com/en/articles/8241126-upload-files-to-claude
-    title: Upload files to Claude
-    publisher: Anthropic
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
   - id: google-ga4-mcp-repo
     url: https://github.com/googleanalytics/google-analytics-mcp
     title: Google Analytics MCP Server (Experimental)
@@ -161,14 +151,6 @@ evidence:
     checked_on: "2026-10-04"
     kind: vendor_docs
     public: true
-  - id: ga4-export-help
-    url: https://support.google.com/analytics/answer/9317657
-    title: "[GA4] Share and export reports"
-    publisher: Google
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-
 options:
   - id: coupler-io
     name: Coupler.io
@@ -631,147 +613,6 @@ options:
         dimension pair. Both answering confirms the token reaches the property and the tools loaded.
       evidence_ids: [zapier-ga4-connector]
 
-  - id: manual-export
-    name: Manual export and upload
-    provider: Google
-    method: file_upload
-    description: >-
-      Download a GA4 report as CSV and attach it to a conversation. No credentials, no Cloud
-      project, and a generous row ceiling, but it is a snapshot of one report as configured.
-
-    maintainer:
-      status: known
-      value: manual
-      evidence_ids: [ga4-export-help, claude-upload-files]
-      note: There is no connector in this route; you move the file yourself
-
-    route_status:
-      status: known
-      value: available
-      evidence_ids: [ga4-export-help, claude-upload-files]
-
-    directory_listing:
-      status: not_applicable
-      value: null
-      evidence_ids: [claude-upload-files]
-      note: A file upload is a built-in part of the Claude interface, not a connector you add
-
-    links:
-      overview: https://support.google.com/analytics/answer/9317657
-      setup: https://support.claude.com/en/articles/8241126-upload-files-to-claude
-
-    surfaces:
-      claude_web:
-        status: known
-        value: supported
-        evidence_ids: [claude-upload-files]
-        note: >-
-          Anthropic documents uploading through the + button in the chat box and through a project's
-          Files section; the article does not name individual Claude apps
-      claude_desktop:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the upload article does not name Claude Desktop
-      claude_code:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the upload article does not name Claude Code
-      cowork:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the upload article does not name Cowork
-
-    access:
-      status: known
-      value: read
-      evidence_ids: [ga4-export-help]
-      note: An export is a one-way copy; nothing in this route writes back to GA4
-
-    data_available:
-      status: known
-      value:
-        - "Whatever a GA4 report currently shows, exported as Google Sheets, PDF, or CSV"
-        - "Google names Looker Studio and the Analytics Data API as the other export routes"
-      evidence_ids: [ga4-export-help]
-      note: >-
-        The article refers generically to a report rather than naming which standard reports are
-        exportable, and states that Explorations work differently
-
-    history:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: >-
-        the article states no date-range cap on an export; GA4's property retention setting of 2 or
-        14 months still governs what a report can show
-
-    refresh:
-      status: not_applicable
-      value: null
-      evidence_ids: [ga4-export-help]
-      note: >-
-        An export is a point-in-time file. Nothing in this article describes scheduling an export
-        into Claude, so keeping Claude current means exporting and uploading again
-
-    multi_source:
-      status: known
-      value:
-        - Up to 20 files can be attached to a single chat, so several reports can be compared in one conversation
-      evidence_ids: [claude-upload-files]
-
-    prerequisites:
-      status: known
-      value:
-        - The Viewer role at the property level to share or export a report
-        - A Claude account, and code execution and file creation enabled if you upload XLSX rather than CSV
-      evidence_ids: [ga4-export-help, claude-upload-files]
-
-    pricing:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: no pricing page was checked for this record
-
-    data_path:
-      status: known
-      value: >-
-        You download the report from GA4 and attach it to a conversation. The contents sit in the
-        model's context rather than in a queryable store, so a wide export competes with the rest of
-        the conversation.
-      evidence_ids: [ga4-export-help, claude-upload-files]
-
-    limits:
-      status: known
-      value:
-        - "A CSV or Google Sheets download includes up to 100,000 rows"
-        - "You cannot share a report while you are customising it"
-        - "Explorations are exported through a different route than standard reports"
-        - "Chat uploads are capped at 500MB per file and 20 files per chat; project files are capped at 30MB each"
-      evidence_ids: [ga4-export-help, claude-upload-files]
-
-    setup_steps:
-      - text: "In GA4, select Reports from the left menu and open the report you want."
-        evidence_ids: [ga4-export-help]
-      - text: "Click Share this report in the top right, then Download File, then Download CSV."
-        evidence_ids: [ga4-export-help]
-
-    claude_configuration:
-      - text: In Claude, click the + button in the lower left of the chat box, choose Add files or photos, and select the export, or drag it into the chat window.
-        evidence_ids: [claude-upload-files]
-      - text: For a file you want to reuse across conversations, add it to a project's Files section instead of a single chat.
-        evidence_ids: [claude-upload-files]
-
-    sample_query: Here is our traffic acquisition export. Which channels grew, and which lost engagement rate while gaining sessions?
-
-    success_check:
-      text: >-
-        Ask Claude how many rows the file contains and to name the columns. A reply matching your
-        export confirms the whole file was read rather than truncated.
-      evidence_ids: [claude-upload-files]
-
 recommendations:
   - job: Tracking GA4 trends over time or alongside ad spend
     option_id: coupler-io
@@ -792,13 +633,6 @@ recommendations:
       It is the only researched route that can create and archive custom dimensions and metrics,
       manage key events, and send server-side events, which Google's own read-only server cannot do.
     evidence_ids: [zapier-ga4-connector]
-  - job: A one-off question about a report you can already see
-    option_id: manual-export
-    reason: >-
-      Nothing to install or authorise, and a CSV download carries up to 100,000 rows, which covers
-      most single reports.
-    evidence_ids: [ga4-export-help, claude-upload-files]
-
 faq:
   - question: Is there an official Google Analytics connector in Claude's directory?
     answer: >-

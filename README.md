@@ -14,11 +14,11 @@ It is an editorial directory, not a connector service. It does not authenticate 
 
 | Source | Routes | Page |
 | --- | --- | --- |
-| Google Ads | 4 | — |
-| Google Analytics 4 | 4 | — |
-| Google Search Console | 5 | — |
-| Pipedrive | 3 | — |
-| QuickBooks Online | 4 | — |
+| Google Ads | 3 | — |
+| Google Analytics 4 | 3 | — |
+| Google Search Console | 3 | — |
+| Pipedrive | 2 | — |
+| QuickBooks Online | 3 | — |
 
 ## How claims are recorded
 

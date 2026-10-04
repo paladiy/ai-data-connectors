@@ -28,13 +28,11 @@ research:
     - https://claude.com/connectors/coupler-io
     - https://claude.com/connectors/pipedrive-mcp
     - https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
-    - https://support.claude.com/en/articles/8241126-upload-files-to-claude
     - https://support.pipedrive.com/en/article/mcp-claude
     - https://www.pipedrive.com/en/features/mcp-server
-    - https://support.pipedrive.com/en/article/exporting-data-from-pipedrive
   coverage_note: >-
-    Three routes were researched on 4 October 2026: the Coupler.io data platform, Pipedrive's own
-    connector in Claude's directory, and a manual export uploaded into a conversation. Each route's
+    Two routes are covered, from the three researched on 4 October 2026: the Coupler.io data platform
+    and Pipedrive's own connector in Claude's directory. Each route's
     own documentation was read in full, covering the data available, prerequisites, access, and
     limits. One disagreement is recorded rather than resolved: Anthropic's directory entry says the
     Pipedrive connector needs a paid Pipedrive plan, while Pipedrive says every plan can use it.
@@ -138,13 +136,6 @@ evidence:
     checked_on: "2026-10-04"
     kind: vendor_docs
     public: true
-  - id: claude-upload-files
-    url: https://support.claude.com/en/articles/8241126-upload-files-to-claude
-    title: Upload files to Claude
-    publisher: Anthropic
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
   - id: pipedrive-claude-article
     url: https://support.pipedrive.com/en/article/mcp-claude
     title: Pipedrive MCP for Claude
@@ -159,14 +150,6 @@ evidence:
     checked_on: "2026-10-04"
     kind: vendor_docs
     public: true
-  - id: pipedrive-export-article
-    url: https://support.pipedrive.com/en/article/exporting-data-from-pipedrive
-    title: Exporting data from Pipedrive
-    publisher: Pipedrive
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-
 options:
   - id: coupler-io
     name: Coupler.io
@@ -500,152 +483,6 @@ options:
         stage and value from your own pipeline rather than asking which CRM you mean.
       evidence_ids: [dir-pipedrive]
 
-  - id: manual-export
-    name: Manual export and upload
-    provider: Pipedrive
-    method: file_upload
-    description: >-
-      Export the records you need from Pipedrive as a spreadsheet and attach the file to a Claude
-      conversation. Nothing to install and nothing to authorise, but the file is a snapshot and
-      every refresh is another export.
-
-    maintainer:
-      status: known
-      value: manual
-      evidence_ids: [pipedrive-export-article, claude-upload-files]
-      note: There is no connector in this route; you move the file yourself
-
-    route_status:
-      status: known
-      value: available
-      evidence_ids: [pipedrive-export-article, claude-upload-files]
-
-    directory_listing:
-      status: not_applicable
-      value: null
-      evidence_ids: [claude-upload-files]
-      note: A file upload is a built-in part of the Claude interface, not a connector you add
-
-    links:
-      overview: https://support.pipedrive.com/en/article/exporting-data-from-pipedrive
-      setup: https://support.claude.com/en/articles/8241126-upload-files-to-claude
-
-    surfaces:
-      claude_web:
-        status: known
-        value: supported
-        evidence_ids: [claude-upload-files]
-        note: >-
-          Anthropic documents uploading through the + button in the chat box and through a project's
-          Files section; the article does not name individual Claude apps
-      claude_desktop:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the upload article does not name Claude Desktop
-      claude_code:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the upload article does not name Claude Code
-      cowork:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the upload article does not name Cowork
-
-    access:
-      status: known
-      value: read
-      evidence_ids: [pipedrive-export-article]
-      note: An export is a one-way copy; nothing in this route writes back to Pipedrive
-
-    data_available:
-      status: known
-      value:
-        - "Exportable item types: Leads, Deals, Organizations, People, Products, Activities, Projects, Notes, Files"
-        - "Leads can be filtered by archive status, Deals by creation date or won time for participant-based exports, and Activities by date done, due date, date added, or last updated"
-        - "Products can be exported as the entire catalogue or only those added to deals, and Notes as HTML or plain text"
-        - "Insights reports and goals export as PDF or PNG, with the underlying report table available as a spreadsheet"
-      evidence_ids: [pipedrive-export-article]
-
-    history:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: the export article states no date cap on how far back an export can reach
-
-    refresh:
-      status: not_applicable
-      value: null
-      evidence_ids: [pipedrive-export-article]
-      note: >-
-        An export is a point-in-time file. Nothing in the documentation describes scheduling an
-        export into Claude, so keeping Claude current means exporting and uploading again
-
-    multi_source:
-      status: known
-      value:
-        - Up to 20 files can be attached to a single chat, so several exports can be compared in one conversation
-        - "Activities, notes, and files linked to deals and contacts must be exported separately"
-      evidence_ids: [claude-upload-files, pipedrive-export-article]
-
-    prerequisites:
-      status: known
-      value:
-        - Only global admins and regular users with export permissions enabled can export data
-        - Exporting by data type from the Export data tab requires global admin permissions
-        - Even with export permissions, you can export only the data visible to you under your visibility group
-        - Projects export requires a Premium or higher plan, or the Projects add-on
-        - A Claude account, and code execution and file creation enabled if you upload XLSX rather than CSV
-      evidence_ids: [pipedrive-export-article, claude-upload-files]
-
-    pricing:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: no pricing page was checked for this record
-
-    data_path:
-      status: known
-      value: >-
-        You download the file from Pipedrive and attach it to a conversation. The contents sit in
-        the model's context rather than in a queryable store, and Claude extracts text only, so a
-        wide export competes with the rest of the conversation.
-      evidence_ids: [pipedrive-export-article, claude-upload-files]
-
-    limits:
-      status: known
-      value:
-        - "Exported files are available for 28 days"
-        - "Deal details can be exported as XLSX only from the deal detail view"
-        - "Files stored in Google Drive are not exported during a global export"
-        - "Chat uploads are capped at 500MB per file and 20 files per chat; project files are capped at 30MB each"
-        - "Uploading XLSX requires code execution and file creation to be enabled on the account, which CSV does not"
-      evidence_ids: [pipedrive-export-article, claude-upload-files]
-
-    setup_steps:
-      - text: "In Pipedrive, open Tools and apps > Export data, choose the item type, pick Excel or CSV, and click Export."
-        evidence_ids: [pipedrive-export-article]
-      - text: "Or export what is on screen: from a list view, click the three dots and choose Export filter results."
-        evidence_ids: [pipedrive-export-article]
-      - text: Download the generated file within 28 days, after which it is no longer available.
-        evidence_ids: [pipedrive-export-article]
-
-    claude_configuration:
-      - text: In Claude, click the + button in the lower left of the chat box, choose Add files or photos, and select the export, or drag it into the chat window.
-        evidence_ids: [claude-upload-files]
-      - text: For a file you want to reuse across conversations, add it to a project's Files section instead of a single chat.
-        evidence_ids: [claude-upload-files]
-
-    sample_query: Here is our deal export. Which stages are losing the most value, and how has that changed month over month?
-
-    success_check:
-      text: >-
-        Ask Claude how many rows the file contains and to name the columns. A reply matching your
-        export confirms the whole file was read rather than truncated.
-      evidence_ids: [claude-upload-files]
-
 recommendations:
   - job: Analysing sales history at length or alongside other systems
     option_id: coupler-io
@@ -661,21 +498,14 @@ recommendations:
       CRM data rather than a sync, and it can create and update records within your existing
       Pipedrive permissions with every action logged.
     evidence_ids: [dir-pipedrive, pipedrive-mcp-feature]
-  - job: A one-off question about a list you can already export
-    option_id: manual-export
-    reason: >-
-      Nothing to install or authorise: export the item type as CSV and attach it to a chat. It suits
-      a single analysis rather than anything you need to repeat.
-    evidence_ids: [pipedrive-export-article, claude-upload-files]
-
 faq:
   - question: Can Claude update my CRM, or only read it?
     answer: >-
       It depends on the route. Pipedrive's own connector creates and updates deals, people,
       organisations, activities, and notes, and Pipedrive states that it can only touch data your
       own user may edit and that every action is recorded in the change log. Coupler.io is read-only
-      against Pipedrive: Claude queries an imported dataset. A manual export writes nothing back.
-    evidence_ids: [dir-pipedrive, pipedrive-mcp-feature, cpl-mcp, pipedrive-export-article]
+      against Pipedrive: Claude queries an imported dataset.
+    evidence_ids: [dir-pipedrive, pipedrive-mcp-feature, cpl-mcp]
   - question: Do I need a paid Pipedrive plan for the official connector?
     answer: >-
       The two vendors disagree. Anthropic's directory entry says the connector is available on all
@@ -687,9 +517,7 @@ faq:
     answer: >-
       Not as reports. Pipedrive's in-app analytics and forecast reports are not available through
       the API, so Coupler.io exports raw CRM data only and you would rebuild the analysis in Claude.
-      Manually, Insights reports and goals can be exported as PDF or PNG, with the underlying table
-      available as a spreadsheet.
-    evidence_ids: [cpl-pipedrive-data, pipedrive-export-article]
+    evidence_ids: [cpl-pipedrive-data]
   - question: Why is my import slow or timing out?
     answer: >-
       Pipedrive rate limits entry-level plans to 20 requests per 2 seconds, and Coupler.io paces its
@@ -697,12 +525,11 @@ faq:
       within 30 minutes times out. Narrowing the export with a filter ID, a last-modified date range,
       or fewer columns is the documented way to keep runs short.
     evidence_ids: [cpl-pipedrive-issues, cpl-pipedrive-data]
-  - question: Will an export include deals I have deleted or archived?
+  - question: Will an import include deals I have deleted or archived?
     answer: >-
       No. The Pipedrive API returns active records only, so deleted and archived deals, persons, and
-      organizations are excluded from a Coupler.io import. In a manual export, Leads can be filtered
-      by archive status, which is the one documented exception.
-    evidence_ids: [cpl-pipedrive-best, pipedrive-export-article]
+      organizations are excluded from a Coupler.io import.
+    evidence_ids: [cpl-pipedrive-best]
   - question: Does the activity data cover my whole team?
     answer: >-
       Yes, and that may surprise you. Coupler.io fetches the Activities entity with user_id=0, which
