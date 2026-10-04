@@ -13,7 +13,7 @@ summary: >-
   analyze it in Claude, you can use scheduled Coupler.io imports, Google's official read-only MCP
   server, or the NotFair connector, which can also propose campaign changes for your approval.
 
-meta_description: "Connect Google Ads campaign, spend, and conversion data to Claude: Coupler.io import, Google's official MCP server, or NotFair. Compared with cited evidence."
+meta_description: "Connect Google Ads campaign, spend, and conversion data to Claude: Coupler.io import, Google's official MCP server, or NotFair."
 
 research:
   searched_on: "2026-10-04"

@@ -23,7 +23,7 @@ summary: >-
   Claude, you can use scheduled Coupler.io imports, Intuit's connector in Claude's directory, or
   Intuit's open-source MCP server that runs on your machine.
 
-meta_description: "Connect QuickBooks Online invoices, customers, and financial reports to Claude: Coupler.io import, Intuit's connector, or Intuit's local MCP server. Evidence-based."
+meta_description: "Connect QuickBooks Online invoices, customers, and financial reports to Claude: Coupler.io import, Intuit's connector, or Intuit's local MCP server."
 
 research:
   searched_on: "2026-10-04"

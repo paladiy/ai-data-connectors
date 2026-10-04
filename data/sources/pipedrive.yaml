@@ -12,7 +12,7 @@ summary: >-
   data and can create and update records, or scheduled Coupler.io imports, which load one entity at
   a time into a queryable dataset.
 
-meta_description: "Connect Pipedrive deals, contacts, and activities to Claude: Pipedrive's own live connector or scheduled Coupler.io imports. Compared with cited evidence."
+meta_description: "Connect Pipedrive deals, contacts, and activities to Claude: Pipedrive's own live connector or scheduled Coupler.io imports."
 
 research:
   searched_on: "2026-10-04"

@@ -13,7 +13,7 @@ summary: >-
   use scheduled Coupler.io imports, Google's official experimental read-only MCP server, or Zapier's
   Google Analytics connector.
 
-meta_description: "Connect Google Analytics 4 traffic, event, and conversion data to Claude: Coupler.io import, Google's official MCP server, or Zapier. Compared with cited evidence."
+meta_description: "Connect Google Analytics 4 traffic, event, and conversion data to Claude: Coupler.io import, Google's official MCP server, or Zapier."
 
 research:
   searched_on: "2026-10-04"

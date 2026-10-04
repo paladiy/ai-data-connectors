@@ -14,7 +14,7 @@ summary: >-
   status. Google offers no MCP server for it, so Claude reaches it through scheduled Coupler.io
   imports, the hosted GSC PAP service, or a community MCP server you run yourself.
 
-meta_description: "Connect Google Search Console queries, clicks, impressions, and index status to Claude: Coupler.io import, GSC PAP, or a community MCP server. Compared with evidence."
+meta_description: "Connect Google Search Console queries, clicks, impressions, and index status to Claude: Coupler.io import, GSC PAP, or a community MCP server."
 
 research:
   searched_on: "2026-10-04"
