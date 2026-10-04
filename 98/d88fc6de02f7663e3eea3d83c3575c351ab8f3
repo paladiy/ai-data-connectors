@@ -1,0 +1,19 @@
+.github/workflows/deploy.yml
+  s_520592eba7192e::t_d2e6fd14cf5d34 1,4-5,10-13,15,27-28,30-31,33-36,39-41,44-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "98d88fc6de02f7663e3eea3d83c3575c351ab8f3",
+  "prompts": {},
+  "sessions": {
+    "s_520592eba7192e": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "523d1a7a-744e-4978-a8ae-5f1eb4c9a03a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
