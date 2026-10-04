@@ -7,6 +7,7 @@ import { serializePublicDataset } from "./public-export.ts";
 import {
   connectorsSection,
   descriptionSection,
+  escapeHtml,
   routesSection,
   skillsSection,
 } from "./render-source-page.ts";
@@ -79,12 +80,34 @@ function headFor(site: SiteConfig, path: string, structuredData: unknown[]): Hea
   return tags;
 }
 
+const TROUBLESHOOTING = /\b(why|slow|timing out|time out|error|fail|cannot|can't|not (?:see|load|work)|stuck|missing)\b/i;
+
+/**
+ * Order questions so decision-making ones lead: those where Coupler.io is part of the answer come
+ * first, other comparison questions next, and troubleshooting last. Order within a tier is kept
+ * as written, and no answer text is changed.
+ */
+function faqRank(entry: ModelSource["faq"][number]): number {
+  if (TROUBLESHOOTING.test(entry.question)) return 2;
+  return /coupler\.io/i.test(entry.answer) ? 0 : 1;
+}
+
 function faqSection(source: ModelSource): string | null {
   if (source.faq.length === 0) return null;
-  const lines = ["## Questions"];
-  for (const entry of source.faq) {
-    lines.push("", `### ${escapeText(entry.question)}`, "", escapeText(entry.answer));
-  }
+  const ordered = source.faq
+    .map((entry, index) => ({ entry, index }))
+    .sort((a, b) => faqRank(a.entry) - faqRank(b.entry) || a.index - b.index)
+    .map(({ entry }) => entry);
+  const lines = ["## Questions", "", `<div class="sp-faq">`];
+  ordered.forEach((entry, index) => {
+    lines.push(
+      `<details class="sp-faq-item"${index === 0 ? " open" : ""}>`,
+      `<summary>${escapeHtml(entry.question)}</summary>`,
+      `<p>${escapeHtml(entry.answer)}</p>`,
+      `</details>`,
+    );
+  });
+  lines.push(`</div>`);
   return lines.join("\n");
 }
 

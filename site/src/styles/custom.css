@@ -587,6 +587,44 @@
   margin-block: 0.125rem;
 }
 
+/* Small screens: the routes become one compact row (three fit side by side, more scroll sideways).
+   Provider, method, and "best for" move out of the card; the panel below still explains the route. */
+@media (max-width: 40rem) {
+  .sp-tabs {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(6.5rem, 1fr);
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-block-end: 0.25rem;
+  }
+  .sp-tab {
+    gap: 0.25rem;
+    padding: 0.625rem 0.625rem 0.75rem;
+    scroll-snap-align: start;
+  }
+  .sp-tab-name {
+    font-size: var(--sl-text-sm);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .sp-tab-meta,
+  .sp-tab-best {
+    display: none;
+  }
+  .sp-tab .sp-badges {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  .sp-tab .sp-badge {
+    font-size: 0.6875rem;
+    padding: 0.05rem 0.4rem;
+    white-space: normal;
+  }
+}
+
 /* Compact switcher that stays in view while a long panel scrolls. */
 .sp-pillbar {
   position: sticky;
@@ -727,4 +765,42 @@
   .sp-tab {
     transition: none;
   }
+}
+
+.sp-faq {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.sp-faq-item {
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.5rem;
+  padding: 0 1rem;
+}
+.sp-faq-item[open] {
+  border-color: var(--sl-color-accent);
+  background: var(--sl-color-bg-nav);
+}
+.sp-faq-item > summary {
+  cursor: pointer;
+  padding: 0.75rem 0;
+  font-weight: 600;
+  color: var(--sl-color-white);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.sp-faq-item > summary::-webkit-details-marker {
+  display: none;
+}
+.sp-faq-item > summary::after {
+  content: "+";
+  color: var(--sl-color-accent-high);
+}
+.sp-faq-item[open] > summary::after {
+  content: "−";
+}
+.sp-faq-item > p {
+  margin: 0 0 1rem;
 }
