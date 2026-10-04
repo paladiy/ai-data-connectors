@@ -1,0 +1,311 @@
+schema_version: 1
+id: facebook-ads
+slug: facebook-ads
+name: Facebook Ads
+aliases:
+  - Meta Ads
+  - Facebook Ads Manager
+summary: >-
+  Facebook Ads (Meta Ads) is Meta's advertising platform for campaigns across Facebook, Instagram,
+  Messenger, and the Audience Network. Its data covers campaigns, ad sets, ads, creatives, spend,
+  reach, clicks, and conversions. To analyze it in ChatGPT, Claude, Gemini, or another LLM, use
+  scheduled Coupler.io imports.
+
+meta_description: "Connect Facebook Ads (Meta Ads) spend, reach, and conversion data to ChatGPT, Claude, Gemini, and other LLMs with scheduled Coupler.io imports."
+
+research:
+  searched_on: "2026-10-04"
+  checked_urls:
+    - https://docs.coupler.io/sources/category/ppc/facebook-ads
+    - https://docs.coupler.io/sources/category/ppc/facebook-ads/data-overview
+    - https://docs.coupler.io/sources/category/ppc/facebook-ads/faq
+    - https://docs.coupler.io/sources/category/ppc/facebook-ads/common-issues
+    - https://docs.coupler.io/sources/category/ppc/facebook-ads/best-practices
+    - https://www.coupler.io/claude-integrations/facebook-ads-to-claude
+    - https://docs.coupler.io/destinations/categories/ai/claude
+    - https://docs.coupler.io/destinations/categories/ai/claude/faq
+    - https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    - https://docs.coupler.io/ai/mcp
+    - https://claude.com/connectors/coupler-io
+  coverage_note: >-
+    One route is covered, researched on 4 October 2026: the Coupler.io data platform. No dedicated
+    Facebook Ads or Meta Ads entry was reachable in Claude's connector directory at the obvious
+    addresses; the directory cannot be searched exhaustively, so no claim is made that none exists.
+
+evidence:
+  - id: cpl-claude-destination
+    url: https://docs.coupler.io/destinations/categories/ai/claude
+    title: Claude destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-faq
+    url: https://docs.coupler.io/destinations/categories/ai/claude/faq
+    title: Claude destination FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-issues
+    url: https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    title: Claude destination common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-mcp
+    url: https://docs.coupler.io/ai/mcp
+    title: What the Coupler.io MCP server can and cannot do
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-refresh
+    url: https://docs.coupler.io/functionality/flow-settings/how-to-set-up-automatic-data-refresh
+    title: How to set up automatic data refresh
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-fb-overview
+    url: https://docs.coupler.io/sources/category/ppc/facebook-ads
+    title: Facebook Ads source overview
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-fb-data
+    url: https://docs.coupler.io/sources/category/ppc/facebook-ads/data-overview
+    title: Facebook Ads data overview
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-fb-faq
+    url: https://docs.coupler.io/sources/category/ppc/facebook-ads/faq
+    title: Facebook Ads source FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-fb-issues
+    url: https://docs.coupler.io/sources/category/ppc/facebook-ads/common-issues
+    title: Facebook Ads source common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-fb-best
+    url: https://docs.coupler.io/sources/category/ppc/facebook-ads/best-practices
+    title: Facebook Ads best practices
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-fb-claude-page
+    url: https://www.coupler.io/claude-integrations/facebook-ads-to-claude
+    title: Connect Facebook Ads to Claude
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: dir-coupler-io
+    url: https://claude.com/connectors/coupler-io
+    title: Coupler.io in the Claude connectors directory
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: directory
+    public: true
+options:
+  - id: coupler-io
+    name: Coupler.io
+    provider: Coupler.io
+    method: data_platform
+    description: >-
+      Coupler.io imports a Facebook Ads report on a schedule and exposes the result to Claude through
+      its own MCP server, so Claude queries a stored dataset instead of calling the Meta Marketing API
+      during the conversation.
+
+    maintainer:
+      status: known
+      value: third_party
+      evidence_ids: [cpl-mcp, cpl-claude-destination]
+      note: Coupler.io builds and runs this connector and its MCP server.
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [cpl-claude-destination, cpl-fb-claude-page]
+
+    directory_listing:
+      status: known
+      value: https://claude.com/connectors/coupler-io
+      evidence_ids: [dir-coupler-io]
+      note: >-
+        The entry is marked Anthropic verified, credited to Coupler.io, added in November 2025, and
+        records sign-in as required. It lists four tools: get-data, get-schema, list-dataflows, and
+        get-dataflow
+
+    links:
+      overview: https://docs.coupler.io/sources/category/ppc/facebook-ads
+    works_with: all
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [cpl-mcp, dir-coupler-io]
+      note: >-
+        Queries against imported data are read-only, and nothing in either source describes changing
+        campaigns, budgets, or bids. Coupler.io's own documentation also describes tools that change
+        your Coupler.io workspace, such as creating a data flow or triggering a run
+
+    data_available:
+      status: known
+      value:
+        - "Nine report types: Reports and Insights, List of Sponsored Leads, List of Campaigns, List of Ad Sets, List of Ads, List of Ad Creatives, List of Ads with Ad Creatives, List of Activities, and List of Business invoices"
+        - "Reports and Insights carries the performance data: account, campaign, ad set, and ad dimensions with performance, click, cost, engagement, video, and conversion metrics"
+        - "Conversion events come in Total, Unique, Cost, Unique Cost, and Value variants, with purchase revenue as the Value variant and Purchase ROAS as its own metric; custom conversions and custom events are included"
+        - "Breakdowns: age, gender, country, region, Comscore markets, publisher platform, impression device, device platform, product id, frequency value, and hourly stats"
+        - "Time splits: daily, weekly, monthly, or totals only for the whole date range"
+        - "Structural lists cover campaign, ad set, and ad statuses, budgets, objectives, and targeting; creatives carry image URLs, ad text, and UTM url_tags"
+        - "List of Activities is the account audit log, including billing and funding activity; List of Business invoices gives monthly invoices with billed amounts per campaign"
+      evidence_ids: [cpl-fb-overview, cpl-fb-data, cpl-fb-faq]
+      note: >-
+        The structural and creative lists carry no performance metrics, so creative performance
+        needs a Reports and Insights import at the Ad level joined to the creative list on Ad Id
+
+    history:
+      status: known
+      value:
+        - "You set a start and end date; no hard limit on the range is stated, but very large ranges with many breakdowns can be slow or hit API limits"
+        - "For initial backfills the documentation recommends pulling data in monthly chunks"
+      evidence_ids: [cpl-fb-faq, cpl-fb-best]
+      note: no fixed Facebook Ads retention window is stated
+
+    refresh:
+      status: known
+      value:
+        - A successful manual run is required before a schedule can be set
+        - Scheduled refresh is described as hourly, daily, or a custom interval
+        - The platform supports intervals from every 15 minutes to monthly, depending on plan
+      evidence_ids: [cpl-claude-faq, cpl-refresh]
+      note: Which intervals each plan allows is not documented
+
+    multi_source:
+      status: known
+      value:
+        - One data flow can take several sources and combine them with Join or Append before the data reaches Claude
+        - Facebook Ads is documented as merging with Google Ads, Google Analytics, CRM, or e-commerce data for a full-funnel view of marketing
+        - Creative details and performance come from separate report types and are joined on Ad Id
+      evidence_ids: [cpl-claude-faq, cpl-fb-overview, cpl-fb-faq]
+
+    prerequisites:
+      status: known
+      value:
+        - A Facebook account with access to at least one ad account in Meta Business Suite
+        - Admin or Advertiser permissions on the ad account you want to pull data from
+        - A Coupler.io account
+      evidence_ids: [cpl-fb-overview, cpl-fb-issues, cpl-claude-destination]
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no pricing page was checked for this record
+
+    data_path:
+      status: known
+      value: >-
+        Coupler.io reads the Facebook Ads API, stores the result as a dataset, and serves it to Claude
+        over its MCP server. Queries run on Coupler.io's side, so a large dataset does not have to
+        fit into the model's context. Claude sees only datasets from data flows that have Claude as
+        their destination.
+      evidence_ids: [cpl-mcp]
+
+    limits:
+      status: known
+      value:
+        - "The Facebook Ads API has a 1 to 2 day data latency, so today and sometimes yesterday are incomplete"
+        - "Attribution windows must match Ads Manager for the numbers to agree; if none is selected in Coupler.io, a 7-day click window is used"
+        - "The 1-day engaged-view attribution window is not available through the API, so conversion counts can be lower than in Ads Manager"
+        - "Reach and ratio metrics such as CTR, CPC, and CPM cannot be summed across rows"
+        - "Since 6 August 2026, Meta returns no data for the Impression device, Frequency value, and Hourly stats by audience time zone breakdowns until they are enabled per ad account in Ads Manager"
+        - "Demographic or geographic breakdowns cannot be combined with hourly breakdowns, and action breakdowns can make the parts add up to more than the total"
+        - "Any filter in Advanced settings makes the API return active objects only, unless an explicit status filter is added"
+        - "Several data flows pulling from one ad account at once can hit Facebook's per-account rate limits; large reports can fail with Async Job failed"
+        - "Currency follows the ad account and cannot be converted, and insights are returned in the ad account's timezone"
+      evidence_ids: [cpl-fb-data, cpl-fb-faq, cpl-fb-issues, cpl-fb-best]
+
+    setup_steps:
+      - text: In Coupler.io, create a data flow, add Facebook Ads as the source, and sign in with your Facebook account, granting every permission it requests.
+        evidence_ids: [cpl-fb-overview, cpl-fb-issues]
+      - text: Select the ad accounts to pull from, then choose a report type; Reports and Insights is the one with performance metrics.
+        evidence_ids: [cpl-fb-overview, cpl-fb-best]
+      - text: Set the date range with yesterday as the end date, pick your metrics and breakdowns, and match the attribution window to the one you use in Ads Manager.
+        evidence_ids: [cpl-fb-overview, cpl-fb-best]
+      - text: Choose {destination} as the destination in the data flow's destination step.
+        evidence_ids: [cpl-claude-destination]
+      - text: Give the data flow a clear name, because {tool} refers to the dataset by that name.
+        evidence_ids: [cpl-claude-destination]
+      - text: Run the data flow manually once and wait for it to finish successfully.
+        evidence_ids: [cpl-claude-destination]
+      - text: Set a refresh schedule once that first run has succeeded.
+        evidence_ids: [cpl-claude-faq]
+
+    sample_query: Which ad sets increased spend last month without a matching rise in purchases, and which creatives were they running?
+
+    success_check:
+      text: >-
+        Ask {tool} to list the datasets it can see; the Facebook Ads data flow should appear under the
+        name you gave it. Then compare total spend for a closed date range with Ads Manager, using the
+        same attribution window.
+      evidence_ids: [cpl-claude-destination, cpl-fb-faq]
+
+recommendations:
+  - job: Reporting on paid social spend over time or alongside Google Ads, analytics, and CRM data
+    option_id: coupler-io
+    reason: >-
+      Queries run against a stored dataset rather than the Facebook Ads API, so long date ranges do
+      not have to fit into the conversation, and one data flow can join Facebook Ads with Google Ads,
+      Google Analytics, or CRM data before Claude sees it.
+    evidence_ids: [cpl-mcp, cpl-fb-overview]
+faq:
+  - question: Can Claude pause an ad or change my budgets?
+    answer: >-
+      No. Coupler.io is read-only against Facebook Ads: Claude queries an imported dataset and cannot
+      change campaigns, budgets, or bids.
+    evidence_ids: [cpl-mcp]
+  - question: Why don't my numbers match Ads Manager?
+    answer: >-
+      Usually the attribution window. Coupler.io uses a 7-day click window when none is selected, so
+      set the same window you use in Ads Manager. Then check that the period split, the entity level,
+      and the breakdowns match. Conversions attributed to the 1-day engaged-view window are not
+      available through the API at all, so those counts can stay slightly lower.
+    evidence_ids: [cpl-fb-issues, cpl-fb-faq]
+  - question: Why is today's data missing or incomplete?
+    answer: >-
+      The Facebook Ads API has a 1 to 2 day data latency, so the current day and sometimes yesterday
+      are not fully processed. Set the end date to yesterday for complete numbers.
+    evidence_ids: [cpl-fb-faq, cpl-fb-best]
+  - question: Why is my Reach total higher than in Ads Manager?
+    answer: >-
+      Reach counts unique people, so adding up daily Reach rows counts anyone who saw an ad on several
+      days more than once. Use the Totals only period split for a single deduplicated figure over a
+      fixed date range, or keep Reach per row. Ratio metrics such as CTR, CPC, and CPM should likewise
+      be recalculated from totals rather than summed.
+    evidence_ids: [cpl-fb-faq, cpl-fb-issues]
+  - question: Why did the Impression device, Frequency value, or Hourly stats breakdown stop returning data?
+    answer: >-
+      Since 6 August 2026, Meta requires these breakdowns to be enabled per ad account in Ads
+      Manager, and until then its API returns no results for them, even if they worked before. Enable
+      the breakdown for the ad account and re-run the data flow; full history, including data from
+      before enablement, comes back.
+    evidence_ids: [cpl-fb-issues, cpl-fb-faq]
+  - question: How are ad accounts counted toward my Coupler.io plan?
+    answer: >-
+      Facebook Ads is a tenant-based source, so each ad account you select counts as one account
+      toward your plan limit, however many report types or data flows use it.
+    evidence_ids: [cpl-fb-faq]
+
+related_source_ids: []

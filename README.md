@@ -47,6 +47,7 @@ Each source below has a researched guide, readable here in Markdown, that explai
 
 | Source | Example question | Guides |
 | --- | --- | --- |
+| Facebook Ads | “Which ad sets increased spend last month without a matching rise in purchases, and which creatives were they running?” | [Setup guide](sources/facebook-ads/README.md) · [Facebook Ads on Coupler.io](https://www.coupler.io/claude-integrations/facebook-ads-to-claude) |
 | Google Ads | “Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?” | [Setup guide](sources/google-ads/README.md) · [Google Ads on Coupler.io](https://www.coupler.io/claude-integrations/google-ads-to-claude) |
 | Google Analytics 4 | “Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?” | [Setup guide](sources/google-analytics-4/README.md) · [Google Analytics 4 on Coupler.io](https://www.coupler.io/claude-integrations/google-analytics-to-claude) |
 | Google Search Console | “Which pages lost the most clicks year over year, and did their average position or their CTR move first?” | [Setup guide](sources/google-search-console/README.md) · [Google Search Console on Coupler.io](https://www.coupler.io/claude-integrations/google-search-console-to-claude) |
