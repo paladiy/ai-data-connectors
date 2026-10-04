@@ -1,8 +1,10 @@
 import { z } from "zod";
+import { AiToolsFile } from "../../schemas/ai-tool.ts";
 import { SiteConfig } from "../../schemas/site.ts";
 import { PrivateEvidenceFile, Source } from "../../schemas/source.ts";
 
 const SCHEMAS: Record<string, z.ZodType> = {
+  "ai-tools.schema.json": AiToolsFile,
   "source.schema.json": Source,
   "site.schema.json": SiteConfig,
   "private-evidence.schema.json": PrivateEvidenceFile,

@@ -9,7 +9,7 @@ import { fixtureOption, fixtureOurOption, known } from "./fixtures/factory.ts";
 
 function pageFor(overrides: Record<string, unknown> = {}, site = fixtureSite) {
   const model = buildModel(fixtureContent([fixtureRecord(overrides)], { site }));
-  return renderSourcePage(model.sources[0]!, model.site);
+  return renderSourcePage(model.sources[0]!, model.site, model.ai_tools);
 }
 
 function frontmatterOf(page: string): Record<string, unknown> {

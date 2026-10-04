@@ -11,6 +11,7 @@ import {
   renderRobotsTxt,
   renderSourcePage,
 } from "./render-site.ts";
+import { renderToolCss } from "./render-source-page.ts";
 
 export interface Outputs {
   files: Map<string, string>;
@@ -27,13 +28,14 @@ function siteOutputs(model: Model): Map<string, string> {
     ["site/src/content/docs/index.mdx", renderIndexPage(model)],
     ["site/src/generated/site.json", `${JSON.stringify(model.site, null, 2)}\n`],
     ["site/src/generated/directory.json", `${JSON.stringify(buildDirectoryData(model), null, 2)}\n`],
+    ["site/src/generated/ai-tools.css", renderToolCss(model.ai_tools)],
     ["site/public/connectors.json", renderPublicDataset(model)],
     ["site/public/llms.txt", renderLlmsTxt(model)],
     ["site/public/robots.txt", renderRobotsTxt(model)],
   ]);
 
   for (const source of model.sources) {
-    files.set(`site/src/content/docs/sources/${source.slug}.md`, renderSourcePage(source, model.site));
+    files.set(`site/src/content/docs/sources/${source.slug}.md`, renderSourcePage(source, model.site, model.ai_tools));
   }
   return files;
 }

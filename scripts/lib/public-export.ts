@@ -1,7 +1,6 @@
 import { z } from "zod";
-import type { Claim } from "../../schemas/common.ts";
-import { SURFACES } from "../../schemas/source.ts";
-import type { Model, ModelOption, ModelSource } from "./model.ts";
+import type { Claim, Evidence } from "../../schemas/common.ts";
+import type { Model, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
 
 export const PUBLIC_SCHEMA_VERSION = 1;
 
@@ -36,7 +35,7 @@ const PublicOption = z.strictObject({
     setup: z.string().optional(),
     pricing: z.string().optional(),
   }),
-  surfaces: z.record(z.string(), PublicClaim),
+  works_with: z.array(z.string()),
   access: PublicClaim,
   data_available: PublicClaim,
   history: PublicClaim,
@@ -83,12 +82,38 @@ const PublicSource = z.strictObject({
   related_source_ids: z.array(z.string()),
 });
 
+const PublicText = z.strictObject({ text: z.string(), evidence_ids: z.array(z.string()) });
+
+const PublicAiTool = z.strictObject({
+  id: z.string(),
+  name: z.string(),
+  in_text: z.string().optional(),
+  vendor: z.string().optional(),
+  connection: z.string(),
+  connection_label: z.string(),
+  connection_note: z.string().optional(),
+  available_in: z.array(z.string()),
+  prerequisites: z.array(PublicText),
+  setups: z.array(z.strictObject({ title: z.string().optional(), steps: z.array(PublicText) })),
+  notes: z.array(PublicText),
+  links: z.strictObject({
+    setup: z.string(),
+    vendor: z.string().optional(),
+    directory: z.strictObject({ name: z.string(), url: z.string() }).optional(),
+  }),
+});
+
 export const PublicDataset = z.strictObject({
   schema_version: z.literal(PUBLIC_SCHEMA_VERSION),
   name: z.string(),
   url: z.string(),
   publisher: z.strictObject({ name: z.string(), type: z.enum(["Person", "Organization"]) }),
   documentation: z.string(),
+  ai_tools: z.strictObject({
+    evidence: z.array(PublicEvidence),
+    shared_notes: z.array(PublicText),
+    tools: z.array(PublicAiTool),
+  }),
   sources: z.array(PublicSource),
 });
 
@@ -119,9 +144,7 @@ function publicOption(option: ModelOption) {
       ...(option.links.setup ? { setup: option.links.setup } : {}),
       ...(option.links.pricing ? { pricing: option.links.pricing } : {}),
     },
-    surfaces: Object.fromEntries(
-      SURFACES.map((surface) => [surface, publicClaim(option.surfaces[surface] as Claim<unknown>)]),
-    ),
+    works_with: option.works_with,
     access: publicClaim(option.access),
     data_available: publicClaim(option.data_available),
     history: publicClaim(option.history),
@@ -140,6 +163,47 @@ function publicOption(option: ModelOption) {
   };
 }
 
+function publicEvidence(item: Evidence) {
+  return {
+    id: item.id,
+    url: item.url!,
+    title: item.title,
+    publisher: item.publisher,
+    checked_on: item.checked_on,
+    kind: item.kind,
+  };
+}
+
+const publicText = (item: { text: string; evidence_ids: string[] }) => ({ text: item.text, evidence_ids: item.evidence_ids });
+
+function publicAiTools(aiTools: ModelAiTools) {
+  return {
+    evidence: aiTools.evidence.map(publicEvidence),
+    shared_notes: aiTools.shared_notes.map(publicText),
+    tools: aiTools.tools.map((tool) => ({
+      id: tool.id,
+      name: tool.name,
+      ...(tool.in_text ? { in_text: tool.in_text } : {}),
+      ...(tool.vendor ? { vendor: tool.vendor } : {}),
+      connection: tool.connection,
+      connection_label: tool.connection_label,
+      ...(tool.connection_note ? { connection_note: tool.connection_note } : {}),
+      available_in: tool.available_in,
+      prerequisites: tool.prerequisites.map(publicText),
+      setups: tool.setups.map((setup) => ({
+        ...(setup.title ? { title: setup.title } : {}),
+        steps: setup.steps.map(publicText),
+      })),
+      notes: tool.notes.map(publicText),
+      links: {
+        setup: tool.links.setup,
+        ...(tool.links.vendor ? { vendor: tool.links.vendor } : {}),
+        ...(tool.links.directory ? { directory: { name: tool.links.directory.name, url: tool.links.directory.url } } : {}),
+      },
+    })),
+  };
+}
+
 function publicSource(source: ModelSource, siteUrl: string) {
   return {
     id: source.id,
@@ -149,14 +213,7 @@ function publicSource(source: ModelSource, siteUrl: string) {
     url: new URL(`/sources/${source.slug}/`, siteUrl).toString(),
     summary: source.summary,
     research: { searched_on: source.research.searched_on, coverage_note: source.research.coverage_note },
-    evidence: source.evidence.map((item) => ({
-      id: item.id,
-      url: item.url!,
-      title: item.title,
-      publisher: item.publisher,
-      checked_on: item.checked_on,
-      kind: item.kind,
-    })),
+    evidence: source.evidence.map(publicEvidence),
     options: source.options.map(publicOption),
     recommendations: source.recommendations.map((recommendation) => ({
       job: recommendation.job,
@@ -177,6 +234,7 @@ export function buildPublicDataset(model: Model): PublicDataset {
     url: new URL("/", model.site.url).toString(),
     publisher: { name: model.site.publisher.name, type: model.site.publisher.type },
     documentation: new URL("/about/", model.site.url).toString(),
+    ai_tools: publicAiTools(model.ai_tools),
     sources: model.sources.map((source) => publicSource(source, model.site.url)),
   });
 }

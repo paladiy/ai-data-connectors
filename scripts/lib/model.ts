@@ -1,16 +1,14 @@
+import type { AiTool, AiToolsFile } from "../../schemas/ai-tool.ts";
 import type { Claim, Evidence } from "../../schemas/common.ts";
 import type { Option, RelatedSkill, Source } from "../../schemas/source.ts";
-import { SURFACES } from "../../schemas/source.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import type { Content } from "./load.ts";
 import { isUsableRoute } from "./validate.ts";
 
-export const SURFACE_LABELS: Record<(typeof SURFACES)[number], string> = {
-  claude_web: "Claude web",
-  claude_desktop: "Claude desktop",
-  claude_code: "Claude Code",
-  cowork: "Cowork",
-};
+export const CONNECTION_LABELS = {
+  remote_mcp: "Remote MCP",
+  local_mcp: "Local MCP",
+} as const;
 
 export const MAINTAINER_LABELS = {
   source_vendor: "Source-vendor maintained",
@@ -27,7 +25,18 @@ export const METHOD_LABELS = {
   automation: "Automation",
 } as const;
 
-export interface ModelOption extends Option {
+export interface ModelAiTool extends AiTool {
+  connection_label: string;
+}
+
+export interface ModelAiTools {
+  evidence: Evidence[];
+  shared_notes: AiToolsFile["shared_notes"];
+  tools: ModelAiTool[];
+}
+
+export interface ModelOption extends Omit<Option, "works_with"> {
+  works_with: string[];
   badges: string[];
   maintainer_label: string;
   method_label: string;
@@ -60,7 +69,22 @@ export interface ModelSource {
 
 export interface Model {
   site: SiteConfig;
+  ai_tools: ModelAiTools;
   sources: ModelSource[];
+}
+
+export function resolveWorksWith(option: Pick<Option, "works_with">, tools: AiTool[]): string[] {
+  if (option.works_with === "all") return tools.map((tool) => tool.id);
+  const wanted = new Set(option.works_with);
+  return tools.filter((tool) => wanted.has(tool.id)).map((tool) => tool.id);
+}
+
+function buildAiTools(file: AiToolsFile): ModelAiTools {
+  return {
+    evidence: file.evidence.filter((item) => item.public).sort((a, b) => a.id.localeCompare(b.id)),
+    shared_notes: file.shared_notes,
+    tools: file.tools.map((tool) => ({ ...tool, connection_label: CONNECTION_LABELS[tool.connection] })),
+  };
 }
 
 function availabilityRank(option: Option): number {
@@ -105,13 +129,10 @@ function stripClaim<T>(claim: Claim<T>, allowed: Set<string>): Claim<T> {
   return { ...claim, evidence_ids: keepPublic(claim.evidence_ids, allowed) };
 }
 
-function toModelOption(option: Option, allowed: Set<string>): ModelOption {
-  const surfaces = Object.fromEntries(
-    SURFACES.map((surface) => [surface, stripClaim(option.surfaces[surface] as Claim<string>, allowed)]),
-  ) as ModelOption["surfaces"];
-
+function toModelOption(option: Option, allowed: Set<string>, tools: AiTool[]): ModelOption {
   return {
     ...option,
+    works_with: resolveWorksWith(option, tools),
     maintainer: stripClaim(option.maintainer, allowed),
     route_status: stripClaim(option.route_status, allowed),
     directory_listing: stripClaim(option.directory_listing, allowed),
@@ -125,13 +146,8 @@ function toModelOption(option: Option, allowed: Set<string>): ModelOption {
     data_path: stripClaim(option.data_path, allowed),
     limits: stripClaim(option.limits, allowed),
     ...(option.setup_time ? { setup_time: stripClaim(option.setup_time, allowed) } : {}),
-    surfaces,
     capabilities: option.capabilities.map((item) => ({ ...item, evidence_ids: keepPublic(item.evidence_ids, allowed) })),
     setup_steps: option.setup_steps.map((step) => ({ ...step, evidence_ids: keepPublic(step.evidence_ids, allowed) })),
-    claude_configuration: option.claude_configuration.map((step) => ({
-      ...step,
-      evidence_ids: keepPublic(step.evidence_ids, allowed),
-    })),
     success_check: option.success_check
       ? { ...option.success_check, evidence_ids: keepPublic(option.success_check.evidence_ids, allowed) }
       : null,
@@ -154,7 +170,7 @@ export function buildModel(content: Content): Model {
     const evidence = publicEvidence(record);
     const allowed = new Set(evidence.map((item) => item.id));
     const modelOptions = [...record.options]
-      .map((option) => toModelOption(option, allowed))
+      .map((option) => toModelOption(option, allowed, content.aiTools.tools))
       .sort(
         (a, b) =>
           isRecommended(a) - isRecommended(b) ||
@@ -196,6 +212,7 @@ export function buildModel(content: Content): Model {
 
   return {
     site: content.site,
+    ai_tools: buildAiTools(content.aiTools),
     sources,
   };
 }

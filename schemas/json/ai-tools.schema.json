@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "number",
+      "const": 1
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "url": {
+            "type": "string"
+          },
+          "internal_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "publisher": {
+            "type": "string",
+            "minLength": 1
+          },
+          "checked_on": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "vendor_docs",
+              "directory",
+              "product_test",
+              "internal_docs"
+            ]
+          },
+          "public": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "publisher",
+          "checked_on",
+          "kind",
+          "public"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "shared_notes": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            }
+          }
+        },
+        "required": [
+          "text",
+          "evidence_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "tools": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "in_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "vendor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "connection": {
+            "type": "string",
+            "enum": [
+              "remote_mcp",
+              "local_mcp"
+            ]
+          },
+          "connection_note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "available_in": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "prerequisites": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  }
+                }
+              },
+              "required": [
+                "text",
+                "evidence_ids"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "setups": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "steps": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "evidence_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                        }
+                      }
+                    },
+                    "required": [
+                      "text",
+                      "evidence_ids"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "steps"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "notes": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  }
+                }
+              },
+              "required": [
+                "text",
+                "evidence_ids"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "setup": {
+                "type": "string"
+              },
+              "vendor": {
+                "type": "string"
+              },
+              "directory": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "url"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "setup"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "connection",
+          "prerequisites",
+          "setups",
+          "links"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "evidence",
+    "tools"
+  ],
+  "additionalProperties": false
+}

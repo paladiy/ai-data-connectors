@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { AiToolsFile } from "../schemas/ai-tool.ts";
 import { Source } from "../schemas/source.ts";
 import { validateContent } from "../scripts/lib/validate.ts";
 import { bundle, fixtureContent, fixtureRecord } from "./fixtures/content.ts";
-import { fixtureOption, fixtureOurOption, fixtureSource, unknown, known } from "./fixtures/factory.ts";
+import { fixtureAiTools, fixtureOption, fixtureOurOption, fixtureSource, unknown, known } from "./fixtures/factory.ts";
 
 const record = () => Source.parse(fixtureSource());
 
@@ -119,20 +120,38 @@ describe("record rules", () => {
     );
   });
 
-  it("requires sourced access, prerequisites, surfaces, and a success check on load-bearing routes", () => {
+  it("requires sourced access, prerequisites, and a success check on load-bearing routes", () => {
     const weak = fixtureOption({
       access: unknown(),
       prerequisites: unknown(),
-      surfaces: { claude_web: unknown(), claude_desktop: unknown(), claude_code: unknown(), cowork: unknown() },
       success_check: null,
     });
     const problems = messages(fixtureContent([fixtureRecord({ options: [weak, fixtureOurOption()] })]));
     expect(problems).toContain("options.fx-route.access: needs a sourced access claim");
     expect(problems).toContain("options.fx-route.prerequisites: needs a sourced prerequisites claim");
-    expect(problems).toContain(
-      "options.fx-route.surfaces: needs at least one known supported or limited Claude surface",
-    );
     expect(problems).toContain("options.fx-route.success_check: needs a way to confirm the route works");
+  });
+
+  it("rejects AI tool ids that do not resolve", () => {
+    const record = fixtureRecord({ options: [fixtureOption({ works_with: ["fx-chat", "nope"] }), fixtureOurOption()] });
+    expect(messages(fixtureContent([record]))).toContain('options.fx-route.works_with: AI tool id "nope" does not resolve');
+  });
+
+  it("allows only the tool and destination placeholders in steps and checks", () => {
+    const record = fixtureRecord({
+      options: [
+        fixtureOption({
+          setup_steps: [{ text: "Choose {destination} in {tool} via {connector}.", evidence_ids: ["fx-docs"] }],
+          success_check: { text: "Ask {assistant}.", evidence_ids: ["fx-docs"] },
+        }),
+        fixtureOurOption(),
+      ],
+    });
+    const problems = messages(fixtureContent([record]));
+    expect(problems).toEqual([
+      "options.fx-route.setup_steps.0: unknown placeholder {connector}; use {tool} or {destination}",
+      "options.fx-route.success_check: unknown placeholder {assistant}; use {tool} or {destination}",
+    ]);
   });
 
   it("requires evidence on setup steps", () => {
@@ -175,6 +194,40 @@ describe("record rules", () => {
     );
   });
 
+});
+
+describe("AI tool rules", () => {
+  const withTools = (overrides: Record<string, unknown>) =>
+    messages(fixtureContent([record()], { aiTools: AiToolsFile.parse(fixtureAiTools(overrides)) }));
+
+  it("accepts the fixture tools", () => {
+    expect(withTools({})).toEqual([]);
+  });
+
+  it("rejects duplicate tool ids and unresolved evidence", () => {
+    const tools: Array<Record<string, unknown>> = (fixtureAiTools().tools as Array<Record<string, unknown>>).map(
+      (tool) => ({ ...tool, id: "fx-chat" }),
+    );
+    tools[1] = { ...tools[1], prerequisites: [{ text: "Something.", evidence_ids: ["missing"] }] };
+    const problems = withTools({ tools });
+    expect(problems).toContain("tools.fx-chat: duplicate AI tool id");
+    expect(problems).toContain('tools.fx-chat.prerequisites.0: evidence id "missing" does not resolve');
+  });
+
+  it("requires a title on every setup when a tool has several", () => {
+    const [chat, agent] = fixtureAiTools().tools as Array<Record<string, unknown>>;
+    const setups = [{ steps: [{ text: "One.", evidence_ids: ["fx-tool-docs"] }] }, ...(chat!.setups as unknown[]).slice(1)];
+    expect(withTools({ tools: [{ ...chat, setups }, agent] })).toContain(
+      "tools.fx-chat.setups: a tool with several setups needs a title on each",
+    );
+  });
+
+  it("keeps AI tool evidence public", () => {
+    const [evidence] = fixtureAiTools().evidence as Array<Record<string, unknown>>;
+    expect(withTools({ evidence: [{ ...evidence, public: false }] })).toContain(
+      "evidence.fx-tool-docs: AI tool evidence is published, so it must be public",
+    );
+  });
 });
 
 describe("production readiness", () => {

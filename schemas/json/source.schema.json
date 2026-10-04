@@ -284,197 +284,21 @@
             },
             "additionalProperties": false
           },
-          "surfaces": {
-            "type": "object",
-            "properties": {
-              "claude_web": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "known",
-                      "unknown",
-                      "not_applicable"
-                    ]
-                  },
-                  "value": {
-                    "anyOf": [
-                      {
-                        "type": "string",
-                        "enum": [
-                          "supported",
-                          "limited",
-                          "unsupported"
-                        ]
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "evidence_ids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-                    }
-                  },
-                  "note": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": [
-                  "status",
-                  "value",
-                  "evidence_ids"
-                ],
-                "additionalProperties": false
+          "works_with": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "all"
               },
-              "claude_desktop": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "known",
-                      "unknown",
-                      "not_applicable"
-                    ]
-                  },
-                  "value": {
-                    "anyOf": [
-                      {
-                        "type": "string",
-                        "enum": [
-                          "supported",
-                          "limited",
-                          "unsupported"
-                        ]
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "evidence_ids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-                    }
-                  },
-                  "note": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": [
-                  "status",
-                  "value",
-                  "evidence_ids"
-                ],
-                "additionalProperties": false
-              },
-              "claude_code": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "known",
-                      "unknown",
-                      "not_applicable"
-                    ]
-                  },
-                  "value": {
-                    "anyOf": [
-                      {
-                        "type": "string",
-                        "enum": [
-                          "supported",
-                          "limited",
-                          "unsupported"
-                        ]
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "evidence_ids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-                    }
-                  },
-                  "note": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": [
-                  "status",
-                  "value",
-                  "evidence_ids"
-                ],
-                "additionalProperties": false
-              },
-              "cowork": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "known",
-                      "unknown",
-                      "not_applicable"
-                    ]
-                  },
-                  "value": {
-                    "anyOf": [
-                      {
-                        "type": "string",
-                        "enum": [
-                          "supported",
-                          "limited",
-                          "unsupported"
-                        ]
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "evidence_ids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-                    }
-                  },
-                  "note": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": [
-                  "status",
-                  "value",
-                  "evidence_ids"
-                ],
-                "additionalProperties": false
+              {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                }
               }
-            },
-            "required": [
-              "claude_web",
-              "claude_desktop",
-              "claude_code",
-              "cowork"
-            ],
-            "additionalProperties": false
+            ]
           },
           "access": {
             "type": "object",
@@ -1048,31 +872,6 @@
               "additionalProperties": false
             }
           },
-          "claude_configuration": {
-            "default": [],
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "evidence_ids": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-                  }
-                }
-              },
-              "required": [
-                "text",
-                "evidence_ids"
-              ],
-              "additionalProperties": false
-            }
-          },
           "sample_query": {
             "type": "string",
             "minLength": 1
@@ -1115,7 +914,7 @@
           "route_status",
           "directory_listing",
           "links",
-          "surfaces",
+          "works_with",
           "access",
           "data_available",
           "history",

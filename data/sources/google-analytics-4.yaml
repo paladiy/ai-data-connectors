@@ -146,27 +146,7 @@ options:
 
     links:
       overview: https://docs.coupler.io/sources/category/ppc/google-analytics
-      setup: https://docs.coupler.io/destinations/categories/ai/claude
-
-    surfaces:
-      claude_web:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination, cpl-claude-faq]
-      claude_desktop:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
-        note: Local use with Claude Desktop is also described through a Desktop Extension
-      claude_code:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
-        note: Connected with the /mcp command rather than the web connector
-      cowork:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
+    works_with: all
 
     access:
       status: known
@@ -220,8 +200,7 @@ options:
         - A Google account with access to at least one GA4 property
         - Viewer permissions or higher on the GA4 property
         - "The analytics.readonly permission must be granted during the OAuth flow"
-        - A Coupler.io account and a Claude account
-        - On a Claude Team or Enterprise plan, admin access is needed to add the connector
+        - A Coupler.io account
       evidence_ids: [cpl-ga4-overview, cpl-ga4-issues, cpl-claude-destination]
       note: no GA4 plan tier, such as standard versus 360, is named
 
@@ -250,9 +229,7 @@ options:
         - "Data is typically available within a few hours, but some metrics take 24 to 48 hours to finish processing"
         - "Total users broken down by a dimension will not sum to the overall total"
         - "On the free plan only the first 1,000 rows are exported, which shows up as gaps in dates"
-        - The Claude destination replaces data on each run; append mode is not supported
-        - "On individual Claude Free and Pro plans the official connector may connect but fail to load its tools; a custom connector URL is documented as a workaround"
-      evidence_ids: [cpl-ga4-data, cpl-ga4-issues, cpl-claude-destination, cpl-claude-issues, cpl-claude-free-pro]
+      evidence_ids: [cpl-ga4-data, cpl-ga4-issues]
       note: Data is pulled through the GA4 Data API, which returns unsampled results
 
     setup_steps:
@@ -260,32 +237,22 @@ options:
         evidence_ids: [cpl-ga4-overview]
       - text: Choose your property, then pick up to 10 metrics and 9 dimensions and set the date range.
         evidence_ids: [cpl-ga4-data]
-      - text: Choose Claude as the destination in the data flow's destination step.
+      - text: Choose {destination} as the destination in the data flow's destination step.
         evidence_ids: [cpl-claude-destination]
-      - text: Give the data flow a clear name, because Claude refers to the dataset by that name.
+      - text: Give the data flow a clear name, because {tool} refers to the dataset by that name.
         evidence_ids: [cpl-claude-destination]
       - text: Run the data flow manually once and wait for it to finish successfully.
         evidence_ids: [cpl-claude-destination]
       - text: Set a refresh schedule once that first run has succeeded.
         evidence_ids: [cpl-claude-faq]
 
-    claude_configuration:
-      - text: Install the Coupler.io connector in Claude and click Connect, then connect again from the Connectors menu to authenticate.
-        evidence_ids: [cpl-claude-destination]
-      - text: For Claude Code, start a session, paste the connection command shown in the destination step, restart the session, then run /mcp and authorise in the browser.
-        evidence_ids: [cpl-claude-destination]
-      - text: Approve the tool request the first time Claude fetches data in a session.
-        evidence_ids: [cpl-claude-faq]
-      - text: On a Claude Team or Enterprise plan, ask a workspace admin to add the connector if the option is unavailable.
-        evidence_ids: [cpl-claude-issues]
-
     sample_query: Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?
 
     success_check:
       text: >-
-        Open a new Claude chat and ask it to list the datasets it can see; the GA4 data flow should
-        appear under the name you gave it. Then compare the row count Claude reports with the run in
-        Coupler.io, because the preview alone does not confirm what Claude received.
+        Ask {tool} to list the datasets it can see; the GA4 data flow should appear under the name
+        you gave it. Then compare the row count {tool} reports with the run in Coupler.io, because
+        the preview alone does not confirm what {tool} received.
       evidence_ids: [cpl-claude-destination, cpl-claude-issues]
 
 recommendations:

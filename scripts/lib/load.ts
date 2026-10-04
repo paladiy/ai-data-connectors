@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { parse } from "yaml";
 import type { z } from "zod";
+import { AiToolsFile } from "../../schemas/ai-tool.ts";
 import { SiteConfig } from "../../schemas/site.ts";
 import { PrivateEvidenceFile, Source } from "../../schemas/source.ts";
 import type { Evidence } from "../../schemas/common.ts";
@@ -38,6 +39,7 @@ export interface SourceBundle {
 export interface Content {
   root: string;
   site: SiteConfig;
+  aiTools: AiToolsFile;
   sources: SourceBundle[];
 }
 
@@ -57,6 +59,7 @@ function loadPrivateEvidence(root: string, sourceId: string): Evidence[] {
 
 export function loadContent(root: string = process.cwd()): Content {
   const site = parseFile(SiteConfig, path.join(root, "data", "site.yaml"), "data/site.yaml");
+  const aiTools = parseFile(AiToolsFile, path.join(root, "data", "ai-tools.yaml"), "data/ai-tools.yaml");
 
   const sourcesDir = path.join(root, "data", "sources");
   const files = existsSync(sourcesDir)
@@ -80,7 +83,7 @@ export function loadContent(root: string = process.cwd()): Content {
   }
   if (problems.length > 0) throw new ContentError(problems);
 
-  return { root, site, sources };
+  return { root, site, aiTools, sources };
 }
 
 export function allEvidence(bundle: SourceBundle): Evidence[] {

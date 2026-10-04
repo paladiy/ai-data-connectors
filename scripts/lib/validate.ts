@@ -1,6 +1,7 @@
+import type { AiToolsFile } from "../../schemas/ai-tool.ts";
 import type { Claim } from "../../schemas/common.ts";
 import type { Option, Source } from "../../schemas/source.ts";
-import { SURFACES } from "../../schemas/source.ts";
+import { TOOL_PLACEHOLDERS } from "../../schemas/source.ts";
 import { allEvidence, type Content, type SourceBundle } from "./load.ts";
 
 export interface Problem {
@@ -17,11 +18,11 @@ export function isUsableRoute(option: Option): boolean {
   return option.route_status.status === "known" && option.route_status.value !== "unavailable";
 }
 
-export function hasSupportedSurface(option: Option): boolean {
-  return SURFACES.some((surface) => {
-    const claim = option.surfaces[surface] as Claim<string>;
-    return claim.status === "known" && (claim.value === "supported" || claim.value === "limited");
-  });
+const PLACEHOLDER = /\{[^}]*\}/g;
+const KNOWN_PLACEHOLDERS = new Set<string>(TOOL_PLACEHOLDERS);
+
+function unknownPlaceholders(text: string): string[] {
+  return [...text.matchAll(PLACEHOLDER)].map((match) => match[0]).filter((token) => !KNOWN_PLACEHOLDERS.has(token));
 }
 
 function isSourced(claim: Claim<unknown>): boolean {
@@ -58,6 +59,9 @@ export function validateContent(content: Content, options: ValidateOptions = {})
   const seenIds = new Map<string, string>();
   const seenSlugs = new Map<string, string>();
   const sourceIds = new Set(content.sources.map((s) => s.record.id));
+  const toolIds = new Set(content.aiTools.tools.map((tool) => tool.id));
+
+  problems.push(...aiToolProblems(content.aiTools, options));
 
   for (const bundle of content.sources) {
     const { record, file } = bundle;
@@ -105,20 +109,31 @@ export function validateContent(content: Content, options: ValidateOptions = {})
         ["pricing", option.pricing],
         ["data_path", option.data_path],
         ["limits", option.limits],
-        ...SURFACES.map((s) => [`surfaces.${s}`, option.surfaces[s] as Claim<unknown>] as [string, Claim<unknown>]),
         ...(option.setup_time ? ([["setup_time", option.setup_time]] as Array<[string, Claim<unknown>]>) : []),
       ];
       for (const [name, claim] of claims) checkEvidenceRefs(claim.evidence_ids, `${where}.${name}`);
       for (const [stepIndex, step] of option.setup_steps.entries()) {
         checkEvidenceRefs(step.evidence_ids, `${where}.setup_steps.${stepIndex}`);
       }
-      for (const [stepIndex, step] of option.claude_configuration.entries()) {
-        checkEvidenceRefs(step.evidence_ids, `${where}.claude_configuration.${stepIndex}`);
-      }
       for (const [itemIndex, item] of option.capabilities.entries()) {
         checkEvidenceRefs(item.evidence_ids, `${where}.capabilities.${itemIndex}`);
       }
       if (option.success_check) checkEvidenceRefs(option.success_check.evidence_ids, `${where}.success_check`);
+
+      if (option.works_with !== "all") {
+        for (const id of option.works_with) {
+          if (!toolIds.has(id)) add(file, `${where}.works_with`, `AI tool id "${id}" does not resolve`);
+        }
+      }
+      const templated: Array<[string, string]> = [
+        ...option.setup_steps.map((step, i) => [`${where}.setup_steps.${i}`, step.text] as [string, string]),
+        ...(option.success_check ? ([[`${where}.success_check`, option.success_check.text]] as Array<[string, string]>) : []),
+      ];
+      for (const [path, text] of templated) {
+        for (const token of unknownPlaceholders(text)) {
+          add(file, path, `unknown placeholder ${token}; use ${TOOL_PLACEHOLDERS.join(" or ")}`);
+        }
+      }
 
       if (option.setup_time && option.setup_time.status === "known") {
         const value = option.setup_time.value!;
@@ -213,9 +228,6 @@ function recordProblems(bundle: SourceBundle, options: ValidateOptions): Problem
     if (!isUsableRoute(option)) {
       add(`${where}.route_status`, "options used in setup or recommendations need known availability");
     }
-    if (!hasSupportedSurface(option)) {
-      add(`${where}.surfaces`, "needs at least one known supported or limited Claude surface");
-    }
     if (!isSourced(option.access)) add(`${where}.access`, "needs a sourced access claim");
     if (!isSourced(option.prerequisites)) add(`${where}.prerequisites`, "needs a sourced prerequisites claim");
     if (!option.success_check) add(`${where}.success_check`, "needs a way to confirm the route works");
@@ -233,6 +245,52 @@ function recordProblems(bundle: SourceBundle, options: ValidateOptions): Problem
     }
   }
 
+  return problems;
+}
+
+function aiToolProblems(file: AiToolsFile, options: ValidateOptions): Problem[] {
+  const label = "data/ai-tools.yaml";
+  const problems: Problem[] = [];
+  const add = (path: string, message: string) => problems.push({ file: label, path, message });
+
+  const evidenceIds = new Set<string>();
+  for (const item of file.evidence) {
+    if (evidenceIds.has(item.id)) add(`evidence.${item.id}`, "duplicate evidence id");
+    evidenceIds.add(item.id);
+    if (!item.public) add(`evidence.${item.id}`, "AI tool evidence is published, so it must be public");
+  }
+  const checkText = (path: string, item: { text: string; evidence_ids: string[] }) => {
+    if (item.evidence_ids.length === 0) add(path, "needs evidence");
+    for (const id of item.evidence_ids) {
+      if (!evidenceIds.has(id)) add(path, `evidence id "${id}" does not resolve`);
+    }
+    if (PLACEHOLDER_TEXT.test(item.text)) add(path, "contains placeholder text");
+  };
+
+  file.shared_notes.forEach((note, i) => checkText(`shared_notes.${i}`, note));
+
+  const toolIds = new Set<string>();
+  for (const tool of file.tools) {
+    const where = `tools.${tool.id}`;
+    if (toolIds.has(tool.id)) add(where, "duplicate AI tool id");
+    toolIds.add(tool.id);
+    tool.prerequisites.forEach((item, i) => checkText(`${where}.prerequisites.${i}`, item));
+    tool.setups.forEach((setup, s) => setup.steps.forEach((step, i) => checkText(`${where}.setups.${s}.steps.${i}`, step)));
+    tool.notes.forEach((item, i) => checkText(`${where}.notes.${i}`, item));
+    if (tool.setups.length > 1 && tool.setups.some((setup) => !setup.title)) {
+      add(`${where}.setups`, "a tool with several setups needs a title on each");
+    }
+    const links: Array<[string, string | undefined]> = [
+      ["setup", tool.links.setup],
+      ["vendor", tool.links.vendor],
+      ["directory", tool.links.directory?.url],
+    ];
+    for (const [name, url] of links) {
+      if (url && placeholderUrl(url, options.allowReservedHosts === true)) {
+        add(`${where}.links.${name}`, `"${url}" looks like a placeholder URL`);
+      }
+    }
+  }
   return problems;
 }
 

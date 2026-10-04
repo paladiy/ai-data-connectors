@@ -11,7 +11,7 @@ import { FIXTURE_MARKER, fixtureOption, fixtureOurOption, fixtureSource, unknown
 
 const guideFor = (overrides: Record<string, unknown> = {}, site = fixtureSite) => {
   const model = buildModel(fixtureContent([fixtureRecord(overrides)], { site }));
-  return renderSourcePage(model.sources[0]!, model.site);
+  return renderSourcePage(model.sources[0]!, model.site, model.ai_tools);
 };
 
 function unescaped(pattern: string): RegExp {
@@ -112,9 +112,52 @@ describe("connector page rendering", () => {
     const guide = guideFor();
     expect(guide).toContain("Read-only");
     expect(guide).not.toContain(">read<");
-    expect(guide).toContain('>Works with</h3>');
-    expect(guide).toContain('<ul class="sp-surfaces">');
-    expect(guide).toContain('<span class="sp-surf-name">Claude web</span><span class="sp-surf-state">Works</span>');
+    expect(guide).toContain(">Works with</h3>");
+    expect(guide).toContain('<span class="sp-tool-meta">Fixture Labs · Remote MCP</span>');
+    expect(guide).toContain('<span class="sp-tool-meta">Local MCP</span>');
+  });
+
+  it("offers one tile per AI tool, with the first one selected", () => {
+    const guide = guideFor({ options: [fixtureOurOption()], recommendations: [] });
+    const radios = [...guide.matchAll(/<input class="sp-tool-radio"[^>]*>/g)].map((match) => match[0]);
+    expect(radios).toHaveLength(2);
+    expect(radios[0]).toContain('value="fx-chat"');
+    expect(radios[0]).toContain(" checked");
+    expect(radios[1]).not.toContain(" checked");
+    expect(guide).toContain("Each fixture tool sees only its own datasets.");
+  });
+
+  it("fills the source steps with the selected tool's names in each tool panel", () => {
+    const guide = guideFor({ options: [fixtureOurOption()], recommendations: [] });
+    const chat = guide.match(/<div class="sp-tool-panel" data-tool="fx-chat">.*?<\/div>/)![0];
+    const agent = guide.match(/<div class="sp-tool-panel" data-tool="fx-agent">.*?<\/div>/)![0];
+    expect(chat).toContain("<li>Choose Fixture Chat as the destination.</li>");
+    expect(chat).toContain("<p>Fixture Chat lists fixture reports.</p>");
+    expect(agent).toContain("<li>Choose Fixture Agent as the destination.</li>");
+    expect(agent).toContain("<p>your fixture agent lists fixture reports.</p>");
+    expect(guide).not.toMatch(/\{(tool|destination)\}/);
+  });
+
+  it("renders each tool's own prerequisites, setups, notes, and links", () => {
+    const guide = guideFor({ options: [fixtureOurOption()], recommendations: [] });
+    const chat = guide.match(/<div class="sp-tool-panel" data-tool="fx-chat">.*?<\/div>/)![0];
+    const agent = guide.match(/<div class="sp-tool-panel" data-tool="fx-agent">.*?<\/div>/)![0];
+    expect(chat).toContain("<li>A fixture account</li><li>A Fixture Chat account.</li>");
+    expect(chat).toContain('<p class="sp-label">In Fixture web</p>');
+    expect(chat).toContain("<li>Run <code>/mcp</code> and authorize.</li>");
+    expect(chat).toContain("Works in Fixture web, Fixture desktop.");
+    expect(chat).toContain("Free plans may not load the tools.");
+    expect(chat).toContain('<a href="https://tools.example.test/directory/coupler">Coupler.io in the Fixture directory</a>');
+    expect(agent).toContain('<p class="sp-label">In Fixture Agent</p>');
+    expect(agent).toContain("Runs the server in a local container.");
+    expect(agent).toContain('href="https://agent.example.test/mcp"');
+    expect(agent).not.toContain("Free plans may not load the tools.");
+  });
+
+  it("limits the picker to the tools a route lists", () => {
+    const guide = guideFor({ options: [fixtureOurOption({ works_with: ["fx-agent"] })], recommendations: [] });
+    expect(guide).toContain('data-tool="fx-agent"');
+    expect(guide).not.toContain('data-tool="fx-chat"');
   });
 
   it("builds a prefilled correction link once the repository is configured", () => {

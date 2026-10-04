@@ -1,7 +1,6 @@
-import { SURFACES } from "../../schemas/source.ts";
 import type { Claim } from "../../schemas/common.ts";
 import { formatValue } from "./markdown.ts";
-import { SURFACE_LABELS, type ModelOption, type ModelSource } from "./model.ts";
+import type { ModelAiTool, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
 
 export function escapeHtml(value: string): string {
   return value
@@ -78,31 +77,93 @@ function bestFor(source: ModelSource, option: ModelOption): string | null {
   return jobs.length > 0 ? jobs.map((job) => job.job).join("; ") : null;
 }
 
-const svg = (paths: string) =>
-  `<svg class="sp-surf-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${paths}</svg>`;
+function richText(value: string): string {
+  return e(value).replace(/`([^`]+)`/g, "<code>$1</code>");
+}
 
-const SURFACE_ICONS: Record<(typeof SURFACES)[number], string> = {
-  claude_web: svg(`<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9h18"/><circle cx="6.2" cy="6.8" r=".5"/><circle cx="8.6" cy="6.8" r=".5"/>`),
-  claude_desktop: svg(`<rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M9 20h6M12 16.5V20"/>`),
-  claude_code: svg(`<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="m7.5 10 3 2.5-3 2.5M13 15h3.5"/>`),
-  cowork: svg(`<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.4-3 2.6-4.8 5.5-4.8s5.1 1.8 5.5 4.8"/><path d="M15.5 5.7a3 3 0 0 1 0 5.6M17.2 14.5c2 .6 3.1 2.2 3.3 4.5"/>`),
-};
+function withTool(value: string, tool: ModelAiTool): string {
+  return value.split("{destination}").join(tool.name).split("{tool}").join(tool.in_text ?? tool.name);
+}
 
-function worksIn(option: ModelOption): string {
-  const tiles = SURFACES.map((surface) => {
-    const claim = option.surfaces[surface] as Claim<string>;
-    let state: "supported" | "limited" | "unsupported" | "unknown" = "unknown";
-    if (claim.status === "known" && claim.value === "supported") state = "supported";
-    else if (claim.status === "known" && claim.value === "limited") state = "limited";
-    else if (claim.status === "known" && claim.value === "unsupported") state = "unsupported";
-    const text = { supported: "Works", limited: "Limited", unsupported: "Not supported", unknown: "Not documented" }[state];
+function toolsFor(option: ModelOption, aiTools: ModelAiTools): ModelAiTool[] {
+  const wanted = new Set(option.works_with);
+  return aiTools.tools.filter((tool) => wanted.has(tool.id));
+}
+
+function toolTiles(option: ModelOption, tools: ModelAiTool[], aiTools: ModelAiTools): string[] {
+  const tiles = tools.map((tool, i) => {
+    const meta = [tool.vendor, tool.connection_label].filter(Boolean).join(" · ");
     return (
-      `<li class="sp-surf sp-surf--${state}">${SURFACE_ICONS[surface]}` +
-      `<span class="sp-surf-name">${e(SURFACE_LABELS[surface])}</span>` +
-      `<span class="sp-surf-state">${text}</span></li>`
+      `<label class="sp-tool-tile">` +
+      `<input class="sp-tool-radio" type="radio" name="tool-${e(option.id)}" value="${e(tool.id)}" data-tool="${e(tool.id)}"${i === 0 ? " checked" : ""}>` +
+      `<span class="sp-tool-name">${e(tool.name)}</span>` +
+      `<span class="sp-tool-meta">${e(meta)}</span>` +
+      `</label>`
     );
   });
-  return `<ul class="sp-surfaces">${tiles.join("")}</ul>`;
+  const out = [
+    `<p>Pick the AI tool you use. The install steps below change to match it.</p>`,
+    `<div class="sp-tools" role="radiogroup" aria-label="AI tool">${tiles.join("")}</div>`,
+  ];
+  if (aiTools.shared_notes.length > 0) {
+    out.push(list(aiTools.shared_notes.map((note) => e(note.text)), "sp-tool-shared"));
+  }
+  return out;
+}
+
+function toolLinks(tool: ModelAiTool): string {
+  const links = [anchor(`Coupler.io guide for ${tool.name}`, tool.links.setup)];
+  if (tool.links.vendor) links.push(anchor(`${tool.vendor ?? tool.name} documentation`, tool.links.vendor));
+  if (tool.links.directory) links.push(anchor(`Coupler.io in ${tool.links.directory.name}`, tool.links.directory.url));
+  return `<p class="sp-links">${links.join("")}</p>`;
+}
+
+function toolPanel(option: ModelOption, tool: ModelAiTool): string {
+  const out: string[] = [];
+  const intro = [
+    tool.connection_note,
+    tool.available_in.length > 0 ? `Works in ${tool.available_in.join(", ")}.` : undefined,
+  ].filter((part): part is string => Boolean(part));
+  if (intro.length > 0) out.push(`<p class="sp-tool-intro">${intro.map(e).join(" ")}</p>`);
+
+  const prerequisites: string[] = [];
+  if (option.prerequisites.status === "known") {
+    const value = option.prerequisites.value;
+    prerequisites.push(...(Array.isArray(value) ? value : [value]).map((item) => e(String(item))));
+  }
+  prerequisites.push(...tool.prerequisites.map((item) => richText(item.text)));
+  if (prerequisites.length > 0) out.push(`<p class="sp-label">Before you start</p>`, list(prerequisites));
+
+  if (option.setup_steps.length > 0) {
+    out.push(
+      `<p class="sp-label">In Coupler.io</p>`,
+      `<ol>${option.setup_steps.map((step) => `<li>${richText(withTool(step.text, tool))}</li>`).join("")}</ol>`,
+    );
+  }
+  for (const setup of tool.setups) {
+    out.push(
+      `<p class="sp-label">In ${e(setup.title ?? tool.name)}</p>`,
+      `<ol>${setup.steps.map((step) => `<li>${richText(step.text)}</li>`).join("")}</ol>`,
+    );
+  }
+  if (option.success_check) {
+    out.push(`<p class="sp-label">Check it worked</p>`, `<p>${richText(withTool(option.success_check.text, tool))}</p>`);
+  }
+  if (tool.notes.length > 0) {
+    out.push(`<p class="sp-label">Good to know</p>`, list(tool.notes.map((note) => richText(note.text))));
+  }
+  out.push(toolLinks(tool));
+  return `<div class="sp-tool-panel" data-tool="${e(tool.id)}">${out.join("")}</div>`;
+}
+
+export function renderToolCss(aiTools: ModelAiTools): string {
+  return aiTools.tools
+    .map((tool) => {
+      const id = tool.id;
+      return `.sp-panel:has(.sp-tool-radio[value="${id}"]:checked) .sp-tool-panel[data-tool="${id}"] { display: block; }`;
+    })
+    .concat("")
+    .join("\n");
 }
 
 function setupTime(option: ModelOption): string {
@@ -113,32 +174,9 @@ function setupTime(option: ModelOption): string {
   return `<p><strong>Setup time:</strong> ${e(range)}. <span class="sp-muted">${e(basis)}</span></p>`;
 }
 
-function installBody(option: ModelOption): string[] {
-  const out: string[] = [];
-
-  if (option.prerequisites.status === "known") {
-    const value = option.prerequisites.value;
-    const items = Array.isArray(value) ? value : [value];
-    out.push(`<p class="sp-label">Before you start</p>`, list(items.map((item) => e(String(item)))));
-  }
-  out.push(`<p class="sp-label">Cost</p>`, claimBlock(option.pricing));
-  if (option.setup_steps.length > 0) {
-    out.push(
-      `<p class="sp-label">Steps</p>`,
-      `<ol>${option.setup_steps.map((step) => `<li>${e(step.text)}</li>`).join("")}</ol>`,
-    );
-  }
-  if (option.claude_configuration.length > 0) {
-    const standalone = option.setup_steps.length === 0;
-    const items = option.claude_configuration.map((step) => `<li>${e(step.text)}</li>`).join("");
-    out.push(
-      `<p class="sp-label">${standalone ? "Steps" : "In Claude"}</p>`,
-      standalone ? `<ol>${items}</ol>` : `<ul>${items}</ul>`,
-    );
-  }
-  if (option.success_check) {
-    out.push(`<p class="sp-label">Check it worked</p>`, `<p>${e(option.success_check.text)}</p>`);
-  }
+function installBody(option: ModelOption, tools: ModelAiTool[]): string[] {
+  const out: string[] = [`<p class="sp-label">Cost</p>`, claimBlock(option.pricing)];
+  out.push(...tools.map((tool) => toolPanel(option, tool)));
   out.push(setupTime(option));
 
   const links: string[] = [];
@@ -147,9 +185,6 @@ function installBody(option: ModelOption): string[] {
     links.push(anchor("Overview", option.links.overview));
   }
   if (option.links.pricing) links.push(anchor("Pricing", option.links.pricing));
-  if (option.directory_listing.status === "known" && option.directory_listing.value !== option.links.overview) {
-    links.push(anchor("Claude directory entry", option.directory_listing.value!));
-  }
   if (links.length > 0) out.push(`<p class="sp-links">${links.join("")}</p>`);
   return out.filter((part) => part !== "");
 }
@@ -177,19 +212,20 @@ function compactTab(option: ModelOption, index: number): string {
   return `<label class="sp-pill" for="route-${index}-${e(option.id)}">${e(option.name)}</label>`;
 }
 
-function panel(option: ModelOption): string {
+function panel(option: ModelOption, aiTools: ModelAiTools): string {
   const limited = option.route_status.status === "known" && option.route_status.value !== "available";
   const intro = option.description ? `<p class="sp-panel-intro">${e(option.description)}</p>` : "";
+  const tools = toolsFor(option, aiTools);
   return (
     `<div class="sp-panel${limited ? " sp-panel--limited" : ""}" data-option="${e(option.id)}">` +
     intro +
-    section(option, "works", "Works with", [worksIn(option)]) +
-    section(option, "install", "How to install", installBody(option)) +
+    section(option, "works", "Works with", toolTiles(option, tools, aiTools)) +
+    section(option, "install", "How to install", installBody(option, tools)) +
     `</div>`
   );
 }
 
-export function routesSection(source: ModelSource): string[] {
+export function routesSection(source: ModelSource, aiTools: ModelAiTools): string[] {
   const options = source.options;
   const radios = options
     .map(
@@ -202,11 +238,11 @@ export function routesSection(source: ModelSource): string[] {
   return [
     options.length === 1 ? "## How to connect" : "## Connection routes",
     options.length === 1
-      ? `<p>Connect ${e(source.name)} to Claude with ${e(options[0]!.name)}. This shows which Claude apps it works with and how to install it.</p>`
-      : `<p>Choose a route. ${options.length} are recorded. Each one shows which Claude apps it works with and how to install it.</p>`,
+      ? `<p>Connect ${e(source.name)} to your AI tool with ${e(options[0]!.name)}. Pick the tool you use to see how to install it.</p>`
+      : `<p>Choose a route. ${options.length} are recorded. Each one shows which AI tools it works with and how to install it.</p>`,
     `<div class="sp-switch not-content${options.length === 1 ? " sp-switch--single" : ""}">${radios}<div class="sp-tabs">${cards}</div>` +
       `<div class="sp-pillbar" aria-label="Switch route">${pills}</div>` +
-      options.map((option) => panel(option)).join("") +
+      options.map((option) => panel(option, aiTools)).join("") +
       `</div>`,
   ];
 }

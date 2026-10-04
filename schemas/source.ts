@@ -19,10 +19,9 @@ export const Method = z.enum([
   "automation",
 ]);
 export const RouteStatus = z.enum(["available", "limited", "unavailable"]);
-export const SurfaceSupport = z.enum(["supported", "limited", "unsupported"]);
 export const Access = z.enum(["read", "write", "read_write"]);
 
-export const SURFACES = ["claude_web", "claude_desktop", "claude_code", "cowork"] as const;
+export const TOOL_PLACEHOLDERS = ["{tool}", "{destination}"] as const;
 
 export const Option = z.strictObject({
   id: Slug,
@@ -38,12 +37,7 @@ export const Option = z.strictObject({
     setup: HttpsUrl.optional(),
     pricing: HttpsUrl.optional(),
   }),
-  surfaces: z.strictObject({
-    claude_web: claim(SurfaceSupport),
-    claude_desktop: claim(SurfaceSupport),
-    claude_code: claim(SurfaceSupport),
-    cowork: claim(SurfaceSupport),
-  }),
+  works_with: z.union([z.literal("all"), z.array(Slug).min(1)]),
   access: claim(Access),
   data_available: claim(z.array(NonEmptyText).min(1)),
   history: claim(TextOrList),
@@ -62,7 +56,6 @@ export const Option = z.strictObject({
   ).optional(),
   capabilities: z.array(EvidencedText).default([]),
   setup_steps: z.array(EvidencedText),
-  claude_configuration: z.array(EvidencedText).default([]),
   sample_query: NonEmptyText.optional(),
   success_check: EvidencedText.nullable(),
 });

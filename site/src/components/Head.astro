@@ -42,6 +42,36 @@ import Default from "@astrojs/starlight/components/Head.astro";
   }
 
   init();
+
+  const TOOL_KEY = "sp-ai-tool";
+
+  function selectTool(id: string | null): boolean {
+    if (!id) return false;
+    const matches = Array.from(document.querySelectorAll<HTMLInputElement>(".sp-tool-radio")).filter(
+      (radio) => radio.value === id,
+    );
+    for (const radio of matches) radio.checked = true;
+    return matches.length > 0;
+  }
+
+  function initTools() {
+    const fromHash = decodeURIComponent(location.hash.slice(1)).match(/^tool-(.+)$/)?.[1] ?? null;
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(TOOL_KEY);
+    } catch {}
+    if (!selectTool(fromHash)) selectTool(stored);
+
+    document.addEventListener("change", (event) => {
+      const radio = event.target as HTMLInputElement;
+      if (!radio.classList?.contains("sp-tool-radio")) return;
+      try {
+        localStorage.setItem(TOOL_KEY, radio.value);
+      } catch {}
+    });
+  }
+
+  initTools();
 </script>
 
 <script>

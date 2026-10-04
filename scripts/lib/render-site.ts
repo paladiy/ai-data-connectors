@@ -1,7 +1,7 @@
 import { stringify } from "yaml";
 import type { SiteConfig } from "../../schemas/site.ts";
 import { escapeText, joinSections, link } from "./markdown.ts";
-import type { Model, ModelSource } from "./model.ts";
+import type { Model, ModelAiTools, ModelSource } from "./model.ts";
 import { pageTitle, correctionUrl } from "./render-github.ts";
 import { serializePublicDataset } from "./public-export.ts";
 import {
@@ -118,7 +118,7 @@ function sourcesSection(source: ModelSource, site: SiteConfig): string {
   return lines.join("\n");
 }
 
-export function renderSourcePage(source: ModelSource, site: SiteConfig): string {
+export function renderSourcePage(source: ModelSource, site: SiteConfig, aiTools: ModelAiTools): string {
   const path = `/sources/${source.slug}/`;
   const head = headFor(
     site,
@@ -140,7 +140,7 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
       head,
     }),
     ...descriptionSection(source),
-    ...routesSection(source),
+    ...routesSection(source, aiTools),
     ...skillsSection(source),
     ...connectorsSection(source),
     faqSection(source),
@@ -216,6 +216,13 @@ export function renderLlmsTxt(model: Model): string {
     lines.push("## Connectors", "");
     for (const source of model.sources) {
       lines.push(`- [${source.name} to Claude](${absolute(site, `/sources/${source.slug}/`)}): ${source.summary}`);
+    }
+    lines.push("");
+  }
+  if (model.ai_tools.tools.length > 0) {
+    lines.push("## Works with", "");
+    for (const tool of model.ai_tools.tools) {
+      lines.push(`- [${tool.name}](${tool.links.setup}): ${tool.connection_label}`);
     }
     lines.push("");
   }

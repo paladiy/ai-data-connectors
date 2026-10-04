@@ -34,7 +34,7 @@ export default defineConfig({
       editLink: site.repo ? { baseUrl: `https://github.com/${site.repo}/edit/main/` } : undefined,
       lastUpdated: false,
       pagination: false,
-      customCss: ["@mantine/core/styles.layer.css", "./src/styles/custom.css"],
+      customCss: ["@mantine/core/styles.layer.css", "./src/styles/custom.css", "./src/generated/ai-tools.css"],
       components: { Head: "./src/components/Head.astro" },
       sidebar: [
         { label: "All sources", link: "/" },

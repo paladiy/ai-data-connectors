@@ -53,13 +53,6 @@ evidence:
     checked_on: "2026-10-04"
     kind: vendor_docs
     public: true
-  - id: cpl-claude-free-pro
-    url: https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans
-    title: Claude connector tools do not load on Free and Pro plans
-    publisher: Coupler.io
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
   - id: cpl-mcp
     url: https://docs.coupler.io/ai/mcp
     title: What the Coupler.io MCP server can and cannot do
@@ -155,27 +148,7 @@ options:
 
     links:
       overview: https://docs.coupler.io/sources/category/marketing/google-search-console
-      setup: https://docs.coupler.io/destinations/categories/ai/claude
-
-    surfaces:
-      claude_web:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination, cpl-claude-faq]
-      claude_desktop:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
-        note: Local use with Claude Desktop is also described through a Desktop Extension
-      claude_code:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
-        note: Connected with the /mcp command rather than the web connector
-      cowork:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
+    works_with: all
 
     access:
       status: known
@@ -233,8 +206,7 @@ options:
         - A Google Search Console account with verified site ownership or delegated access
         - At least Restricted or Full user access to the property
         - "Owner-level access is not required for performance reports but may be needed for URL inspection data"
-        - A Coupler.io account and a Claude account
-        - On a Claude Team or Enterprise plan, admin access is needed to add the connector
+        - A Coupler.io account
       evidence_ids: [cpl-gsc-overview, cpl-claude-destination]
 
     pricing:
@@ -259,42 +231,30 @@ options:
         - "When there are too many unique queries, Google groups low-volume ones under (other) to protect privacy, and there is no workaround"
         - "The URL Inspection API has a daily quota per property; Coupler.io fetches up to 20 URLs concurrently"
         - "CTR and position are averages and are not directly summable across dimensions without recalculation"
-        - The Claude destination replaces data on each run; append mode is not supported
         - Row counts in Claude can differ from the Coupler.io preview when an identifier repeats, so the count should be checked in Claude
-        - "On individual Claude Free and Pro plans the official connector may connect but fail to load its tools; a custom connector URL is documented as a workaround"
-      evidence_ids: [cpl-gsc-data, cpl-gsc-issues, cpl-gsc-faq, cpl-claude-destination, cpl-claude-issues, cpl-claude-free-pro]
+      evidence_ids: [cpl-gsc-data, cpl-gsc-issues, cpl-gsc-faq, cpl-claude-issues]
 
     setup_steps:
       - text: In Coupler.io, create a data flow and select Google Search Console as the source, then choose the site.
         evidence_ids: [cpl-gsc-overview]
       - text: Pick one of the five report types, set the report period, and add any dimension filters you need.
         evidence_ids: [cpl-gsc-data]
-      - text: Choose Claude as the destination in the data flow's destination step.
+      - text: Choose {destination} as the destination in the data flow's destination step.
         evidence_ids: [cpl-claude-destination]
-      - text: Give the data flow a clear name, because Claude refers to the dataset by that name.
+      - text: Give the data flow a clear name, because {tool} refers to the dataset by that name.
         evidence_ids: [cpl-claude-destination]
       - text: Run the data flow manually once and wait for it to finish successfully.
         evidence_ids: [cpl-claude-destination]
       - text: Schedule a single daily morning refresh, since the data lags by 2 to 3 days and the freshness TTL is 6 hours.
         evidence_ids: [cpl-gsc-best, cpl-claude-faq]
 
-    claude_configuration:
-      - text: Install the Coupler.io connector in Claude and click Connect, then connect again from the Connectors menu to authenticate.
-        evidence_ids: [cpl-claude-destination]
-      - text: For Claude Code, start a session, paste the connection command shown in the destination step, restart the session, then run /mcp and authorise in the browser.
-        evidence_ids: [cpl-claude-destination]
-      - text: Approve the tool request the first time Claude fetches data in a session.
-        evidence_ids: [cpl-claude-faq]
-      - text: On a Claude Team or Enterprise plan, ask a workspace admin to add the connector if the option is unavailable.
-        evidence_ids: [cpl-claude-issues]
-
     sample_query: Which pages lost the most clicks year over year, and did their average position or their CTR move first?
 
     success_check:
       text: >-
-        Open a new Claude chat and ask it to list the datasets it can see; the Search Console data
-        flow should appear under the name you gave it. Then compare the row count Claude reports
-        with the run in Coupler.io, because the preview alone does not confirm what Claude received.
+        Ask {tool} to list the datasets it can see; the Search Console data flow should appear
+        under the name you gave it. Then compare the row count {tool} reports with the run in
+        Coupler.io, because the preview alone does not confirm what {tool} received.
       evidence_ids: [cpl-claude-destination, cpl-claude-issues]
 
 recommendations:

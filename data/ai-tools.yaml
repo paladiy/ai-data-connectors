@@ -1,0 +1,374 @@
+schema_version: 1
+
+evidence:
+  - id: cpl-mcp
+    url: https://docs.coupler.io/ai/mcp
+    title: What the Coupler.io MCP server can and cannot do
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude
+    url: https://docs.coupler.io/destinations/categories/ai/claude
+    title: Claude destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-faq
+    url: https://docs.coupler.io/destinations/categories/ai/claude/faq
+    title: Claude destination FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-issues
+    url: https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    title: Claude destination common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-free-pro
+    url: https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans
+    title: Claude connector tools do not load on Free and Pro plans
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: dir-coupler-io
+    url: https://claude.com/connectors/coupler-io
+    title: Coupler.io in the Claude connectors directory
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: directory
+    public: true
+  - id: cpl-chatgpt
+    url: https://docs.coupler.io/destinations/categories/ai/chatgpt
+    title: ChatGPT destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-chatgpt-faq
+    url: https://docs.coupler.io/destinations/categories/ai/chatgpt/faq
+    title: ChatGPT destination FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-gemini-cli
+    url: https://docs.coupler.io/destinations/categories/ai/gemini
+    title: Gemini CLI destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-gemini-enterprise
+    url: https://docs.coupler.io/destinations/categories/ai/gemini_enterprise
+    title: Gemini Enterprise destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-copilot-studio
+    url: https://docs.coupler.io/destinations/categories/ai/ms_copilot_studio
+    title: Microsoft Copilot Studio destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-perplexity
+    url: https://docs.coupler.io/destinations/categories/ai/perplexity
+    title: Perplexity destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-cursor
+    url: https://docs.coupler.io/destinations/categories/ai/cursor
+    title: Cursor destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-openclaw
+    url: https://docs.coupler.io/destinations/categories/ai/openclaw
+    title: OpenClaw destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-custom-mcp
+    url: https://docs.coupler.io/destinations/categories/ai/custom_mcp
+    title: Custom MCP destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-custom-mcp-issues
+    url: https://docs.coupler.io/destinations/categories/ai/custom_mcp/common-issues
+    title: Custom MCP destination common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+
+shared_notes:
+  - text: >-
+      Each AI tool sees only the datasets from data flows that have that tool as a destination. To
+      use the same data in several tools, add each one as a destination on the data flow.
+    evidence_ids: [cpl-mcp]
+  - text: Every AI tool destination replaces the data on each run; append mode is not supported.
+    evidence_ids:
+      - cpl-claude
+      - cpl-chatgpt
+      - cpl-gemini-cli
+      - cpl-gemini-enterprise
+      - cpl-copilot-studio
+      - cpl-perplexity
+      - cpl-cursor
+      - cpl-openclaw
+      - cpl-custom-mcp
+
+tools:
+  - id: claude
+    name: Claude
+    vendor: Anthropic
+    connection: remote_mcp
+    available_in: [Claude web, Claude desktop, Claude mobile, Cowork, Claude Code]
+    prerequisites:
+      - text: A Claude account.
+        evidence_ids: [cpl-claude]
+      - text: On a Claude Team or Enterprise plan, admin access to add a connector.
+        evidence_ids: [cpl-claude, cpl-claude-issues]
+    setups:
+      - title: Claude web, desktop, and Cowork
+        steps:
+          - text: Install the Coupler.io connector from Claude's connector directory and click Connect.
+            evidence_ids: [cpl-claude, dir-coupler-io]
+          - text: In the Connectors menu, click Connect again and sign in to Coupler.io.
+            evidence_ids: [cpl-claude]
+          - text: Open a new chat. Claude asks permission to use the Coupler.io tools the first time; allow them.
+            evidence_ids: [cpl-claude, cpl-claude-faq]
+      - title: Claude Code
+        steps:
+          - text: Start a new Claude Code session.
+            evidence_ids: [cpl-claude]
+          - text: Paste the connection command shown in the Claude destination step of your data flow.
+            evidence_ids: [cpl-claude]
+          - text: Restart the session.
+            evidence_ids: [cpl-claude]
+          - text: Run `/mcp`, select Coupler.io, and click Authorize in the browser window that opens.
+            evidence_ids: [cpl-claude]
+    notes:
+      - text: >-
+          On individual Claude Free and Pro plans the official connector may connect but fail to
+          load its tools. The documented workaround is a custom connector: in Coupler.io, open AI
+          integrations, click Custom connector, and copy the URL. Remove the official connector in
+          Claude, then go to Connectors, Add, Add custom connector, give it a name with plain
+          letters and spaces only (for example Coupler Custom), paste the URL, and connect.
+        evidence_ids: [cpl-claude-free-pro]
+      - text: Local use with Claude desktop is also available through a Desktop Extension.
+        evidence_ids: [cpl-claude]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/claude
+      directory:
+        name: the Claude connectors directory
+        url: https://claude.com/connectors/coupler-io
+
+  - id: chatgpt
+    name: ChatGPT
+    vendor: OpenAI
+    connection: remote_mcp
+    connection_note: Connects through the Coupler.io ChatGPT app.
+    prerequisites:
+      - text: >-
+          A ChatGPT account. Coupler.io says the app works on all ChatGPT plans, though the Free
+          plan may not be enough for thorough analysis.
+        evidence_ids: [cpl-chatgpt, cpl-chatgpt-faq]
+    setups:
+      - steps:
+          - text: >-
+              Open the Coupler.io app in ChatGPT, from the link in your Coupler.io account or the
+              apps section of ChatGPT settings.
+            evidence_ids: [cpl-chatgpt]
+          - text: Install the app and authorize it with your Coupler.io account.
+            evidence_ids: [cpl-chatgpt]
+          - text: >-
+              Start a new chat to pick up fresh data after a run, or ask ChatGPT to fetch it again
+              in an ongoing conversation.
+            evidence_ids: [cpl-chatgpt-faq]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/chatgpt
+
+  - id: gemini-cli
+    name: Gemini CLI
+    vendor: Google
+    connection: remote_mcp
+    prerequisites:
+      - text: Gemini CLI installed on your machine.
+        evidence_ids: [cpl-gemini-cli]
+      - text: A Google account with access to Gemini.
+        evidence_ids: [cpl-gemini-cli]
+    setups:
+      - steps:
+          - text: >-
+              In the Gemini CLI destination step, generate the command that adds the Coupler.io
+              MCP server, then run it in your terminal. It looks like `gemini mcp add coupler
+              --transport=http --scope=user https://mcp.coupler.io/mcp/...`.
+            evidence_ids: [cpl-gemini-cli]
+          - text: Start Gemini CLI and run `/mcp auth coupler` to sign in to Coupler.io.
+            evidence_ids: [cpl-gemini-cli]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/gemini
+
+  - id: gemini-enterprise
+    name: Gemini Enterprise
+    vendor: Google Cloud
+    connection: remote_mcp
+    connection_note: Added as a custom MCP data store with OAuth credentials from Coupler.io.
+    prerequisites:
+      - text: A Google Cloud account with access to Gemini Enterprise.
+        evidence_ids: [cpl-gemini-enterprise]
+      - text: Admin or owner access in Coupler.io, to create the OAuth credentials.
+        evidence_ids: [cpl-gemini-enterprise]
+    setups:
+      - steps:
+          - text: >-
+              In the Gemini Enterprise destination step, create OAuth credentials and copy the
+              Client ID and Client Secret. The secret is shown only once; if you lose it,
+              regenerate it.
+            evidence_ids: [cpl-gemini-enterprise]
+          - text: In Gemini Enterprise, go to Data stores, Create data store, and choose Custom MCP server.
+            evidence_ids: [cpl-gemini-enterprise]
+          - text: >-
+              Paste the MCP Server URL, Authorization URL, Token URL, and the scope `mcp` from the
+              destination step, together with the Client ID and Client Secret.
+            evidence_ids: [cpl-gemini-enterprise]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/gemini_enterprise
+      vendor: https://docs.cloud.google.com/gemini/enterprise/docs/connectors/custom-mcp-server/set-up-custom-mcp-server
+
+  - id: copilot-studio
+    name: Microsoft Copilot Studio
+    in_text: your Copilot Studio agent
+    vendor: Microsoft
+    connection: remote_mcp
+    connection_note: Added to a Copilot Studio agent as an MCP tool.
+    prerequisites:
+      - text: A Microsoft Copilot Studio environment with an agent you want to extend.
+        evidence_ids: [cpl-copilot-studio]
+      - text: Generative orchestration turned on for that agent, which is the default for new agents.
+        evidence_ids: [cpl-copilot-studio]
+    setups:
+      - steps:
+          - text: Open your agent in Copilot Studio and confirm generative orchestration is on.
+            evidence_ids: [cpl-copilot-studio]
+          - text: >-
+              Go to Tools, Add a tool, New tool, Model Context Protocol, and paste the Coupler.io MCP
+              server URL shown in the destination step.
+            evidence_ids: [cpl-copilot-studio]
+          - text: >-
+              For authentication, choose OAuth 2.0 and Dynamic discovery, then click Create. No
+              client ID or secret is needed.
+            evidence_ids: [cpl-copilot-studio]
+          - text: The first time someone uses the tool, they see a consent card in chat and sign in to Coupler.io once.
+            evidence_ids: [cpl-copilot-studio]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/ms_copilot_studio
+      vendor: https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-existing-server-to-agent
+
+  - id: perplexity
+    name: Perplexity
+    connection: local_mcp
+    connection_note: Perplexity currently uses the local Coupler.io MCP server, which runs in Docker.
+    prerequisites:
+      - text: A Perplexity account.
+        evidence_ids: [cpl-perplexity]
+      - text: Docker installed and running.
+        evidence_ids: [cpl-perplexity]
+    setups:
+      - steps:
+          - text: In Perplexity, go to Settings, Connectors, click Add new connector, and choose the simpler settings.
+            evidence_ids: [cpl-perplexity]
+          - text: >-
+              Name the connection coupler-io and enter the command `docker run --pull=always -e
+              COUPLER_ACCESS_TOKEN --rm -i ghcr.io/railsware/coupler-io-mcp-server`.
+            evidence_ids: [cpl-perplexity]
+          - text: >-
+              Add an environment variable called `COUPLER_ACCESS_TOKEN`, then generate a Coupler.io
+              personal access token and paste it as the value.
+            evidence_ids: [cpl-perplexity]
+          - text: Save the configuration and accept the security warning about Docker.
+            evidence_ids: [cpl-perplexity]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/perplexity
+
+  - id: cursor
+    name: Cursor
+    connection: remote_mcp
+    prerequisites:
+      - text: A Cursor account and the Cursor desktop app installed.
+        evidence_ids: [cpl-cursor]
+    setups:
+      - steps:
+          - text: Open the Coupler.io entry in Cursor's MCP directory and click Add to Cursor.
+            evidence_ids: [cpl-cursor]
+          - text: >-
+              In Cursor, find the new Coupler.io integration, click Needs authentication, then sign
+              in with your Coupler.io account and grant access.
+            evidence_ids: [cpl-cursor]
+          - text: Open the AI pane and ask about your dataset.
+            evidence_ids: [cpl-cursor]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/cursor
+      directory:
+        name: the Cursor MCP directory
+        url: https://l.rw.rw/couplerio-cursor-mcp
+
+  - id: openclaw
+    name: OpenClaw
+    connection: remote_mcp
+    connection_note: Connects to the Coupler.io MCP server through mcporter.
+    prerequisites:
+      - text: OpenClaw installed on your machine.
+        evidence_ids: [cpl-openclaw]
+    setups:
+      - steps:
+          - text: >-
+              Install the coupler-io skill from ClawHub. It holds the commands that connect the
+              Coupler.io MCP server to OpenClaw with mcporter.
+            evidence_ids: [cpl-openclaw]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/openclaw
+      directory:
+        name: ClawHub
+        url: https://clawhub.ai/nika-is-nika/coupler-io
+
+  - id: custom-mcp
+    name: Custom MCP
+    in_text: your MCP client
+    connection: remote_mcp
+    connection_note: Connects any MCP-compatible client with a personal access token.
+    prerequisites:
+      - text: An MCP-compatible client, such as Claude, Cursor, Zapier, n8n, Make, or your own application.
+        evidence_ids: [cpl-custom-mcp]
+      - text: Basic understanding of how to configure that client to connect to an external server.
+        evidence_ids: [cpl-custom-mcp]
+    setups:
+      - title: your MCP client
+        steps:
+          - text: >-
+              In the Custom MCP destination step, click Generate token and copy it together with
+              the MCP server URL.
+            evidence_ids: [cpl-custom-mcp]
+          - text: Add the token and URL to your MCP client's JSON config, following the example config shown there.
+            evidence_ids: [cpl-custom-mcp]
+    notes:
+      - text: Treat the personal access token as a secret and do not share it.
+        evidence_ids: [cpl-custom-mcp]
+      - text: Behind a corporate firewall, allow outbound connections to the Coupler.io MCP endpoint.
+        evidence_ids: [cpl-custom-mcp-issues]
+    links:
+      setup: https://docs.coupler.io/destinations/categories/ai/custom_mcp

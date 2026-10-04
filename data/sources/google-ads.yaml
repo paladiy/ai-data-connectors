@@ -52,13 +52,6 @@ evidence:
     checked_on: "2026-10-04"
     kind: vendor_docs
     public: true
-  - id: cpl-claude-free-pro
-    url: https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans
-    title: Claude connector tools do not load on Free and Pro plans
-    publisher: Coupler.io
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
   - id: cpl-mcp
     url: https://docs.coupler.io/ai/mcp
     title: What the Coupler.io MCP server can and cannot do
@@ -154,27 +147,7 @@ options:
 
     links:
       overview: https://docs.coupler.io/sources/category/ppc/google-ads
-      setup: https://docs.coupler.io/destinations/categories/ai/claude
-
-    surfaces:
-      claude_web:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination, cpl-claude-faq]
-      claude_desktop:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
-        note: Local use with Claude Desktop is also described through a Desktop Extension
-      claude_code:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
-        note: Connected with the /mcp command rather than the web connector
-      cowork:
-        status: known
-        value: supported
-        evidence_ids: [cpl-claude-destination]
+    works_with: all
 
     access:
       status: known
@@ -229,8 +202,7 @@ options:
     prerequisites:
       status: known
       value:
-        - A Coupler.io account and a Claude account
-        - On a Claude Team or Enterprise plan, admin access is needed to add the connector
+        - A Coupler.io account
       evidence_ids: [cpl-claude-destination]
 
     pricing:
@@ -259,26 +231,16 @@ options:
         - "Performance Max campaigns have asset groups rather than traditional ads and ad groups"
         - "Custom GAQL returns cost as cost_micros, which must be divided by 1,000,000"
         - "Data is typically available within a few hours, but conversions may take 24 to 72 hours to finalise"
-        - The Claude destination replaces data on each run; append mode is not supported
-        - "On individual Claude Free and Pro plans the official connector may connect but fail to load its tools; a custom connector URL is documented as a workaround"
-      evidence_ids: [cpl-ads-data, cpl-ads-issues, cpl-ads-faq, cpl-claude-destination, cpl-claude-issues, cpl-claude-free-pro]
+      evidence_ids: [cpl-ads-data, cpl-ads-issues, cpl-ads-faq]
 
     setup_steps: []
-
-    claude_configuration:
-      - text: In Claude web, Claude desktop, or Cowork, install the Coupler.io connector and click Connect, then connect again from the Connectors menu to authenticate.
-        evidence_ids: [cpl-claude-destination]
-      - text: In Claude Code, run the Coupler.io connection command in a new session, restart the session, then run /mcp, select Coupler.io, and click Authorize in the browser.
-        evidence_ids: [cpl-claude-destination]
-      - text: On a Claude Team or Enterprise plan, ask a workspace admin to add the connector if the option is unavailable.
-        evidence_ids: [cpl-claude-issues]
 
     sample_query: Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?
 
     success_check:
       text: >-
-        Open a new Claude chat and ask it to list the datasets it can see. Claude asks permission to
-        use the Coupler.io tools the first time; allow them, and your Coupler.io datasets are listed.
+        Ask {tool} to list the datasets it can see. Allow the Coupler.io tools if it asks, and your
+        Coupler.io datasets are listed.
       evidence_ids: [cpl-claude-faq, cpl-claude-issues]
 
 recommendations:
