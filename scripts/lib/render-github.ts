@@ -223,7 +223,7 @@ export function renderReadme(model: Model): string {
       "| --- | --- |",
       "| `npm ci` | Install the locked dependency tree. |",
       "| `npm run validate` | Validate records and references. |",
-      "| `npm run generate` | Regenerate this README, site content, and public exports. |",
+      "| `npm run generate` | Regenerate this README, `llms.txt`, the guides, site content, and public exports. |",
       "| `npm run check:generated` | Fail if committed generated files are stale. |",
       "| `npm test` | Run the schema, generation, and export tests. |",
       "| `npm run build` | Validate, generate, and build the static site and its search index. |",
