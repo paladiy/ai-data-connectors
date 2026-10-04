@@ -1,24 +1,24 @@
 # AI Data Connectors
 
-Compare ways to connect your business data to AI assistants and agents, through native connectors, MCP servers, data platforms, and file export.
+Connect your business data to Claude with Coupler.io, source by source.
 
 The public website URL is not configured yet.
 
 ## What this is
 
-This repository holds one maintained dataset describing ways to get data from a business source into AI assistants and agents, and generates the website and a public JSON dataset from it.
+This repository holds one maintained dataset describing how to get data from a business source into Claude with Coupler.io, and generates the website and a public JSON dataset from it.
 
-It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a route appears once it is documented with cited evidence.
+It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a source appears once it is documented with cited evidence.
 
 ## Sources
 
-| Source | Routes | Page |
-| --- | --- | --- |
-| Google Ads | 3 | — |
-| Google Analytics 4 | 3 | — |
-| Google Search Console | 3 | — |
-| Pipedrive | 2 | — |
-| QuickBooks Online | 3 | — |
+| Source | Page |
+| --- | --- |
+| Google Ads | — |
+| Google Analytics 4 | — |
+| Google Search Console | — |
+| Pipedrive | — |
+| QuickBooks Online | — |
 
 ## How claims are recorded
 

@@ -1,7 +1,7 @@
 # Site metadata. Values marked PLACEHOLDER must be replaced by the owner before launch;
 # `npm run validate -- --production` fails while any of them remain.
 name: AI Data Connectors
-tagline: Compare ways to connect your business data to AI assistants and agents, through native connectors, MCP servers, data platforms, and file export.
+tagline: Connect your business data to Claude with Coupler.io, source by source.
 
 # PLACEHOLDER: local-development URL until the owner selects a domain.
 url: http://localhost:4321

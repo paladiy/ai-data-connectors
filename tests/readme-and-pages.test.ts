@@ -98,7 +98,7 @@ describe("connector page rendering", () => {
 
   it("records the research date without an evidence list", () => {
     const guide = guideFor();
-    expect(guide).toContain("researched on 2026-09-01.");
+    expect(guide).toContain("Researched on 2026-09-01.");
     expect(guide).not.toContain("### Evidence");
     expect(guide).not.toContain("https://vendor.example.test/docs");
   });
@@ -132,10 +132,10 @@ describe("README rendering", () => {
     expect(readme).toContain("No sources have been added yet.");
   });
 
-  it("lists every record with its route count", () => {
+  it("lists every record", () => {
     const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
     expect(readme).toContain(
-      "| Fixture Source SYNTHETIC-FIXTURE | 2 | — |",
+      "| Fixture Source SYNTHETIC-FIXTURE | — |",
     );
   });
 

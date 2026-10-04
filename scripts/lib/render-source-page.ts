@@ -224,9 +224,11 @@ export function routesSection(source: ModelSource): string[] {
   const cards = options.map((option, i) => tabCard(option, source, i + 1)).join("");
   const pills = options.map((option, i) => compactTab(option, i + 1)).join("");
   return [
-    "## Connection routes",
-    `<p>${options.length === 1 ? "One route is recorded." : `Choose a route. ${options.length} are recorded.`} Each one shows which Claude apps it works with and how to install it.</p>`,
-    `<div class="sp-switch not-content">${radios}<div class="sp-tabs">${cards}</div>` +
+    options.length === 1 ? "## How to connect" : "## Connection routes",
+    options.length === 1
+      ? `<p>Connect ${e(source.name)} to Claude with ${e(options[0]!.name)}. This shows which Claude apps it works with and how to install it.</p>`
+      : `<p>Choose a route. ${options.length} are recorded. Each one shows which Claude apps it works with and how to install it.</p>`,
+    `<div class="sp-switch not-content${options.length === 1 ? " sp-switch--single" : ""}">${radios}<div class="sp-tabs">${cards}</div>` +
       `<div class="sp-pillbar" aria-label="Switch route">${pills}</div>` +
       options.map((option) => panel(option)).join("") +
       `</div>`,

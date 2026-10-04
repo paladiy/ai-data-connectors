@@ -207,7 +207,7 @@ function DirectoryApp() {
           />
         </Group>
 
-        {methods.length > 0 && (
+        {methods.length > 1 && (
           <Chip.Group multiple value={active} onChange={setActive}>
             <Group gap={6} role="group" aria-label="Filter by connection method">
               <Text size="xs" fw={600} tt="uppercase" c="dimmed" mr={4}>

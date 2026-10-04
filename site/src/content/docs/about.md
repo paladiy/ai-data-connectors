@@ -1,31 +1,23 @@
 ---
 title: About
-description: What this directory covers, how options are ordered, what claims mean, and how to report a correction.
+description: What this directory covers, what claims mean, and how to report a correction.
 tableOfContents: false
 ---
 
 ## What it covers
 
-Each connector page answers one question: how can the data in a given business source be used by an
-AI assistant or agent? A route is included when it moves or exposes that source's data to an AI tool,
-whether through a native connector, an MCP server, a data platform, an automation tool, or a manual
-file export. The route details recorded so far, such as supported apps and setup steps, are for Claude.
+Each connector page answers one question: how can the data in a given business source be used in
+Claude through Coupler.io? The details recorded so far, such as supported Claude apps and install
+steps, are for Claude.
 
-Coverage is not exhaustive. A route appears once it is documented with the sources cited on the
+Coverage is not exhaustive. A source appears once it is documented with the sources cited on the
 page.
-
-## How options are ordered
-
-Routes are listed in this order: those maintained by the source vendor or Anthropic, other managed
-routes alphabetically by provider, community-maintained routes, and manual export. Routes that are
-not currently available are listed after those you can use today. Position in the table is not a
-ranking.
 
 ## What claims mean
 
 - **Known.** The claim is documented in the evidence cited on the page.
 - **Unknown.** The claim is not documented. This is not the same as "no".
-- **Not applicable.** The field does not apply to that route.
+- **Not applicable.** The field does not apply to that source.
 
 ## The public dataset
 

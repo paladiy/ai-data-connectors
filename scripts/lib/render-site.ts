@@ -113,7 +113,7 @@ function faqSection(source: ModelSource): string | null {
 
 function sourcesSection(source: ModelSource, site: SiteConfig): string {
   const lines = ["## Sources and corrections"];
-  lines.push("", `Alternatives were researched on ${source.research.searched_on}. ${escapeText(source.research.coverage_note)}`);
+  lines.push("", `Researched on ${source.research.searched_on}. ${escapeText(source.research.coverage_note)}`);
 
   const correction = correctionUrl(site, source);
   lines.push(

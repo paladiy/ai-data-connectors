@@ -809,3 +809,15 @@
 .sp-faq-item > p {
   margin: 0 0 1rem;
 }
+
+/* One route only: nothing to choose between, so the route cards and the sticky switcher are hidden. */
+.sp-switch--single .sp-tabs,
+.sp-switch--single .sp-pillbar {
+  display: none !important;
+}
+
+/* One route only: nothing to choose between, so the route cards and the sticky switcher are hidden. */
+.sp-switch--single .sp-tabs,
+.sp-switch--single .sp-pillbar {
+  display: none !important;
+}

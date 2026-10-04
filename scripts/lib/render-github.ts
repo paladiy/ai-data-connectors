@@ -31,13 +31,12 @@ export function renderReadme(model: Model): string {
   const table =
     model.sources.length > 0
       ? [
-          "| Source | Routes | Page |",
-          "| --- | --- | --- |",
+          "| Source | Page |",
+          "| --- | --- |",
           ...model.sources.map((source) =>
             [
               "",
               escapeCell(source.name),
-              String(source.options.filter((option) => option.is_usable_route).length),
               home ? link("Page", new URL(`/sources/${source.slug}/`, home).toString()) : "—",
               "",
             ].join(" | ").trim(),
@@ -51,9 +50,9 @@ export function renderReadme(model: Model): string {
     home ? `Website: ${link(site.name, home)}` : "The public website URL is not configured yet.",
     "## What this is",
     [
-      "This repository holds one maintained dataset describing ways to get data from a business source into AI assistants and agents, and generates the website and a public JSON dataset from it.",
+      "This repository holds one maintained dataset describing how to get data from a business source into Claude with Coupler.io, and generates the website and a public JSON dataset from it.",
       "",
-      "It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a route appears once it is documented with cited evidence.",
+      "It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a source appears once it is documented with cited evidence.",
     ].join("\n"),
     "## Sources",
     table,
