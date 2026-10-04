@@ -1,7 +1,7 @@
 import { buildInstall, type InstallLink, type OptionInstall, type ToolInstall } from "./install.ts";
 import { formatValue } from "./markdown.ts";
 import type { ModelAiTool, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
-import { SKILLS_INDEX_URL, SKILLS_REPO_URL } from "./skills.ts";
+import { SKILLS_INDEX_URL, SKILLS_REPO_URL } from "../../site/src/lib/skills.ts";
 
 export function escapeHtml(value: string): string {
   return value

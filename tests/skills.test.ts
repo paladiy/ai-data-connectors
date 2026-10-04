@@ -8,7 +8,7 @@ import {
   skillUrl,
   variants,
   type IndexedSkill,
-} from "../scripts/lib/skills.ts";
+} from "../site/src/lib/skills.ts";
 
 const skill = (overrides: Partial<IndexedSkill> = {}): IndexedSkill => ({
   name: "google-ads-budget-pacing",
