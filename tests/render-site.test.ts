@@ -130,30 +130,24 @@ describe("source page structure", () => {
     expect(page).not.toContain("Compare the options");
   });
 
-  it("says plainly when no skill or related connector is listed", () => {
+  it("says plainly when no related connector is listed", () => {
     const page = pageFor();
-    expect(page).toContain("No source-specific skill listed yet.");
     expect(page).toContain("No related connectors listed yet.");
   });
 
-  it("lists each capability under its route and links skills with what they also need", () => {
+  it("lists each capability under its route", () => {
     const page = pageFor({
       options: [
         fixtureOption({ capabilities: [{ text: "Read fixture invoices.", evidence_ids: ["fx-docs"] }] }),
         fixtureOurOption(),
       ],
-      related_skills: [
-        {
-          name: "Fixture month-end close",
-          description: "Walks through a close.",
-          url: "https://skills.example.test/close",
-          also_needs: ["Fixture bank feed"],
-          evidence_ids: ["fx-docs"],
-        },
-      ],
     });
     expect(page).toContain("<li>Read fixture invoices.</li>");
-    expect(page).toContain('<a class="sp-route-link" href="https://skills.example.test/close">Fixture month-end close</a>');
-    expect(page).toContain("Also needs Fixture bank feed.");
+  });
+
+  it("renders related skills as a live placeholder, not from recorded data", () => {
+    const page = pageFor();
+    expect(page).toContain("data-skills-names=");
+    expect(page).toContain("raw.githubusercontent.com/coupler-io/skills/main/skills-index.json");
   });
 });

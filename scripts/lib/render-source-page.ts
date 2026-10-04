@@ -257,27 +257,23 @@ export function routesSection(source: ModelSource): string[] {
 
 /* ---------- Related skills and connectors ---------- */
 
+/** Live skills index. Skills are never indexed in this repository; the browser reads this file. */
+export const SKILLS_INDEX_URL = "https://raw.githubusercontent.com/coupler-io/skills/main/skills-index.json";
+export const SKILLS_REPO_URL = "https://github.com/coupler-io/skills";
+
+/**
+ * Renders only a placeholder carrying the names to match on. The script in
+ * site/src/components/Head.astro fills it from the live coupler-io/skills index.
+ */
 export function skillsSection(source: ModelSource): string[] {
-  const out = ["## Related skills"];
-  if (source.related_skills.length === 0) {
-    out.push(`<p class="sp-muted">No source-specific skill listed yet.</p>`);
-    return out;
-  }
-  out.push(
-    `<p>A skill gives Claude instructions for a task. It does not connect any data, so each one lists what it needs besides ${e(source.name)}.</p>`,
-    list(
-      source.related_skills.map(
-        (skill) =>
-          `<a class="sp-route-link" href="${e(encodeURI(skill.url))}">${e(skill.name)}</a>` +
-          `<span>${e(skill.description)}</span>` +
-          (skill.also_needs.length > 0
-            ? `<span class="sp-muted">Also needs ${skill.also_needs.map(e).join(", ")}.</span>`
-            : ""),
-      ),
-      "sp-routes not-content",
-    ),
-  );
-  return out;
+  const names = JSON.stringify([source.name, ...source.aliases]);
+  return [
+    "## Related skills",
+    `<div class="sp-skills not-content" data-skills-names="${e(names)}" data-skills-source="${e(source.name)}" data-skills-index="${e(SKILLS_INDEX_URL)}" data-skills-repo="${e(SKILLS_REPO_URL)}">` +
+      `<p class="sp-muted sp-skills-status">Loading skills from the <a href="${e(SKILLS_REPO_URL)}">coupler-io/skills</a> repository…</p>` +
+      `<noscript><p class="sp-muted">Skills are loaded live. See the <a href="${e(SKILLS_REPO_URL)}">coupler-io/skills</a> repository.</p></noscript>` +
+      `</div>`,
+  ];
 }
 
 export function connectorsSection(source: ModelSource): string[] {

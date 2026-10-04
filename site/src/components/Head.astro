@@ -45,3 +45,80 @@ import Default from "@astrojs/starlight/components/Head.astro";
 
   init();
 </script>
+
+<script>
+  // Related skills: read the live coupler-io/skills index in the browser and list the skills for this source.
+  interface IndexedSkill {
+    name: string;
+    path: string;
+    sources?: string[];
+    short_description?: string;
+    description?: string;
+  }
+
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  // "Google Analytics 4 (GA4)" matches as the whole label, without the brackets, and as the bracketed part.
+  const variants = (label: string) => {
+    const out = new Set([norm(label)]);
+    out.add(norm(label.replace(/\(.*?\)/g, "")));
+    for (const m of label.matchAll(/\((.*?)\)/g)) out.add(norm(m[1]));
+    out.delete("");
+    return out;
+  };
+
+  function summary(skill: IndexedSkill): string {
+    if (skill.short_description) return skill.short_description;
+    // Descriptions start with trigger phrasing ("Use for ..."); keep the first sentence only.
+    const text = (skill.description ?? "").replace(/\s+/g, " ").trim();
+    const end = text.search(/[.!?](\s|$)/);
+    return end > 0 ? text.slice(0, end + 1) : text;
+  }
+
+  async function loadSkills() {
+    const box = document.querySelector<HTMLElement>(".sp-skills");
+    if (!box) return;
+    const status = box.querySelector<HTMLElement>(".sp-skills-status");
+    const repo = box.dataset.skillsRepo ?? "";
+    const fail = () => {
+      if (!status) return;
+      const a = document.createElement("a");
+      a.href = repo;
+      a.textContent = "coupler-io/skills";
+      status.replaceChildren("Could not load skills. Browse them in the ", a, " repository.");
+    };
+    try {
+      const names: string[] = JSON.parse(box.dataset.skillsNames ?? "[]");
+      const wanted = new Set(names.flatMap((n) => [...variants(n)]));
+      const res = await fetch(box.dataset.skillsIndex ?? "", { headers: { Accept: "application/json" } });
+      if (!res.ok) return fail();
+      const index = (await res.json()) as { skills?: IndexedSkill[] };
+      const matches = (index.skills ?? [])
+        .filter((skill) => (skill.sources ?? []).some((s) => [...variants(s)].some((v) => wanted.has(v))))
+        .sort((a, b) => a.name.localeCompare(b.name));
+      if (matches.length === 0) {
+        if (status) status.textContent = "No source-specific skill listed yet.";
+        return;
+      }
+      const list = document.createElement("ul");
+      list.className = "sp-routes";
+      for (const skill of matches) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.className = "sp-route-link";
+        a.href = `${repo}/tree/main/${skill.path.split("/").map(encodeURIComponent).join("/")}`;
+        a.textContent = skill.name;
+        const desc = document.createElement("span");
+        desc.textContent = summary(skill);
+        li.append(a, desc);
+        list.append(li);
+      }
+      const intro = document.createElement("p");
+      intro.textContent = `A skill gives Claude instructions for a task. It does not connect any data, so connect ${box.dataset.skillsSource} first.`;
+      box.replaceChildren(intro, list);
+    } catch {
+      fail();
+    }
+  }
+
+  loadSkills();
+</script>
