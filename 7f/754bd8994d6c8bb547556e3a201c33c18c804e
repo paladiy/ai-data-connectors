@@ -1,0 +1,20 @@
+data/sources/quickbooks-online.yaml
+  s_809c09ea550806::t_46ac4a0e303817 306-314,477-489,639-645,798-808,906-911
+  s_809c09ea550806::t_a03abd7cbe5cc8 1-9,21-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7f754bd8994d6c8bb547556e3a201c33c18c804e",
+  "prompts": {},
+  "sessions": {
+    "s_809c09ea550806": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "54b49573-3afc-42bc-9a3a-82cd4e18f656",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
