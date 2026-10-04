@@ -26,7 +26,8 @@ This repository builds a static directory of ways to connect data sources to Cha
 
 ## Build rules
 
-- Builds are deterministic and offline: no live fetches, no current time in output, stable sorting.
+- Builds are deterministic and offline: no live fetches, no current time in output, stable sorting. `npm run sync:skills` is the only command that uses the network, and no build step runs it.
+- `data/upstream/` is a pinned copy of upstream data, written only by `npm run sync:skills`. Never hand-edit it: the loader checks the snapshot against the sha256 in `skills-lock.json` and fails the build if they disagree.
 - Never hand-edit generated files (`README.md`, `llms.txt`, `guides/*.md`, generated site content, `site/public` exports). Edit `data/` and rerun `npm run generate`.
 - `README.md`, `llms.txt`, and `guides/*.md` are committed, so the repository is useful and indexable without the website. `npm run check:generated` fails if they are stale.
 - Guides are plain Markdown: no HTML, no frontmatter, nothing that needs JavaScript. Escape every value that comes from a record.
@@ -40,6 +41,7 @@ This repository builds a static directory of ways to connect data sources to Cha
 | `npm run validate` | Validate data, references, URLs. Add `-- --production` before launch. |
 | `npm run generate` | Regenerate README, `llms.txt`, `guides/`, site content, public exports. |
 | `npm run check:generated` | Fail if committed generated files are stale. |
+| `npm run sync:skills` | Refresh the pinned `data/upstream/` skills snapshot from `coupler-io/skills`. Run `npm run generate` after it. |
 | `npm test` | Private-path guard plus all tests. |
 | `npm run typecheck` | TypeScript check. |
 | `npm run build` / `npm run preview` | Production build into `site/dist` and local preview with search. |

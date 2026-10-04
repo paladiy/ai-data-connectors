@@ -14,6 +14,7 @@
     "check:private": "tsx scripts/check-private.ts",
     "check:links": "tsx scripts/check-links.ts site/dist",
     "schemas:export": "tsx scripts/export-json-schemas.ts",
+    "sync:skills": "tsx scripts/sync-skills.ts",
     "typecheck": "tsc --noEmit",
     "test": "npm run check:private && vitest run",
     "build": "npm run validate && npm run generate && astro build --root site && npm run check:links",

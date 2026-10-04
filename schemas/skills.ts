@@ -8,7 +8,14 @@ import { IsoDate, NonEmptyText } from "./common.ts";
  */
 export const UpstreamSkill = z.looseObject({
   name: NonEmptyText,
-  path: NonEmptyText,
+  /**
+   * A folder inside the skills repository. Constrained because every guide turns it into a link:
+   * a scheme, an absolute path, or a `..` segment would point the link somewhere else.
+   */
+  path: z
+    .string()
+    .regex(/^[A-Za-z0-9._-]+(\/[A-Za-z0-9._-]+)*$/, "must be a relative path inside the repository")
+    .refine((value) => !value.split("/").includes(".."), "must not traverse out of the repository"),
   category: z.string().optional(),
   sources: z.array(z.string()).default([]),
   short_description: z.string().optional(),

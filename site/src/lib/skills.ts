@@ -13,8 +13,10 @@ export interface IndexedSkill {
   description?: string;
 }
 
-export const SKILLS_REPO_URL = "https://github.com/coupler-io/skills";
-export const SKILLS_INDEX_URL = "https://raw.githubusercontent.com/coupler-io/skills/main/skills-index.json";
+export const SKILLS_REPO = "coupler-io/skills";
+export const SKILLS_INDEX_PATH = "skills-index.json";
+export const SKILLS_REPO_URL = `https://github.com/${SKILLS_REPO}`;
+export const SKILLS_INDEX_URL = `https://raw.githubusercontent.com/${SKILLS_REPO}/main/${SKILLS_INDEX_PATH}`;
 
 export const CATEGORY_LABELS: Record<string, string> = {
   "marketing-and-ads": "Marketing & Ads",

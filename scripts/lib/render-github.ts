@@ -225,6 +225,7 @@ export function renderReadme(model: Model): string {
       "| `npm run validate` | Validate records and references. |",
       "| `npm run generate` | Regenerate this README, `llms.txt`, the guides, site content, and public exports. |",
       "| `npm run check:generated` | Fail if committed generated files are stale. |",
+      "| `npm run sync:skills` | Refresh the pinned snapshot of the upstream skills index. The only command that uses the network. |",
       "| `npm test` | Run the schema, generation, and export tests. |",
       "| `npm run build` | Validate, generate, and build the static site and its search index. |",
       "| `npm run preview` | Serve the production build locally, including search. |",
