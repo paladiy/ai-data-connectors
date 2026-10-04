@@ -2,7 +2,14 @@ import type { Claim } from "../../schemas/common.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import { buildInstall, type InstallLink, type ToolInstall } from "./install.ts";
 import { escapeRichText, escapeText, formatValue, joinSections, link } from "./markdown.ts";
-import { orderFaq, type Model, type ModelAiTools, type ModelOption, type ModelSource } from "./model.ts";
+import {
+  orderFaq,
+  type Model,
+  type ModelAiTools,
+  type ModelOption,
+  type ModelSkill,
+  type ModelSource,
+} from "./model.ts";
 import { correctionUrl, pageTitle, websiteUrl } from "./render-github.ts";
 import { SKILLS_REPO_URL } from "../../site/src/lib/skills.ts";
 
@@ -142,21 +149,46 @@ function optionSections(source: ModelSource, option: ModelOption, aiTools: Model
   return out;
 }
 
-function skillsSection(source: ModelSource): string {
+/**
+ * Upstream summaries are trigger text stuffed with the example questions, so the questions are
+ * shown on their own where they exist and the summary is the fallback, as on the website.
+ */
+function skillEntry(skill: ModelSkill): string {
+  const body =
+    skill.questions.length > 0
+      ? `for questions like ${skill.questions.map((question) => `"${escapeText(question)}"`).join(", ")}.`
+      : escapeText(skill.summary);
+  const needs =
+    skill.also_needs.length > 0 ? ` Also needs ${skill.also_needs.map(escapeText).join(", ")}.` : "";
+  return `- ${link(skill.title, skill.url)}: ${body}${needs}`;
+}
+
+function skillsSection(source: ModelSource, snapshot: Model["skills_snapshot"]): string {
+  const recorded = source.related_skills.map(
+    (skill) =>
+      `- ${link(skill.name, skill.url)}: ${escapeText(skill.description)}` +
+      (skill.also_needs.length > 0 ? ` Also needs ${skill.also_needs.map(escapeText).join(", ")}.` : ""),
+  );
+  const matched = source.skills.map(skillEntry);
+  const entries = [...recorded, ...matched];
+
   const lines = ["## Related skills", ""];
-  if (source.related_skills.length === 0) {
+  if (entries.length === 0) {
     lines.push(
-      `No source-specific skill is recorded yet. Browse the ${link("coupler-io/skills", SKILLS_REPO_URL)} repository.`,
+      `No source-specific skill is listed yet. Browse the ${link("coupler-io/skills", SKILLS_REPO_URL)} repository.`,
     );
     return lines.join("\n");
   }
   lines.push(
     `A skill gives the AI tool instructions for a task. It connects no data, so connect ${escapeText(source.name)} first.`,
     "",
+    ...entries,
   );
-  for (const skill of source.related_skills) {
-    const needs = skill.also_needs.length > 0 ? ` Also needs ${skill.also_needs.map(escapeText).join(", ")}.` : "";
-    lines.push(`- ${link(skill.name, skill.url)}: ${escapeText(skill.description)}${needs}`);
+  if (snapshot) {
+    lines.push(
+      "",
+      `Skills list taken from ${link(snapshot.repo, `https://github.com/${snapshot.repo}`)} at commit \`${snapshot.commit_sha.slice(0, 7)}\`.`,
+    );
   }
   return lines.join("\n");
 }
@@ -264,7 +296,12 @@ export function renderLlmsIndex(model: Model): string {
   return `${lines.join("\n")}\n`;
 }
 
-export function renderGuide(source: ModelSource, site: SiteConfig, aiTools: ModelAiTools): string {
+export function renderGuide(
+  source: ModelSource,
+  site: SiteConfig,
+  aiTools: ModelAiTools,
+  snapshot: Model["skills_snapshot"] = null,
+): string {
   const page = websiteUrl(site, `/sources/${source.slug}/`);
   const aliases =
     source.aliases.length > 0 ? `Also known as ${source.aliases.map(escapeText).join(", ")}.` : null;
@@ -275,7 +312,7 @@ export function renderGuide(source: ModelSource, site: SiteConfig, aiTools: Mode
     aliases,
     "Where a capability is not documented, this guide says so instead of guessing.",
     ...source.options.flatMap((option) => optionSections(source, option, aiTools)),
-    skillsSection(source),
+    skillsSection(source, snapshot),
     faqSection(source),
     sourcesSection(source, site),
     relatedSection(source),

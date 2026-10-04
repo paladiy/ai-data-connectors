@@ -1,7 +1,8 @@
 import { AiToolsFile } from "../../schemas/ai-tool.ts";
 import { SiteConfig } from "../../schemas/site.ts";
 import { Source } from "../../schemas/source.ts";
-import type { Content, SourceBundle } from "../../scripts/lib/load.ts";
+import type { UpstreamSkill } from "../../schemas/skills.ts";
+import type { Content, SkillsSnapshot, SourceBundle } from "../../scripts/lib/load.ts";
 import { fixtureAiTools, fixtureSource } from "./factory.ts";
 
 export const fixtureSite = SiteConfig.parse({
@@ -23,12 +24,27 @@ export function bundle(record: Source, privateEvidence: SourceBundle["privateEvi
   return { record, privateEvidence, file: `data/sources/${record.slug}.yaml` };
 }
 
+export function fixtureSkills(skills: UpstreamSkill[]): SkillsSnapshot {
+  return {
+    index: { skills },
+    lock: {
+      repo: "coupler-io/skills",
+      commit_sha: "a".repeat(40),
+      path: "skills-index.json",
+      sha256: "b".repeat(64),
+      retrieved_on: "2026-09-01",
+      skill_count: skills.length,
+    },
+  };
+}
+
 export function fixtureContent(records: Source[], overrides: Partial<Content> = {}): Content {
   return {
     root: "/fixture",
     site: fixtureSite,
     aiTools: fixtureTools,
     sources: records.map((record) => bundle(record)),
+    skills: null,
     ...overrides,
   };
 }

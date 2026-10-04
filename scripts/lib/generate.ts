@@ -25,7 +25,10 @@ function githubOutputs(model: Model): Map<string, string> {
     ["llms.txt", renderLlmsIndex(model)],
   ]);
   for (const source of model.sources) {
-    files.set(`guides/${source.slug}.md`, renderGuide(source, model.site, model.ai_tools));
+    files.set(
+      `guides/${source.slug}.md`,
+      renderGuide(source, model.site, model.ai_tools, model.skills_snapshot),
+    );
   }
   return files;
 }

@@ -303,7 +303,17 @@ More from the provider: [Overview](https://docs.coupler.io/sources/category/mark
 
 ## Related skills
 
-No source-specific skill is recorded yet. Browse the [coupler-io/skills](https://github.com/coupler-io/skills) repository.
+A skill gives the AI tool instructions for a task. It connects no data, so connect Google Search Console first.
+
+- [Branded vs nonbranded search split](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/seo/branded-vs-nonbranded-search-split): for questions like "Is my SEO growth real or just brand", "Brand vs non-brand organic search", "How much of my search traffic is people searching my name".
+- [Content decay detector](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/seo/content-decay-detector): for questions like "Which of my pages are losing search traffic", "What content is decaying", "Which blog posts should I refresh".
+- [Country device performance](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/seo/gsc-country-device-performance): for questions like "How does my organic search do by country", "Which markets underperform in search", "Is mobile or desktop better for my search traffic".
+- [Search opportunity finder](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/seo/gsc-search-opportunity-finder): for questions like "Which keywords are close to page one on my site", "Striking distance keyword report", "Which of my pages get search impressions but no clicks".
+- [New page indexation tracker](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/seo/new-page-indexation-tracker): for questions like "Are my new pages getting indexed by Google", "How long until new content ranks in search", "Which of my pages is Google ignoring".
+- [Ai citation to revenue funnel](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/geo/ai-citation-to-revenue-funnel): for questions like "Which of our pages do ChatGPT, Perplexity or Gemini cite", "Does our AI search visibility bring traffic, signups or sales", "Is our Peec visibility worth anything". Also needs Peec AI, Google Analytics 4 (GA4), Shopify, WooCommerce, HubSpot, Pipedrive, Salesforce, Stripe, Paddle.
+- [GA4 landing page performance](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/seo/gsc-ga4-landing-page-performance): for questions like "Does my organic search traffic convert", "Which landing pages actually make money from SEO", "Which SEO pages are worth the effort". Also needs Google Analytics 4 (GA4).
+
+Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `cf24f3e`.
 
 ## Questions
 

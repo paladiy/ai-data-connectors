@@ -223,7 +223,21 @@ More from the provider: [Overview](https://docs.coupler.io/sources/category/ppc/
 
 ## Related skills
 
-No source-specific skill is recorded yet. Browse the [coupler-io/skills](https://github.com/coupler-io/skills) repository.
+A skill gives the AI tool instructions for a task. It connects no data, so connect Google Ads first.
+
+- [Budget pacing](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/google-ads/google-ads-budget-pacing): for questions like "Am I on track with my Google Ads budget", "Will I overspend this month", "How much should I spend a day".
+- [Client report](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/google-ads/google-ads-client-report): for questions like "What do I tell the client".
+- [Conversion tracking audit](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/google-ads/google-ads-conversion-tracking-audit): for questions like "Can I trust my Google Ads conversion numbers", "Audit my conversion tracking", "Why do Google Ads and Analytics disagree".
+- [Custom GAQL](https://github.com/coupler-io/skills/tree/main/capability/google-ads-custom-gaql): for questions like "I need a Google Ads field that isn't in any report", "Can I get hourly Google Ads data", "Break conversions down by action at ad group level".
+- [Keyword and quality score analysis](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/google-ads/google-ads-keyword-and-quality-score-analysis): for questions like "Which keywords make money", "My quality score dropped", "Should I use exact or broad match".
+- [Performance review](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/google-ads/google-ads-performance-review): for questions like "How are my Google Ads doing", "Why did my cost per lead go up", "Which campaigns improved this month".
+- [PMax transparency](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/google-ads/google-ads-pmax-transparency): for questions like "How is Performance Max doing", "Is PMax cannibalising my Shopping campaigns", "I can't see anything inside PMax".
+- [Settings audit](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/google-ads/google-ads-settings-audit): for questions like "Audit my Google Ads settings", "Is my account set up right", "I inherited this account, what's wrong with it".
+- [Waste and scale](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/google-ads/google-ads-waste-and-scale): for questions like "Where am I wasting money on Google Ads", "Which keywords should I pause", "Find me negative keywords".
+- [Marketing analytics](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/marketing-analytics): for questions like "Why did conversions drop", "Which channel has best ROI", "Where should I spend more". Also needs Facebook Ads (Meta Ads), LinkedIn Ads, Google Analytics 4 (GA4).
+- [PPC analytics](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/ppc-analytics): for questions like "How are my ads performing", "Weekly PPC report", "Why did CPA spike". Also needs Facebook Ads (Meta Ads).
+
+Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `cf24f3e`.
 
 ## Questions
 

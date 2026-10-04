@@ -4,7 +4,7 @@ import { generateOutputs } from "../scripts/lib/generate.ts";
 import { escapeRichText } from "../scripts/lib/markdown.ts";
 import { buildModel } from "../scripts/lib/model.ts";
 import { renderGuide, renderLlmsIndex } from "../scripts/lib/render-guide.ts";
-import { fixtureContent, fixtureSite, fixtureRecord } from "./fixtures/content.ts";
+import { fixtureContent, fixtureSite, fixtureRecord, fixtureSkills } from "./fixtures/content.ts";
 import { fixtureOption, fixtureOurOption, known, unknown } from "./fixtures/factory.ts";
 
 function guideFor(overrides: Record<string, unknown> = {}, site = fixtureSite) {
@@ -97,8 +97,8 @@ describe("Markdown guide", () => {
     expect(guideFor()).not.toContain("also published at");
   });
 
-  it("says plainly when no skill is recorded", () => {
-    expect(guideFor()).toContain("No source-specific skill is recorded yet.");
+  it("says plainly when no skill matches", () => {
+    expect(guideFor()).toContain("No source-specific skill is listed yet.");
   });
 
   it("keeps internal references out of every committed guide", () => {
@@ -131,6 +131,58 @@ describe("Markdown guide", () => {
 
   it("produces identical bytes from identical inputs", () => {
     expect(guideFor()).toBe(guideFor());
+  });
+});
+
+describe("related skills from the committed snapshot", () => {
+  const withSkills = (skills: Parameters<typeof fixtureSkills>[0]) => {
+    const model = buildModel(fixtureContent([fixtureRecord()], { skills: fixtureSkills(skills) }));
+    return renderGuide(model.sources[0]!, model.site, model.ai_tools, model.skills_snapshot);
+  };
+
+  const skill = {
+    name: "fixture-source-budget-pacing",
+    path: "finance/fixture-source-budget-pacing",
+    sources: ["Fixture Source SYNTHETIC-FIXTURE"],
+    description: 'Use for "am I on track" and "will I overspend", even without the word pacing.',
+  };
+
+  const link = "](https://github.com/coupler-io/skills/tree/main/finance/fixture-source-budget-pacing)";
+
+  it("lists a matching skill with its example questions rather than the trigger text", () => {
+    const guide = withSkills([skill]);
+    expect(guide).toContain(`- [Fixture source budget pacing${link}: for questions like "Am I on track", "Will I overspend".`);
+    expect(guide).toContain("It connects no data, so connect Fixture Source SYNTHETIC-FIXTURE first.");
+  });
+
+  it("falls back to the summary when the trigger text quotes no question", () => {
+    const guide = withSkills([{ ...skill, description: "Use when pacing budgets. More detail here." }]);
+    expect(guide).toContain(`${link}: Use when pacing budgets.`);
+  });
+
+  it("names the other sources a cross-source skill needs", () => {
+    const guide = withSkills([{ ...skill, sources: [...skill.sources, "Stripe"] }]);
+    expect(guide).toContain("Also needs Stripe.");
+  });
+
+  it("records the upstream commit the list came from", () => {
+    expect(withSkills([skill])).toContain(
+      "Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `aaaaaaa`.",
+    );
+  });
+
+  it("ignores a skill for another source", () => {
+    const guide = withSkills([{ ...skill, sources: ["Stripe"] }]);
+    expect(guide).toContain("No source-specific skill is listed yet.");
+    expect(guide).not.toContain("budget pacing");
+  });
+
+  it("escapes upstream text instead of trusting it", () => {
+    const guide = withSkills([
+      { ...skill, description: "", short_description: "Runs <script>alert(1)</script> and {evil}" },
+    ]);
+    expect(guide).not.toMatch(/(^|[^\\])<script/);
+    expect(guide).toContain("\\<script\\>alert(1)\\</script\\>");
   });
 });
 

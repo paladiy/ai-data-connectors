@@ -3,6 +3,14 @@ import type { Claim, Evidence } from "../../schemas/common.ts";
 import type { Option, RelatedSkill, Source } from "../../schemas/source.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import type { Content } from "./load.ts";
+import {
+  matchSkills,
+  otherSources,
+  skillQuestions,
+  skillSummary,
+  skillTitle,
+  skillUrl,
+} from "../../site/src/lib/skills.ts";
 import { isUsableRoute } from "./validate.ts";
 
 export const CONNECTION_LABELS = {
@@ -64,13 +72,25 @@ export interface ModelSource {
   recommendations: ModelRecommendation[];
   faq: Array<{ question: string; answer: string; evidence_ids: string[] }>;
   related_skills: RelatedSkill[];
+  /** Matched from the committed upstream snapshot, not from the record. */
+  skills: ModelSkill[];
   related: Array<{ id: string; slug: string; name: string }>;
+}
+
+export interface ModelSkill {
+  name: string;
+  title: string;
+  summary: string;
+  url: string;
+  questions: string[];
+  also_needs: string[];
 }
 
 export interface Model {
   site: SiteConfig;
   ai_tools: ModelAiTools;
   sources: ModelSource[];
+  skills_snapshot: { repo: string; commit_sha: string } | null;
 }
 
 const TROUBLESHOOTING = /\b(why|slow|timing out|time out|error|fail|cannot|can't|not (?:see|load|work)|stuck|missing)\b/i;
@@ -174,6 +194,19 @@ function toModelOption(option: Option, allowed: Set<string>, tools: AiTool[]): M
   };
 }
 
+function skillsFor(record: Source, content: Content): ModelSkill[] {
+  if (!content.skills) return [];
+  const names = [record.name, ...record.aliases];
+  return matchSkills(content.skills.index.skills, names).map((skill) => ({
+    name: skill.name,
+    title: skillTitle(skill.name, names),
+    summary: skillSummary(skill),
+    url: skillUrl(skill),
+    questions: skillQuestions(skill),
+    also_needs: otherSources(skill, names),
+  }));
+}
+
 export function buildModel(content: Content): Model {
   const selected = content.sources
     .map((bundle) => bundle.record)
@@ -218,6 +251,7 @@ export function buildModel(content: Content): Model {
         ...skill,
         evidence_ids: keepPublic(skill.evidence_ids, allowed),
       })),
+      skills: skillsFor(record, content),
       related: record.related_source_ids
         .map((id) => visibleIds.get(id))
         .filter((related): related is Source => related !== undefined)
@@ -229,5 +263,8 @@ export function buildModel(content: Content): Model {
     site: content.site,
     ai_tools: buildAiTools(content.aiTools),
     sources,
+    skills_snapshot: content.skills
+      ? { repo: content.skills.lock.repo, commit_sha: content.skills.lock.commit_sha }
+      : null,
   };
 }

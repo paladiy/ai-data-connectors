@@ -307,7 +307,15 @@ More from the provider: [Overview](https://docs.coupler.io/sources/category/ppc/
 
 ## Related skills
 
-No source-specific skill is recorded yet. Browse the [coupler-io/skills](https://github.com/coupler-io/skills) repository.
+A skill gives the AI tool instructions for a task. It connects no data, so connect Google Analytics 4 first.
+
+- [Ai traffic vs organic report](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/seo/ai-traffic-vs-organic-report): for questions like "How much traffic does my site get from ChatGPT", "Are AI answer engines sending me visitors", "AI referral vs organic search traffic".
+- [Ai citation to revenue funnel](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/geo/ai-citation-to-revenue-funnel): for questions like "Which of our pages do ChatGPT, Perplexity or Gemini cite", "Does our AI search visibility bring traffic, signups or sales", "Is our Peec visibility worth anything". Also needs Peec AI, Google Search Console, Shopify, WooCommerce, HubSpot, Pipedrive, Salesforce, Stripe, Paddle.
+- [Ecom analytics](https://github.com/coupler-io/skills/tree/main/ecommerce/ecom-analytics): for questions like "How is my store performing", "What's my conversion rate", "Cart abandonment". Also needs Shopify, WooCommerce, Adobe Commerce (Magento), Stripe, Klaviyo.
+- [Gsc GA4 landing page performance](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/seo/gsc-ga4-landing-page-performance): for questions like "Does my organic search traffic convert", "Which landing pages actually make money from SEO", "Which SEO pages are worth the effort". Also needs Google Search Console.
+- [Marketing analytics](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/marketing-analytics): for questions like "Why did conversions drop", "Which channel has best ROI", "Where should I spend more". Also needs Google Ads, Facebook Ads (Meta Ads), LinkedIn Ads.
+
+Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `cf24f3e`.
 
 ## Questions
 
