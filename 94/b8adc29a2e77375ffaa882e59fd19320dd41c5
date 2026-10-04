@@ -1,0 +1,57 @@
+data/site.yaml
+  s_516dc6ce68b8a5::t_c5f7a87ef7a876 1-26
+schemas/json/categories.schema.json
+  s_516dc6ce68b8a5::t_47ae2c1e8cfdfc 1-45
+schemas/json/private-evidence.schema.json
+  s_516dc6ce68b8a5::t_20ce637c7135ce 1-67
+schemas/json/site.schema.json
+  s_516dc6ce68b8a5::t_6f6042c70fceec 1-89
+schemas/json/source.schema.json
+  s_516dc6ce68b8a5::t_f030de999429e9 1-1261
+schemas/site.ts
+  s_516dc6ce68b8a5::t_4e04df0321a9d3 1-25
+schemas/source.ts
+  s_516dc6ce68b8a5::t_158e03b5db1a66 1-133
+scripts/lib/json-schemas.ts
+  s_516dc6ce68b8a5::t_40df7df0fe3b37 1-21
+scripts/lib/load.ts
+  s_516dc6ce68b8a5::t_1c04d2e79971a3 1-98
+scripts/lib/validate.ts
+  s_516dc6ce68b8a5::t_ed8d43ba7ee51a 1-319
+scripts/validate.ts
+  s_516dc6ce68b8a5::t_6a2d15aac05937 1-30
+tests/fixtures/content.ts
+  s_516dc6ce68b8a5::t_93df5fd5768616 1-50
+tests/fixtures/factory.ts
+  s_516dc6ce68b8a5::t_f9295c610e7337 1-104
+tests/validate.test.ts
+  s_516dc6ce68b8a5::t_ac389ed02ed4e2 1-239
+data/categories.yaml
+  s_516dc6ce68b8a5::t_afe89db33414fd 1-51
+schemas/common.ts
+  s_516dc6ce68b8a5::t_80b34c53ee92ee 1-125
+scripts/export-json-schemas.ts
+  s_516dc6ce68b8a5::t_53cfd1c2bee086 1-10
+scripts/lib/hash.ts
+  s_516dc6ce68b8a5::t_f24e84db225b19 1-33
+tests/json-schemas.test.ts
+  s_516dc6ce68b8a5::t_226d7507bbb884 1-18
+tests/schema.test.ts
+  s_516dc6ce68b8a5::t_789c95736d42c5 1-65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "94b8adc29a2e77375ffaa882e59fd19320dd41c5",
+  "prompts": {},
+  "sessions": {
+    "s_516dc6ce68b8a5": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "1dbc9967-8bf3-4699-a118-c52e2feaa754",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
