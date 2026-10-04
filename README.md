@@ -4,7 +4,7 @@
 
 AI Data Connectors is a guide to bringing business data into LLMs and AI tools with [Coupler.io](https://www.coupler.io/). Coupler.io imports data from more than 400 apps, such as Google Ads, Google Analytics 4, QuickBooks, and Pipedrive, keeps it fresh on a schedule, and serves it to ChatGPT, Claude, Gemini, Microsoft Copilot Studio, Cursor, Perplexity, or any MCP-compatible client through its own MCP server. You then ask questions about your numbers in plain language, with no SQL, exports, or copy-paste.
 
-[Coupler.io AI integrations](https://www.coupler.io/ai-integrations) · [How the Coupler.io MCP server works](https://docs.coupler.io/ai/mcp)
+[Coupler.io AI integrations](https://www.coupler.io/ai-integrations) · [How the Coupler.io MCP server works](https://docs.coupler.io/ai/mcp) · [Browse the directory](https://paladiy.github.io/ai-data-connectors/)
 
 ## How to connect your business data to an LLM
 
@@ -47,12 +47,12 @@ Each source below has a researched guide, readable here in Markdown, that explai
 
 | Source | Example question | Guides |
 | --- | --- | --- |
-| Facebook Ads | “Which ad sets increased spend last month without a matching rise in purchases, and which creatives were they running?” | [Setup guide](sources/facebook-ads/README.md) · [Facebook Ads on Coupler.io](https://www.coupler.io/claude-integrations/facebook-ads-to-claude) |
-| Google Ads | “Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?” | [Setup guide](sources/google-ads/README.md) · [Google Ads on Coupler.io](https://www.coupler.io/claude-integrations/google-ads-to-claude) |
-| Google Analytics 4 | “Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?” | [Setup guide](sources/google-analytics-4/README.md) · [Google Analytics 4 on Coupler.io](https://www.coupler.io/claude-integrations/google-analytics-to-claude) |
-| Google Search Console | “Which pages lost the most clicks year over year, and did their average position or their CTR move first?” | [Setup guide](sources/google-search-console/README.md) · [Google Search Console on Coupler.io](https://www.coupler.io/claude-integrations/google-search-console-to-claude) |
-| Pipedrive | “Which deals have sat in the same stage longest, and what are they worth in total by owner?” | [Setup guide](sources/pipedrive/README.md) · [Pipedrive on Coupler.io](https://www.coupler.io/claude-integrations/pipedrive-to-claude) |
-| QuickBooks Online | “Which vendors did we spend the most with last quarter, and how does that compare with the quarter before?” | [Setup guide](sources/quickbooks-online/README.md) · [QuickBooks Online on Coupler.io](https://www.coupler.io/claude-integrations/quickbooks-to-claude) |
+| Facebook Ads | “Which ad sets increased spend last month without a matching rise in purchases, and which creatives were they running?” | [Setup guide](sources/facebook-ads/README.md) · [Website](https://paladiy.github.io/ai-data-connectors/sources/facebook-ads/) · [Facebook Ads on Coupler.io](https://www.coupler.io/claude-integrations/facebook-ads-to-claude) |
+| Google Ads | “Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?” | [Setup guide](sources/google-ads/README.md) · [Website](https://paladiy.github.io/ai-data-connectors/sources/google-ads/) · [Google Ads on Coupler.io](https://www.coupler.io/claude-integrations/google-ads-to-claude) |
+| Google Analytics 4 | “Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?” | [Setup guide](sources/google-analytics-4/README.md) · [Website](https://paladiy.github.io/ai-data-connectors/sources/google-analytics-4/) · [Google Analytics 4 on Coupler.io](https://www.coupler.io/claude-integrations/google-analytics-to-claude) |
+| Google Search Console | “Which pages lost the most clicks year over year, and did their average position or their CTR move first?” | [Setup guide](sources/google-search-console/README.md) · [Website](https://paladiy.github.io/ai-data-connectors/sources/google-search-console/) · [Google Search Console on Coupler.io](https://www.coupler.io/claude-integrations/google-search-console-to-claude) |
+| Pipedrive | “Which deals have sat in the same stage longest, and what are they worth in total by owner?” | [Setup guide](sources/pipedrive/README.md) · [Website](https://paladiy.github.io/ai-data-connectors/sources/pipedrive/) · [Pipedrive on Coupler.io](https://www.coupler.io/claude-integrations/pipedrive-to-claude) |
+| QuickBooks Online | “Which vendors did we spend the most with last quarter, and how does that compare with the quarter before?” | [Setup guide](sources/quickbooks-online/README.md) · [Website](https://paladiy.github.io/ai-data-connectors/sources/quickbooks-online/) · [QuickBooks Online on Coupler.io](https://www.coupler.io/claude-integrations/quickbooks-to-claude) |
 
 ## Frequently asked questions
 
@@ -92,7 +92,7 @@ Each source has its own folder in `sources/`: `source.yaml` is the record, and `
 
 It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a source appears once it is documented with cited evidence.
 
-The public website URL is not configured yet.
+Website: [AI Data Connectors](https://paladiy.github.io/ai-data-connectors/)
 
 ### How claims are recorded
 

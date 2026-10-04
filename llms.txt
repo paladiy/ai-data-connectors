@@ -20,3 +20,5 @@ Each guide is a single plain-Markdown file covering one data source: what Couple
 ## Optional
 
 - [README](https://github.com/paladiy/ai-data-connectors#readme): how Coupler.io connects any of these sources to an LLM, and the full source list.
+- [Website](https://paladiy.github.io/ai-data-connectors/): the same guides as HTML, with search.
+- [Public dataset, schema version 1](https://paladiy.github.io/ai-data-connectors/connectors.json): every claim and its evidence as JSON.

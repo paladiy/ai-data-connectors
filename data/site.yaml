@@ -1,7 +1,7 @@
 name: AI Data Connectors
 tagline: Connect your business data to ChatGPT, Claude, Gemini, and any other LLM with Coupler.io, source by source.
 
-url: http://localhost:4321
+url: https://paladiy.github.io/ai-data-connectors/
 
 repo: paladiy/ai-data-connectors
 

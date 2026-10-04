@@ -8,6 +8,8 @@ import { Source } from "../schemas/source.ts";
 import { generateOutputs, writeOutputs } from "../scripts/lib/generate.ts";
 import { loadContent } from "../scripts/lib/load.ts";
 import { findBrokenLinks } from "../scripts/lib/links.ts";
+import { siteBase, siteUrl } from "../scripts/lib/site-url.ts";
+import type { SiteConfig } from "../schemas/site.ts";
 import { fixtureOption, fixtureOurOption, fixtureSource } from "./fixtures/factory.ts";
 import { validateContent } from "../scripts/lib/validate.ts";
 
@@ -29,6 +31,13 @@ function analyticsFixture(): Source {
 
 let root: string;
 let dist: string;
+let site: SiteConfig;
+
+/** Vitest exports Vite's env (BASE_URL, MODE, ...) to process.env, and a child Astro build would inherit them. */
+function withoutViteEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
+  const { BASE_URL: _base, MODE: _mode, DEV: _dev, PROD: _prod, SSR: _ssr, ...rest } = env;
+  return rest;
+}
 
 beforeAll(() => {
   mkdirSync(path.join(repo, ".tmp"), { recursive: true });
@@ -48,13 +57,14 @@ beforeAll(() => {
   writeFileSync(path.join(source, "source.yaml"), stringify(analyticsFixture()));
 
   const content = loadContent(root);
+  site = content.site;
   expect(validateContent(content, { allowReservedHosts: true })).toEqual([]);
   writeOutputs(root, generateOutputs(content));
 
   execFileSync(path.join(repo, "node_modules", ".bin", "astro"), ["build", "--root", path.join(root, "site")], {
     cwd: root,
     stdio: "pipe",
-    env: { ...process.env, ASTRO_TELEMETRY_DISABLED: "1" },
+    env: { ...withoutViteEnv(process.env), ASTRO_TELEMETRY_DISABLED: "1" },
   });
 }, 180_000);
 
@@ -85,7 +95,7 @@ describe("production build", () => {
   });
 
   it("has no broken internal links", () => {
-    expect(findBrokenLinks(dist)).toEqual([]);
+    expect(findBrokenLinks(dist, siteBase(site))).toEqual([]);
   });
 
   it("lists the published page in the sitemap and nothing else", () => {
@@ -103,7 +113,7 @@ describe("production build", () => {
 
   it("emits a self-referencing canonical and structured data on the guide", () => {
     const html = readFileSync(path.join(dist, "sources", "fixture-analytics", "index.html"), "utf8");
-    expect(html).toContain('rel="canonical" href="http://localhost:4321/sources/fixture-analytics/"');
+    expect(html).toContain(`rel="canonical" href="${siteUrl(site, "/sources/fixture-analytics/")}"`);
     expect(html).toContain('"@type":"WebPage"');
     expect(html).toContain('"@type":"BreadcrumbList"');
     expect(html).not.toContain("noindex");
