@@ -36,9 +36,10 @@ describe("markdown escaping", () => {
       summary: "Summary with {evil} and <img onerror=alert(1)> and | pipes",
       options: [fixtureOption({ name: "Route <b>bold</b>" }), fixtureOurOption()],
     });
-    expect(guide).not.toMatch(unescaped("<img"));
-    expect(guide).not.toMatch(unescaped("<b>"));
-    expect(guide).toContain("\\{evil\\}");
+    expect(guide).not.toContain("<img");
+    expect(guide).not.toContain("<b>");
+    expect(guide).toContain("&lt;img onerror=alert(1)&gt;");
+    expect(guide).toContain("Route &lt;b&gt;bold&lt;/b&gt;");
   });
 });
 
@@ -49,15 +50,15 @@ describe("connector page rendering", () => {
 
   it("shows undocumented capabilities as unknown rather than as a no", () => {
     const guide = guideFor({ options: [fixtureOption({ pricing: unknown() }), fixtureOurOption()] });
-    expect(guide).toContain("| Price note | Unknown |");
-    expect(guide).not.toContain("| Price note | No |");
+    expect(guide).toContain('<p class="sp-label">Cost</p><p class="sp-muted">Unknown</p>');
+    expect(guide).not.toContain("Cost</p><p>No");
   });
 
   it("keeps the note on an unknown claim so the page says what was checked", () => {
     const guide = guideFor({
       options: [
         fixtureOption({
-          directory_listing: {
+          history: {
             status: "unknown",
             value: null,
             evidence_ids: [],
@@ -67,7 +68,7 @@ describe("connector page rendering", () => {
         fixtureOurOption(),
       ],
     });
-    expect(guide).toContain("Unknown (the directory page could not be read)");
+    expect(guide).toContain("Unknown. the directory page could not be read");
   });
 
   it("explains a not-applicable claim", () => {
@@ -79,7 +80,7 @@ describe("connector page rendering", () => {
         fixtureOurOption(),
       ],
     });
-    expect(guide).toContain("Not applicable: The API returns live data only.");
+    expect(guide).toContain("Not applicable. The API returns live data only.");
   });
 
   it("orders vendor-maintained routes ahead of ours and manual export last", () => {
@@ -109,9 +110,9 @@ describe("connector page rendering", () => {
 
   it("renders enum values as human labels", () => {
     const guide = guideFor();
-    expect(guide).toContain("| Access | Read-only");
-    expect(guide).not.toMatch(/\| Access \| read \|/);
-    expect(guide).toContain("| Claude web | Supported |");
+    expect(guide).toContain("Read-only");
+    expect(guide).not.toContain(">read<");
+    expect(guide).toContain("<strong>Works in:</strong> Claude web, Claude desktop");
   });
 
   it("builds a prefilled correction link once the repository is configured", () => {

@@ -121,9 +121,19 @@ describe("production build", () => {
     expect(html).not.toContain("noindex");
   });
 
-  it("keeps the comparison table in the rendered page", () => {
+  it("renders the six page sections in order and drops the comparison table", () => {
     const html = readFileSync(path.join(dist, "sources", "fixture-analytics", "index.html"), "utf8");
-    expect(html).toContain("<table>");
+    const headings = [
+      "Description",
+      "How to install",
+      "What it can do",
+      "What data it has access to",
+      "Related skills",
+      "Related connectors",
+    ].map((heading) => html.indexOf(`>${heading}</h2>`));
+    expect(headings.every((index) => index > -1)).toBe(true);
+    expect(headings).toEqual([...headings].sort((a, b) => a - b));
+    expect(html).not.toContain("<table>");
     expect(html).not.toContain("utm_");
   });
 

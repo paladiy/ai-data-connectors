@@ -113,3 +113,47 @@ describe("site outputs", () => {
     }
   });
 });
+
+describe("source page structure", () => {
+  it("lists the six sections in order", () => {
+    const page = pageFor();
+    const order = [
+      "## Description",
+      "## How to install",
+      "## What it can do",
+      "## What data it has access to",
+      "## Related skills",
+      "## Related connectors",
+    ].map((heading) => page.indexOf(heading));
+    expect(order.every((index) => index > -1)).toBe(true);
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+    expect(page).not.toContain("Compare the options");
+  });
+
+  it("says plainly when no skill or related connector is listed", () => {
+    const page = pageFor();
+    expect(page).toContain("No source-specific skill listed yet.");
+    expect(page).toContain("No related connectors listed yet.");
+  });
+
+  it("lists each capability under its route and links skills with what they also need", () => {
+    const page = pageFor({
+      options: [
+        fixtureOption({ capabilities: [{ text: "Read fixture invoices.", evidence_ids: ["fx-docs"] }] }),
+        fixtureOurOption(),
+      ],
+      related_skills: [
+        {
+          name: "Fixture month-end close",
+          description: "Walks through a close.",
+          url: "https://skills.example.test/close",
+          also_needs: ["Fixture bank feed"],
+          evidence_ids: ["fx-docs"],
+        },
+      ],
+    });
+    expect(page).toContain("<li>Read fixture invoices.</li>");
+    expect(page).toContain('<a class="sp-route-link" href="https://skills.example.test/close">Fixture month-end close</a>');
+    expect(page).toContain("Also needs Fixture bank feed.");
+  });
+});
