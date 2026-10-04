@@ -1,0 +1,22 @@
+AGENTS.md
+  s_0da191e15f1dcc::t_97f48c58e81063 22
+  s_0da191e15f1dcc::t_259585c393ab85 31-32
+  s_0da191e15f1dcc::t_d5b3ff869d4927 3
+  s_0da191e15f1dcc::t_045c7369559287 42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "31884235da3607dcdbbd01543eebcabe835de399",
+  "prompts": {},
+  "sessions": {
+    "s_0da191e15f1dcc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ec8c60db-4427-49dc-a986-ce8931e0f67e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
