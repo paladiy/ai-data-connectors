@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Anchor,
   Badge,
-  Box,
   Button,
   Chip,
   Group,
@@ -74,14 +73,6 @@ function SourceItem({ source }: { source: Source }) {
       {source.name}
     </Anchor>
   );
-  const routes = (
-    <Text size="sm" c="dimmed" component="span" style={{ whiteSpace: "nowrap" }}>
-      <Text component="span" fw={600} c="var(--sl-color-white)" style={{ fontVariantNumeric: "tabular-nums" }}>
-        {source.routes}
-      </Text>{" "}
-      {source.routes === 1 ? "route" : "routes"}
-    </Text>
-  );
   const badges = (
     <Group gap={6} wrap="wrap" aria-label="Connection methods">
       {source.methods.map((id) => (
@@ -108,7 +99,6 @@ function SourceItem({ source }: { source: Source }) {
         </Text>
         {badges}
       </Stack>
-      <Box className="dx-col-routes">{routes}</Box>
     </Group>
   );
 }

@@ -128,11 +128,6 @@
   flex: 1;
   min-width: 0;
 }
-.dx-col-routes {
-  flex: 0 0 6.5rem;
-  text-align: end;
-}
-
 @media (max-width: 50rem) {
   .dx-item-list {
     flex-wrap: wrap !important;
@@ -140,9 +135,6 @@
   .dx-col-name,
   .dx-col-body {
     flex: 1 1 100%;
-  }
-  .dx-col-routes {
-    text-align: start;
   }
 }
 
