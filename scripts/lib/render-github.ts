@@ -9,7 +9,7 @@ export function pageTitle(source: ModelSource): string {
   return `Connect ${source.name} to ChatGPT, Claude, Gemini, and other LLMs`;
 }
 
-function websiteUrl(site: SiteConfig, path: string): string | null {
+export function websiteUrl(site: SiteConfig, path: string): string | null {
   if (!site.url.startsWith("https://")) return null;
   return new URL(path, site.url).toString();
 }

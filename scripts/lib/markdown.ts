@@ -1,10 +1,26 @@
 import type { Claim } from "../../schemas/common.ts";
 
-export function escapeText(value: string): string {
+function escapeInline(value: string): string {
   return value
     .replace(/\\/g, "\\\\")
     .replace(/([*_`[\]<>{}|#])/g, "\\$1")
-    .replace(/\r?\n/g, " ")
+    .replace(/\r?\n/g, " ");
+}
+
+export function escapeText(value: string): string {
+  return escapeInline(value).trim();
+}
+
+/**
+ * Keeps `code spans` intact and escapes everything around them. A code span renders its contents
+ * literally, so the passed-through text cannot become markup; the pattern excludes backticks, so
+ * it cannot close the span early either.
+ */
+export function escapeRichText(value: string): string {
+  return value
+    .split(/(`[^`\n]+`)/)
+    .map((part) => (part.startsWith("`") ? part : escapeInline(part)))
+    .join("")
     .trim();
 }
 

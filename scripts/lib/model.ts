@@ -73,6 +73,21 @@ export interface Model {
   sources: ModelSource[];
 }
 
+const TROUBLESHOOTING = /\b(why|slow|timing out|time out|error|fail|cannot|can't|not (?:see|load|work)|stuck|missing)\b/i;
+
+function faqRank(entry: ModelSource["faq"][number]): number {
+  if (TROUBLESHOOTING.test(entry.question)) return 2;
+  return /coupler\.io/i.test(entry.answer) ? 0 : 1;
+}
+
+/** Decision questions first, troubleshooting last, original order within each group. */
+export function orderFaq(faq: ModelSource["faq"]): ModelSource["faq"] {
+  return faq
+    .map((entry, index) => ({ entry, index }))
+    .sort((a, b) => faqRank(a.entry) - faqRank(b.entry) || a.index - b.index)
+    .map(({ entry }) => entry);
+}
+
 export function resolveWorksWith(option: Pick<Option, "works_with">, tools: AiTool[]): string[] {
   if (option.works_with === "all") return tools.map((tool) => tool.id);
   const wanted = new Set(option.works_with);

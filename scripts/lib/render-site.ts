@@ -1,7 +1,7 @@
 import { stringify } from "yaml";
 import type { SiteConfig } from "../../schemas/site.ts";
 import { escapeText, joinSections, link } from "./markdown.ts";
-import type { Model, ModelAiTools, ModelSource } from "./model.ts";
+import { orderFaq, type Model, type ModelAiTools, type ModelSource } from "./model.ts";
 import { pageTitle, correctionUrl } from "./render-github.ts";
 import { serializePublicDataset } from "./public-export.ts";
 import {
@@ -78,19 +78,9 @@ function headFor(site: SiteConfig, path: string, structuredData: unknown[]): Hea
   return tags;
 }
 
-const TROUBLESHOOTING = /\b(why|slow|timing out|time out|error|fail|cannot|can't|not (?:see|load|work)|stuck|missing)\b/i;
-
-function faqRank(entry: ModelSource["faq"][number]): number {
-  if (TROUBLESHOOTING.test(entry.question)) return 2;
-  return /coupler\.io/i.test(entry.answer) ? 0 : 1;
-}
-
 function faqSection(source: ModelSource): string | null {
   if (source.faq.length === 0) return null;
-  const ordered = source.faq
-    .map((entry, index) => ({ entry, index }))
-    .sort((a, b) => faqRank(a.entry) - faqRank(b.entry) || a.index - b.index)
-    .map(({ entry }) => entry);
+  const ordered = orderFaq(source.faq);
   const lines = ["## Questions", "", `<div class="sp-faq">`];
   ordered.forEach((entry, index) => {
     lines.push(

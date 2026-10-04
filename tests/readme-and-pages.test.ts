@@ -210,16 +210,17 @@ describe("generation", () => {
     expect([...second.files.entries()]).toEqual([...first.files.entries()]);
   });
 
-  it("commits only the README", () => {
+  it("commits the README and one Markdown guide per source", () => {
     const committed = committedOutputs(generateOutputs(fixtureContent([fixtureRecord()])));
-    expect([...committed.files.keys()]).toEqual(["README.md"]);
-    expect(committed.ownedDirectories).toEqual([]);
+    expect([...committed.files.keys()]).toEqual(["guides/fixture-source.md", "README.md"]);
+    expect(committed.ownedDirectories).toEqual(["guides"]);
   });
 
   it("owns only the directories it regenerates", () => {
     expect(generateOutputs(fixtureContent([])).ownedDirectories).toEqual([
       "site/src/generated",
       "site/src/content/docs/sources",
+      "guides",
     ]);
   });
 

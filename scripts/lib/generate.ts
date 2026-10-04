@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync
 import path from "node:path";
 import type { Content } from "./load.ts";
 import { buildModel, type Model } from "./model.ts";
+import { renderGuide } from "./render-guide.ts";
 import { renderReadme } from "./render-github.ts";
 import {
   buildDirectoryData,
@@ -20,6 +21,9 @@ export interface Outputs {
 
 function githubOutputs(model: Model): Map<string, string> {
   const files = new Map<string, string>([["README.md", renderReadme(model)]]);
+  for (const source of model.sources) {
+    files.set(`guides/${source.slug}.md`, renderGuide(source, model.site, model.ai_tools));
+  }
   return files;
 }
 
@@ -45,6 +49,9 @@ export const SITE_OUTPUT_DIRECTORIES = [
   "site/src/content/docs/sources",
 ];
 
+/** Owned so that removing a source record also removes its committed guide. */
+export const COMMITTED_OUTPUT_DIRECTORIES = ["guides"];
+
 export function generateOutputs(content: Content): Outputs {
   const model = buildModel(content);
 
@@ -52,14 +59,17 @@ export function generateOutputs(content: Content): Outputs {
     ...githubOutputs(model),
     ...siteOutputs(model),
   ]);
-  return { files: sortFiles(files), ownedDirectories: [...SITE_OUTPUT_DIRECTORIES] };
+  return {
+    files: sortFiles(files),
+    ownedDirectories: [...SITE_OUTPUT_DIRECTORIES, ...COMMITTED_OUTPUT_DIRECTORIES],
+  };
 }
 
+const COMMITTED = (file: string) => file === "README.md" || file.startsWith("guides/");
+
 export function committedOutputs(outputs: Outputs): Outputs {
-  const files = new Map(
-    [...outputs.files].filter(([file]) => file === "README.md"),
-  );
-  return { files, ownedDirectories: [] };
+  const files = new Map([...outputs.files].filter(([file]) => COMMITTED(file)));
+  return { files, ownedDirectories: [...COMMITTED_OUTPUT_DIRECTORIES] };
 }
 
 function sortFiles(files: Map<string, string>): Map<string, string> {

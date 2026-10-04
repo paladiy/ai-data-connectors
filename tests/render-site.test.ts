@@ -81,9 +81,9 @@ describe("site outputs", () => {
     expect(outputs.files.get("site/public/llms.txt")).toContain("## Connectors");
   });
 
-  it("generate no categories, guides, or header files", () => {
+  it("generate no categories or header files", () => {
     const keys = [...generateOutputs(content).files.keys()];
-    expect(keys.filter((key) => /categories|guides|_headers/.test(key))).toEqual([]);
+    expect(keys.filter((key) => /categories|_headers/.test(key))).toEqual([]);
   });
 
   it("omit internal references from every generated file", () => {
