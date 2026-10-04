@@ -96,10 +96,11 @@ describe("connector page rendering", () => {
     expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
-  it("records the research date and evidence links", () => {
+  it("records the research date without an evidence list", () => {
     const guide = guideFor();
     expect(guide).toContain("researched on 2026-09-01.");
-    expect(guide).toContain("[Fixture docs](https://vendor.example.test/docs)");
+    expect(guide).not.toContain("### Evidence");
+    expect(guide).not.toContain("https://vendor.example.test/docs");
   });
 
   it("omits the correction link rather than explaining it is unconfigured", () => {

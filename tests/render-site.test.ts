@@ -51,8 +51,10 @@ describe("source page", () => {
     expect(JSON.stringify(frontmatterOf(pageFor()).head)).not.toContain("noindex");
   });
 
-  it("explains how claims are checked without hedging about the site itself", () => {
-    expect(pageFor()).toContain("Each claim cites the evidence listed at the end of this page.");
+  it("does not render an evidence list or point to one", () => {
+    const page = pageFor();
+    expect(page).not.toContain("### Evidence");
+    expect(page).not.toContain("cites the evidence");
   });
 
   it("lists aliases as visible text so search can match them", () => {
@@ -115,13 +117,11 @@ describe("site outputs", () => {
 });
 
 describe("source page structure", () => {
-  it("lists the six sections in order", () => {
+  it("lists the sections in order", () => {
     const page = pageFor();
     const order = [
       "## Description",
-      "## How to install",
-      "## What it can do",
-      "## What data it has access to",
+      "## Connection routes",
       "## Related skills",
       "## Related connectors",
     ].map((heading) => page.indexOf(heading));

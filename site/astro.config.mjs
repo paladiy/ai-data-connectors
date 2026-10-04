@@ -6,6 +6,7 @@ import react from "@astrojs/react";
 
 const generated = fileURLToPath(new URL("./src/generated/site.json", import.meta.url));
 
+const directoryPath = fileURLToPath(new URL("./src/generated/directory.json", import.meta.url));
 let site;
 try {
   site = JSON.parse(readFileSync(generated, "utf8"));
@@ -15,6 +16,11 @@ try {
       "or use `npm run build`, which generates before building.",
   );
 }
+
+// Every connector in the sidebar, so any source page can move to any other.
+const sources = JSON.parse(readFileSync(directoryPath, "utf8")).sources
+  .map((entry) => ({ label: entry.name, link: `/sources/${entry.slug}/` }))
+  .sort((a, b) => a.label.localeCompare(b.label, "en", { sensitivity: "base", numeric: true }));
 
 export default defineConfig({
   site: site.url,
@@ -33,6 +39,7 @@ export default defineConfig({
       components: { Head: "./src/components/Head.astro" },
       sidebar: [
         { label: "All sources", link: "/" },
+        { label: "Connectors", items: sources },
         { label: "About", link: "/about/" },
       ],
     }),

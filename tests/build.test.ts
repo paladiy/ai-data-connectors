@@ -121,18 +121,19 @@ describe("production build", () => {
     expect(html).not.toContain("noindex");
   });
 
-  it("renders the six page sections in order and drops the comparison table", () => {
+  it("renders the page sections in order with a route switcher and drops the comparison table", () => {
     const html = readFileSync(path.join(dist, "sources", "fixture-analytics", "index.html"), "utf8");
     const headings = [
       "Description",
-      "How to install",
-      "What it can do",
-      "What data it has access to",
+      "Connection routes",
       "Related skills",
       "Related connectors",
     ].map((heading) => html.indexOf(`>${heading}</h2>`));
     expect(headings.every((index) => index > -1)).toBe(true);
     expect(headings).toEqual([...headings].sort((a, b) => a - b));
+    expect(html).toContain('class="sp-switch');
+    expect(html).toContain(">How to install</h3>");
+    expect(html).toContain(">What data it has access to</h3>");
     expect(html).not.toContain("<table>");
     expect(html).not.toContain("utm_");
   });

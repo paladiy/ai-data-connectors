@@ -352,3 +352,194 @@
     gap: 0.25rem;
   }
 }
+
+/* ---------- Route switcher ----------
+   Radios come first, then the cards that pick a route, then one panel per route. Selection is CSS
+   only (nth-of-type pairs radio n with card n and panel n), so it works without JavaScript. */
+
+.sp-switch {
+  margin-block-start: 1rem;
+}
+
+.sp-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sp-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.75rem;
+}
+
+.sp-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.875rem 1rem 1rem;
+  border: 1px solid var(--sl-color-hairline);
+  border-block-start: 3px solid var(--sl-color-hairline);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 120ms, border-color 120ms;
+}
+.sp-tab:hover {
+  background: var(--sl-color-bg-nav);
+}
+.sp-tab-name {
+  font-size: var(--sl-text-lg);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--sl-color-white);
+}
+.sp-tab-meta,
+.sp-tab-best {
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+}
+.sp-tab .sp-badges {
+  margin-block: 0.125rem;
+}
+
+/* Compact switcher that stays in view while a long panel scrolls. */
+.sp-pillbar {
+  position: sticky;
+  top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height, 0px));
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-block-start: 1.5rem;
+  padding-block: 0.5rem;
+  background: var(--sl-color-bg);
+  border-block-end: 1px solid var(--sl-color-hairline);
+}
+.sp-switch.sp-js:not(.sp-away) .sp-pillbar {
+  visibility: hidden;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.sp-pill {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+  cursor: pointer;
+}
+.sp-pill:hover {
+  color: var(--sl-color-white);
+}
+
+.sp-panel {
+  display: none;
+}
+.sp-panel-intro {
+  margin-block: 1.25rem 0;
+  max-width: 44rem;
+}
+.sp-panel .sp-route:first-of-type {
+  margin-block-start: 1rem;
+}
+.sp-panel .sp-route-head {
+  top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height, 0px) + 3.5rem);
+}
+.sp-panel--limited .sp-panel-intro {
+  padding-inline-start: 1rem;
+  border-inline-start: 2px dashed var(--sl-color-gray-4);
+}
+
+/* Radio n selects card n, pill n, and panel n. Up to six routes. */
+.sp-switch:has(> .sp-radio:nth-of-type(1):checked) > .sp-panel:nth-of-type(3) { display: block; }
+.sp-switch:has(> .sp-radio:nth-of-type(1):checked) .sp-tab:nth-of-type(1) {
+  border-color: var(--sl-color-accent);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(1):checked) .sp-pill:nth-of-type(1) {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-white);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(1):focus-visible) :is(.sp-tab, .sp-pill):nth-of-type(1) {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+.sp-switch:has(> .sp-radio:nth-of-type(2):checked) > .sp-panel:nth-of-type(4) { display: block; }
+.sp-switch:has(> .sp-radio:nth-of-type(2):checked) .sp-tab:nth-of-type(2) {
+  border-color: var(--sl-color-accent);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(2):checked) .sp-pill:nth-of-type(2) {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-white);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(2):focus-visible) :is(.sp-tab, .sp-pill):nth-of-type(2) {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+.sp-switch:has(> .sp-radio:nth-of-type(3):checked) > .sp-panel:nth-of-type(5) { display: block; }
+.sp-switch:has(> .sp-radio:nth-of-type(3):checked) .sp-tab:nth-of-type(3) {
+  border-color: var(--sl-color-accent);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(3):checked) .sp-pill:nth-of-type(3) {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-white);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(3):focus-visible) :is(.sp-tab, .sp-pill):nth-of-type(3) {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+.sp-switch:has(> .sp-radio:nth-of-type(4):checked) > .sp-panel:nth-of-type(6) { display: block; }
+.sp-switch:has(> .sp-radio:nth-of-type(4):checked) .sp-tab:nth-of-type(4) {
+  border-color: var(--sl-color-accent);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(4):checked) .sp-pill:nth-of-type(4) {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-white);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(4):focus-visible) :is(.sp-tab, .sp-pill):nth-of-type(4) {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+.sp-switch:has(> .sp-radio:nth-of-type(5):checked) > .sp-panel:nth-of-type(7) { display: block; }
+.sp-switch:has(> .sp-radio:nth-of-type(5):checked) .sp-tab:nth-of-type(5) {
+  border-color: var(--sl-color-accent);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(5):checked) .sp-pill:nth-of-type(5) {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-white);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(5):focus-visible) :is(.sp-tab, .sp-pill):nth-of-type(5) {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+.sp-switch:has(> .sp-radio:nth-of-type(6):checked) > .sp-panel:nth-of-type(8) { display: block; }
+.sp-switch:has(> .sp-radio:nth-of-type(6):checked) .sp-tab:nth-of-type(6) {
+  border-color: var(--sl-color-accent);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(6):checked) .sp-pill:nth-of-type(6) {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-white);
+  background: var(--sl-color-bg-nav);
+}
+.sp-switch:has(> .sp-radio:nth-of-type(6):focus-visible) :is(.sp-tab, .sp-pill):nth-of-type(6) {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-tab {
+    transition: none;
+  }
+}

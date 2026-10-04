@@ -4,8 +4,8 @@ import { formatValue } from "./markdown.ts";
 import { SURFACE_LABELS, type ModelOption, type ModelSource } from "./model.ts";
 
 /**
- * Body of a source page, in the order a reader decides things: what this is, how to install it,
- * what it can do, what data it reaches, then where to go next.
+ * Body of a source page: what this is, then one route switcher whose selected route shows how to
+ * install it, what it can do, and what data it reaches, then where to go next.
  *
  * Every block is emitted as HTML with no blank lines inside it, so Markdown never re-parses the
  * content. All record text goes through escapeHtml; only https URLs from validated records reach
@@ -52,13 +52,13 @@ function availabilityBadge(option: ModelOption): string | null {
   return null;
 }
 
-function badgesFor(option: ModelOption): string {
+function badgesFor(option: ModelOption, tag: "p" | "span" = "p"): string {
   const parts = [
     option.provider === "Coupler.io" ? badge("Recommended", "accent") : null,
     badge(accessLabel(option), option.access.status === "known" && option.access.value === "read_write" ? "accent" : "plain"),
     availabilityBadge(option),
   ].filter((part): part is string => part !== null);
-  return `<p class="sp-badges">${parts.join("")}</p>`;
+  return `<${tag} class="sp-badges">${parts.join("")}</${tag}>`;
 }
 
 /** Plain text of a claim, with a stated reason when there is nothing to show. */
@@ -78,52 +78,26 @@ function fact(label: string, claim: Claim<unknown>): string {
   return `<div class="sp-fact"><dt>${e(label)}</dt><dd>${claimBlock(claim)}</dd></div>`;
 }
 
-function routeHeading(option: ModelOption, prefix: string): string {
-  return (
-    `<div class="sp-route-head"><h3 id="${prefix}-${e(option.id)}">${e(option.name)}</h3>` +
-    `<p>${e(option.provider)} · ${e(option.method_label)}</p></div>`
-  );
-}
-
-function route(option: ModelOption, prefix: string, body: string[]): string {
-  const limited = option.route_status.status === "known" && option.route_status.value !== "available";
-  const cls = limited ? "sp-route sp-route--limited not-content" : "sp-route not-content";
-  return `<article class="${cls}">${routeHeading(option, prefix)}<div class="sp-route-body">${body.join("")}</div></article>`;
-}
-
 /* ---------- Description ---------- */
-
-function bestFor(source: ModelSource, option: ModelOption): string | null {
-  const jobs = source.recommendations.filter((recommendation) => recommendation.option_id === option.id);
-  return jobs.length > 0 ? jobs.map((job) => job.job).join("; ") : null;
-}
-
-function routeList(source: ModelSource): string {
-  const items = source.options.map((option) => {
-    const best = bestFor(source, option);
-    return (
-      `<a class="sp-route-link" href="#install-${e(option.id)}">${e(option.name)}</a>` +
-      `<span class="sp-route-meta">${e(option.provider)} · ${e(option.method_label)} · ${e(option.maintainer_label)}</span>` +
-      badgesFor(option) +
-      (best ? `<span class="sp-route-best">Best for: ${e(best)}</span>` : "")
-    );
-  });
-  return list(items, "sp-routes not-content");
-}
 
 export function descriptionSection(source: ModelSource): string[] {
   const out = ["## Description", `<p>${e(source.summary)}</p>`];
   if (source.aliases.length > 0) {
     out.push(`<p class="sp-muted">Also searched as ${source.aliases.map(e).join(", ")}.</p>`);
   }
-  out.push(routeList(source));
-  out.push(
-    `<p class="sp-muted">Each claim cites the evidence listed at the end of this page. Where a capability is not documented, it says so instead of guessing.</p>`,
-  );
+  out.push(`<p class="sp-muted">Where a capability is not documented, this page says so instead of guessing.</p>`);
   return out;
 }
 
-/* ---------- How to install ---------- */
+/* ---------- Connection routes ----------
+   One switcher for the whole source. A route is chosen once, with a radio input, and its install
+   steps, capabilities, and data show together. Without JavaScript the radios still work (CSS only);
+   a small script in Head.astro adds deep links (#install-notfair opens that route). */
+
+function bestFor(source: ModelSource, option: ModelOption): string | null {
+  const jobs = source.recommendations.filter((recommendation) => recommendation.option_id === option.id);
+  return jobs.length > 0 ? jobs.map((job) => job.job).join("; ") : null;
+}
 
 function worksIn(option: ModelOption): string {
   const supported: string[] = [];
@@ -153,7 +127,6 @@ function setupTime(option: ModelOption): string {
 
 function installBody(option: ModelOption): string[] {
   const out: string[] = [];
-  if (option.description) out.push(`<p>${e(option.description)}</p>`);
   out.push(worksIn(option));
 
   if (option.prerequisites.status === "known") {
@@ -189,16 +162,6 @@ function installBody(option: ModelOption): string[] {
   return out.filter((part) => part !== "");
 }
 
-export function installSection(source: ModelSource): string[] {
-  return [
-    "## How to install",
-    `<p>Pick one route. Each lists what you need first, then the steps, then how to confirm it worked.</p>`,
-    ...source.options.map((option) => route(option, "install", installBody(option))),
-  ];
-}
-
-/* ---------- What it can do ---------- */
-
 function limitsBlock(option: ModelOption): string {
   if (option.limits.status !== "known") return "";
   const value = option.limits.value;
@@ -207,7 +170,7 @@ function limitsBlock(option: ModelOption): string {
 }
 
 function canDoBody(option: ModelOption): string[] {
-  const out: string[] = [badgesFor(option)];
+  const out: string[] = [];
   if (option.access.status === "known" && option.access.note) {
     out.push(`<p class="sp-note">${e(option.access.note)}</p>`);
   }
@@ -223,12 +186,6 @@ function canDoBody(option: ModelOption): string[] {
   return out.filter((part) => part !== "");
 }
 
-export function canDoSection(source: ModelSource): string[] {
-  return ["## What it can do", ...source.options.map((option) => route(option, "can-do", canDoBody(option)))];
-}
-
-/* ---------- What data it has access to ---------- */
-
 function dataBody(option: ModelOption): string[] {
   return [
     `<p class="sp-label">Data available</p>`,
@@ -242,8 +199,60 @@ function dataBody(option: ModelOption): string[] {
   ];
 }
 
-export function dataSection(source: ModelSource): string[] {
-  return ["## What data it has access to", ...source.options.map((option) => route(option, "data", dataBody(option)))];
+function section(option: ModelOption, kind: "install" | "can-do" | "data", title: string, body: string[]): string {
+  return (
+    `<section class="sp-route"><div class="sp-route-head"><h3 id="${kind}-${e(option.id)}">${e(title)}</h3></div>` +
+    `<div class="sp-route-body">${body.join("")}</div></section>`
+  );
+}
+
+function tabCard(option: ModelOption, source: ModelSource, index: number): string {
+  const best = bestFor(source, option);
+  return (
+    `<label class="sp-tab" for="route-${index}-${e(option.id)}">` +
+    `<span class="sp-tab-name">${e(option.name)}</span>` +
+    `<span class="sp-tab-meta">${e(option.provider)} · ${e(option.method_label)} · ${e(option.maintainer_label)}</span>` +
+    badgesFor(option, "span") +
+    (best ? `<span class="sp-tab-best">Best for: ${e(best)}</span>` : "") +
+    `</label>`
+  );
+}
+
+function compactTab(option: ModelOption, index: number): string {
+  return `<label class="sp-pill" for="route-${index}-${e(option.id)}">${e(option.name)}</label>`;
+}
+
+function panel(option: ModelOption): string {
+  const limited = option.route_status.status === "known" && option.route_status.value !== "available";
+  const intro = option.description ? `<p class="sp-panel-intro">${e(option.description)}</p>` : "";
+  return (
+    `<div class="sp-panel${limited ? " sp-panel--limited" : ""}" data-option="${e(option.id)}">` +
+    intro +
+    section(option, "install", "How to install", installBody(option)) +
+    section(option, "can-do", "What it can do", canDoBody(option)) +
+    section(option, "data", "What data it has access to", dataBody(option)) +
+    `</div>`
+  );
+}
+
+export function routesSection(source: ModelSource): string[] {
+  const options = source.options;
+  const radios = options
+    .map(
+      (option, i) =>
+        `<input class="sp-radio" type="radio" name="sp-route" id="route-${i + 1}-${e(option.id)}" data-option="${e(option.id)}"${i === 0 ? " checked" : ""}>`,
+    )
+    .join("");
+  const cards = options.map((option, i) => tabCard(option, source, i + 1)).join("");
+  const pills = options.map((option, i) => compactTab(option, i + 1)).join("");
+  return [
+    "## Connection routes",
+    `<p>${options.length === 1 ? "One route is recorded." : `Choose a route. ${options.length} are recorded.`} Each one shows what you need first, the steps, what Claude can then do, and which data it reaches.</p>`,
+    `<div class="sp-switch not-content">${radios}<div class="sp-tabs">${cards}</div>` +
+      `<div class="sp-pillbar" aria-label="Switch route">${pills}</div>` +
+      options.map((option) => panel(option)).join("") +
+      `</div>`,
+  ];
 }
 
 /* ---------- Related skills and connectors ---------- */

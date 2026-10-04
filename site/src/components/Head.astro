@@ -3,3 +3,45 @@ import Default from "@astrojs/starlight/components/Head.astro";
 ---
 
 <Default><slot /></Default>
+
+<script>
+  // Route switcher on source pages: open the route a link points to, and keep the choice in the URL.
+  const radios = () => Array.from(document.querySelectorAll<HTMLInputElement>(".sp-radio"));
+
+  function openFromHash() {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+    const target = document.getElementById(id);
+    const panel = target?.closest<HTMLElement>(".sp-panel");
+    const option = panel?.dataset.option ?? (id.startsWith("route-") ? id : undefined);
+    const radio = radios().find((r) => r.dataset.option === option || r.id === id);
+    if (!radio) return;
+    radio.checked = true;
+    if (target && panel) target.scrollIntoView();
+  }
+
+  function init() {
+    const all = radios();
+    if (all.length === 0) return;
+    openFromHash();
+    for (const radio of all) {
+      radio.addEventListener("change", () => {
+        history.replaceState(null, "", `#${radio.id}`);
+      });
+    }
+    window.addEventListener("hashchange", openFromHash);
+
+    // The compact bar only appears once the full route cards have scrolled out of view.
+    const tabs = document.querySelector(".sp-tabs");
+    const wrap = document.querySelector(".sp-switch");
+    if (tabs && wrap && "IntersectionObserver" in window) {
+      wrap.classList.add("sp-js");
+      const top = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sl-nav-height")) * 16 || 64;
+      new IntersectionObserver(([entry]) => wrap.classList.toggle("sp-away", !entry.isIntersecting), {
+        rootMargin: `-${top}px 0px 0px 0px`,
+      }).observe(tabs);
+    }
+  }
+
+  init();
+</script>

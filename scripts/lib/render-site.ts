@@ -5,11 +5,9 @@ import type { Model, ModelSource } from "./model.ts";
 import { pageTitle, correctionUrl } from "./render-github.ts";
 import { serializePublicDataset } from "./public-export.ts";
 import {
-  canDoSection,
   connectorsSection,
-  dataSection,
   descriptionSection,
-  installSection,
+  routesSection,
   skillsSection,
 } from "./render-source-page.ts";
 
@@ -94,12 +92,6 @@ function sourcesSection(source: ModelSource, site: SiteConfig): string {
   const lines = ["## Sources and corrections"];
   lines.push("", `Alternatives were researched on ${source.research.searched_on}. ${escapeText(source.research.coverage_note)}`);
 
-  if (source.evidence.length > 0) {
-    lines.push("", "### Evidence", "");
-    for (const item of source.evidence) {
-      lines.push(`- ${link(item.title, item.url!)} — ${escapeText(item.publisher)}, checked ${item.checked_on}`);
-    }
-  }
   const correction = correctionUrl(site, source);
   lines.push(
     "",
@@ -132,9 +124,7 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
       head,
     }),
     ...descriptionSection(source),
-    ...installSection(source),
-    ...canDoSection(source),
-    ...dataSection(source),
+    ...routesSection(source),
     ...skillsSection(source),
     ...connectorsSection(source),
     faqSection(source),
