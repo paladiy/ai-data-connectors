@@ -1,0 +1,838 @@
+# Every known claim below cites evidence that was read on the recorded date. Anything that the
+# cited documentation does not state is left as status: unknown with a null value.
+schema_version: 1
+id: google-ads
+slug: google-ads
+name: Google Ads
+aliases:
+  - AdWords
+  - Google Adwords
+summary: >-
+  Google ships an official Google Ads MCP server, but its documentation never names a Claude app,
+  so following it means wiring up a generic MCP client yourself. The practical routes are a
+  scheduled import, a third-party connector that can act on campaigns with your approval, or a
+  plain export. This guide compares what each reaches and what it costs you in setup.
+
+meta_description: Compare ways to connect Google Ads to Claude, with evidence for every capability claim.
+
+research:
+  searched_on: "2026-10-04"
+  checked_urls:
+    - https://docs.coupler.io/sources/category/ppc/google-ads
+    - https://docs.coupler.io/sources/category/ppc/google-ads/data-overview
+    - https://docs.coupler.io/sources/category/ppc/google-ads/faq
+    - https://docs.coupler.io/sources/category/ppc/google-ads/common-issues
+    - https://docs.coupler.io/sources/category/ppc/google-ads/best-practices
+    - https://docs.coupler.io/destinations/categories/ai/claude
+    - https://docs.coupler.io/destinations/categories/ai/claude/faq
+    - https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    - https://docs.coupler.io/ai/mcp
+    - https://claude.com/connectors/coupler-io
+    - https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
+    - https://support.claude.com/en/articles/8241126-upload-files-to-claude
+    - https://developers.google.com/google-ads/api/docs/developer-toolkit/mcp-server
+    - https://notfair.co/google-ads-claude-connector-setup-guide
+    - https://support.google.com/google-ads/answer/2404176
+  coverage_note: >-
+    Four routes were researched on 4 October 2026: the Coupler.io data platform, Google's own
+    read-only MCP server, the third-party NotFair connector, and a manual export uploaded into a
+    conversation. No dedicated Google Ads entry was reachable in Claude's connector directory at the
+    obvious address, though several multi-source connectors list Google Ads among the platforms they
+    cover; the directory cannot be searched exhaustively, so no claim is made that none exists.
+
+evidence:
+  - id: cpl-claude-destination
+    url: https://docs.coupler.io/destinations/categories/ai/claude
+    title: Claude destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-faq
+    url: https://docs.coupler.io/destinations/categories/ai/claude/faq
+    title: Claude destination FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-issues
+    url: https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    title: Claude destination common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-free-pro
+    url: https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans
+    title: Claude connector tools do not load on Free and Pro plans
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-mcp
+    url: https://docs.coupler.io/ai/mcp
+    title: What the Coupler.io MCP server can and cannot do
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-refresh
+    url: https://docs.coupler.io/functionality/flow-settings/how-to-set-up-automatic-data-refresh
+    title: How to set up automatic data refresh
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ads-overview
+    url: https://docs.coupler.io/sources/category/ppc/google-ads
+    title: Google Ads source overview
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ads-data
+    url: https://docs.coupler.io/sources/category/ppc/google-ads/data-overview
+    title: Google Ads data overview
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ads-faq
+    url: https://docs.coupler.io/sources/category/ppc/google-ads/faq
+    title: Google Ads source FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ads-issues
+    url: https://docs.coupler.io/sources/category/ppc/google-ads/common-issues
+    title: Google Ads source common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ads-best
+    url: https://docs.coupler.io/sources/category/ppc/google-ads/best-practices
+    title: Google Ads best practices
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-ads-claude-page
+    url: https://www.coupler.io/claude-integrations/google-ads-to-claude
+    title: Connect Google Ads to Claude
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: dir-coupler-io
+    url: https://claude.com/connectors/coupler-io
+    title: Coupler.io in the Claude connectors directory
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: directory
+    public: true
+  - id: claude-connectors-help
+    url: https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
+    title: Use connectors to extend Claude's capabilities
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: claude-upload-files
+    url: https://support.claude.com/en/articles/8241126-upload-files-to-claude
+    title: Upload files to Claude
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: google-ads-mcp-docs
+    url: https://developers.google.com/google-ads/api/docs/developer-toolkit/mcp-server
+    title: Google Ads MCP server
+    publisher: Google
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: notfair-ads-guide
+    url: https://notfair.co/google-ads-claude-connector-setup-guide
+    title: Google Ads Claude connector setup guide
+    publisher: NotFair
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: ads-export-help
+    url: https://support.google.com/google-ads/answer/2404176
+    title: Create, save, and schedule reports from your statistics tables
+    publisher: Google
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+
+options:
+  - id: coupler-io
+    name: Coupler.io
+    provider: Coupler.io
+    method: data_platform
+    description: >-
+      Coupler.io imports a Google Ads report on a schedule and exposes the result to Claude through
+      its own MCP server, so Claude queries a stored dataset instead of calling the Ads API during
+      the conversation.
+
+    maintainer:
+      status: known
+      value: third_party
+      evidence_ids: [cpl-mcp, cpl-claude-destination]
+      note: Coupler.io builds and runs this connector and its MCP server.
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [cpl-claude-destination, cpl-ads-claude-page]
+
+    directory_listing:
+      status: known
+      value: https://claude.com/connectors/coupler-io
+      evidence_ids: [dir-coupler-io]
+      note: >-
+        The entry is marked Anthropic verified, credited to Coupler.io, added in November 2025, and
+        records sign-in as required. It lists four tools: get-data, get-schema, list-dataflows, and
+        get-dataflow
+
+    links:
+      overview: https://docs.coupler.io/sources/category/ppc/google-ads
+      setup: https://docs.coupler.io/destinations/categories/ai/claude
+
+    # The Claude destination page names each of these surfaces for a single web connector.
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination, cpl-claude-faq]
+      claude_desktop:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+        note: Local use with Claude Desktop is also described through a Desktop Extension
+      claude_code:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+        note: Connected with the /mcp command rather than the web connector
+      cowork:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [cpl-mcp, dir-coupler-io]
+      note: >-
+        Queries against imported data are read-only, and nothing in either source describes changing
+        campaigns, budgets, or bids. Coupler.io's own documentation also describes tools that change
+        your Coupler.io workspace, such as creating a data flow or triggering a run
+
+    data_available:
+      status: known
+      value:
+        - "Over 30 report types in total"
+        - "Frequently used: Campaign performance, Keywords performance, Ad group performance, Ad performance, Asset group performance, Custom GAQL"
+        - "Audience and demographics: Ad group audience performance, Campaign audience performance, Age range performance, Gender performance, User interest and user list"
+        - "Search and placement: Search query performance, Display keyword performance, Display topics performance, Placement performance, Landing page and Expanded landing page"
+        - "Geography and network: Geographic performance by country, state, or region, User location performance, Campaign performance by ad network type"
+        - "Other performance: Account performance, Click performance, Shopping performance, Responsive search ad performance, Video campaign performance"
+        - "Structural: Accounts, Campaigns, Ad groups, Ads. Settings: Campaign budgets, Campaign criterion, Campaign labels, Bidding strategies, Labels"
+        - "Metric categories: Budget, Clicks, Conversions, Cost, Performance, Cross sell and Sales, Video, Phone"
+        - "Time splits: Date, Day of week, Week, Month, Quarter, Year"
+      evidence_ids: [cpl-ads-data]
+      note: >-
+        Structural reports and Custom GAQL do not support time period splits, so one row per day is
+        not available for them
+
+    history:
+      status: known
+      value:
+        - "You set a start and end date; no hard limit on the range is stated, but long ranges with daily splits are slow"
+        - "For initial backfills the documentation recommends pulling in monthly or quarterly chunks to avoid API limits"
+      evidence_ids: [cpl-ads-faq, cpl-ads-best]
+      note: no fixed Google Ads retention window is stated
+
+    refresh:
+      status: known
+      value:
+        - A successful manual run is required before a schedule can be set
+        - Scheduled refresh is described as hourly, daily, or a custom interval
+        - The platform supports intervals from every 15 minutes to monthly, depending on plan
+      evidence_ids: [cpl-claude-faq, cpl-refresh]
+      note: Which intervals each plan allows is not documented
+
+    multi_source:
+      status: known
+      value:
+        - One data flow can take several sources and combine them with Join or Append before the data reaches Claude
+        - Google Ads is documented as merging with Google Analytics, Facebook Ads, CRM, or e-commerce data for a full-funnel view of spend and results
+      evidence_ids: [cpl-claude-faq, cpl-ads-overview]
+
+    prerequisites:
+      status: known
+      value:
+        - Standard or Admin access to each Google Ads account you want to pull from
+        - "Manager (MCC) access does not automatically grant data access to sub-accounts; each account needs explicit access"
+        - "The adwords permission must be granted during the OAuth flow"
+        - "Google Ads is a tenant-based source: each ad account selected counts as one account toward your Coupler.io plan limit"
+        - A Coupler.io account and a Claude account
+        - On a Claude Team or Enterprise plan, admin access is needed to add the connector
+      evidence_ids: [cpl-ads-overview, cpl-ads-issues, cpl-ads-faq, cpl-claude-destination]
+      note: read-only access to the ad account may not be sufficient for all report types
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no pricing page was checked for this record
+
+    data_path:
+      status: known
+      value: >-
+        Coupler.io reads the Google Ads API, stores the result as a dataset, and serves it to Claude
+        over its MCP server. Queries run on Coupler.io's side, so a large dataset does not have to
+        fit into the model's context. Claude sees only datasets from data flows that have Claude as
+        their destination.
+      evidence_ids: [cpl-mcp]
+
+    limits:
+      status: known
+      value:
+        - "Google Ads API quota can be exceeded globally or per account, returning a 429 with a retry delay; the documented fix is to wait roughly 4 hours for the quota to reset"
+        - "Rows with all-zero metrics are not returned by the API, so an ad or keyword with no activity in the period simply does not appear"
+        - "Low-volume search terms are grouped under Other search terms to meet Google's privacy thresholds"
+        - "Custom columns created in the Google Ads interface are not part of the API and cannot be pulled"
+        - "Impression share metrics are not summable across rows"
+        - "Performance Max campaigns have asset groups rather than traditional ads and ad groups"
+        - "Custom GAQL returns cost as cost_micros, which must be divided by 1,000,000"
+        - "Data is typically available within a few hours, but conversions may take 24 to 72 hours to finalise"
+        - The Claude destination replaces data on each run; append mode is not supported
+        - "On individual Claude Free and Pro plans the official connector may connect but fail to load its tools; a custom connector URL is documented as a workaround"
+      evidence_ids: [cpl-ads-data, cpl-ads-issues, cpl-ads-faq, cpl-claude-destination, cpl-claude-issues, cpl-claude-free-pro]
+
+    setup_steps:
+      - text: In Coupler.io, create a data flow and select Google Ads as the source, then choose the ad accounts.
+        evidence_ids: [cpl-ads-overview, cpl-ads-faq]
+      - text: Pick a report type, the metrics you need, and a time split such as Date or Month.
+        evidence_ids: [cpl-ads-data]
+      - text: For a large backfill, pull monthly or quarterly chunks rather than years at once.
+        evidence_ids: [cpl-ads-best]
+      - text: Choose Claude as the destination in the data flow's destination step.
+        evidence_ids: [cpl-claude-destination]
+      - text: Give the data flow a clear name, because Claude refers to the dataset by that name.
+        evidence_ids: [cpl-claude-destination]
+      - text: Run the data flow manually once, then set a refresh schedule after it succeeds.
+        evidence_ids: [cpl-claude-destination, cpl-claude-faq]
+
+    claude_configuration:
+      - text: Install the Coupler.io connector in Claude and click Connect, then connect again from the Connectors menu to authenticate.
+        evidence_ids: [cpl-claude-destination]
+      - text: For Claude Code, start a session, paste the connection command shown in the destination step, restart the session, then run /mcp and authorise in the browser.
+        evidence_ids: [cpl-claude-destination]
+      - text: Approve the tool request the first time Claude fetches data in a session.
+        evidence_ids: [cpl-claude-faq]
+      - text: On a Claude Team or Enterprise plan, ask a workspace admin to add the connector if the option is unavailable.
+        evidence_ids: [cpl-claude-issues]
+
+    sample_query: Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?
+
+    success_check:
+      text: >-
+        Open a new Claude chat and ask it to list the datasets it can see; the Google Ads data flow
+        should appear under the name you gave it. Then compare the row count Claude reports with the
+        run in Coupler.io, because the preview alone does not confirm what Claude received.
+      evidence_ids: [cpl-claude-destination, cpl-claude-issues]
+
+  - id: google-ads-mcp
+    name: Google Ads MCP server
+    provider: Google
+    method: local_mcp
+    description: >-
+      Google's own read-only MCP server, built around GAQL. Worth knowing about, but its
+      documentation never names Claude, Claude Code, or Claude Desktop, so there is no vendor-tested
+      Claude setup to follow and no supported surface recorded here.
+
+    maintainer:
+      status: known
+      value: source_vendor
+      evidence_ids: [google-ads-mcp-docs]
+      note: Published in Google's official Google Ads API developer documentation
+
+    route_status:
+      status: known
+      value: limited
+      evidence_ids: [google-ads-mcp-docs]
+      note: >-
+        The server itself is published and documented, but no Claude configuration is given, so
+        using it from Claude means adapting a generic MCP host example yourself
+
+    directory_listing:
+      status: not_applicable
+      value: null
+      evidence_ids: [google-ads-mcp-docs]
+      note: A self-run server is configured by hand in an MCP client, not added from Claude's directory
+
+    links:
+      overview: https://developers.google.com/google-ads/api/docs/developer-toolkit/mcp-server
+
+    # Google's page describes a generic MCP host configuration and names Gemini's settings file as
+    # its example. No Claude app is named anywhere on it.
+    surfaces:
+      claude_web:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Claude on the web
+      claude_desktop:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Claude Desktop
+      claude_code:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Claude Code
+      cowork:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Cowork
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [google-ads-mcp-docs]
+      note: >-
+        Google states the implementation is strictly read-only and cannot modify bids, pause
+        campaigns, or create new assets
+
+    data_available:
+      status: known
+      value:
+        - "list_accessible_customers: the Google Ads customer IDs and account names the authenticated user can reach"
+        - "search: runs Google Ads Query Language requests for resource metrics, budgets, and status"
+        - "get_resource_metadata: metadata about a Google Ads API resource type, such as campaign"
+      evidence_ids: [google-ads-mcp-docs]
+      note: >-
+        Because queries are written in GAQL, the reachable fields are those of the Google Ads API
+        rather than a fixed report list
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: the documentation states no retention or backfill window
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [google-ads-mcp-docs]
+      note: There is no import to schedule; the server queries the Google Ads API on demand
+
+    multi_source:
+      status: not_applicable
+      value: null
+      evidence_ids: [google-ads-mcp-docs]
+      note: This server reaches Google Ads only
+
+    prerequisites:
+      status: known
+      value:
+        - "A Google Cloud project whose Google Ads API access level is Explorer, Basic, or Standard"
+        - "OAuth 2.0 client ID and secret, or Application Default Credentials; a service account also works"
+        - "Developer tokens were sunset on 9 September 2026 and are no longer required, because access levels are tied to the Cloud project"
+        - "Python, and either stdio or a Cloud Run deployment for HTTP and SSE transport"
+      evidence_ids: [google-ads-mcp-docs]
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no price is stated for the server itself
+
+    data_path:
+      status: known
+      value: >-
+        The server runs as a local stdio process or as an HTTP and SSE service you deploy to Cloud
+        Run, authenticating with OAuth 2.0 or a service account, and queries the Google Ads API
+        directly.
+      evidence_ids: [google-ads-mcp-docs]
+
+    limits:
+      status: known
+      value:
+        - "Strictly read-only: it cannot modify bids, pause campaigns, or create new assets"
+        - "No Claude surface is documented; the configuration example is generic and the deployment section uses Gemini's settings file as its example"
+        - "Queries are written in GAQL, so this route expects familiarity with the Google Ads query language"
+      evidence_ids: [google-ads-mcp-docs]
+
+    setup_steps: []
+
+    claude_configuration: []
+
+    sample_query: List the accessible customer accounts, then use GAQL to pull campaign cost and conversions for the last 30 days.
+
+    success_check: null
+
+  - id: notfair
+    name: NotFair connector
+    provider: NotFair
+    method: remote_mcp
+    description: >-
+      A third-party remote connector that reads live Google Ads data and can also propose changes,
+      such as pausing campaigns or adjusting bids, with every write shown to you for confirmation
+      first.
+
+    maintainer:
+      status: known
+      value: third_party
+      evidence_ids: [notfair-ads-guide]
+      note: Built by NotFair, which connects to Google Ads on your behalf
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [notfair-ads-guide]
+
+    directory_listing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        NotFair describes itself as a published community connector in Claude's directory, but no
+        Anthropic listing page for it could be read at the expected address, so the listing is
+        recorded as the vendor's own claim rather than confirmed
+
+    links:
+      overview: https://notfair.co/google-ads-claude-connector-setup-guide
+
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [notfair-ads-guide]
+        note: Named as working anywhere Claude supports remote connectors, including Claude.ai on the web
+      claude_desktop:
+        status: known
+        value: supported
+        evidence_ids: [notfair-ads-guide]
+      claude_code:
+        status: known
+        value: limited
+        evidence_ids: [notfair-ads-guide]
+        note: Claude Code is supported through a separate plugin rather than the remote connector
+      cowork:
+        status: known
+        value: supported
+        evidence_ids: [notfair-ads-guide]
+
+    access:
+      status: known
+      value: read_write
+      evidence_ids: [notfair-ads-guide]
+      note: >-
+        Writes happen only with your explicit approval. Claude can propose pausing campaigns,
+        adjusting bids, adding negative keywords, or writing new ads, and every write action is
+        shown to you first and requires confirmation
+
+    data_available:
+      status: known
+      value:
+        - "Live campaign performance and spend"
+        - "Keyword bids and Quality Scores"
+        - "Search term reports"
+        - "Ad copy"
+        - "Impression share"
+        - "Conversion tracking status"
+      evidence_ids: [notfair-ads-guide]
+      note: Pulled from the Google Ads API in real time
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: the setup guide states no retention or backfill window
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [notfair-ads-guide]
+      note: There is no import to schedule; data is described as pulled from the Google Ads API in real time
+
+    multi_source:
+      status: known
+      value:
+        - "One NotFair workspace covers nine connected sources, including Google Ads, Meta Ads, LinkedIn Ads, Reddit Ads, TikTok Ads, X Ads, Search Console, Google Analytics, and GoHighLevel"
+      evidence_ids: [notfair-ads-guide]
+
+    prerequisites:
+      status: known
+      value:
+        - A Claude account with connector access; Team or Enterprise members may need an organization owner to enable it
+        - A NotFair workspace and a Google account with access to the Google Ads customer you want to analyse
+        - Google Ads connected inside your NotFair workspace
+        - "You do not need to apply for your own Google Ads developer token"
+      evidence_ids: [notfair-ads-guide]
+
+    pricing:
+      status: known
+      value:
+        - Adding the connector and running a Google Ads audit is free with no credit card
+        - Paid plans unlock higher usage limits and team features
+      evidence_ids: [notfair-ads-guide]
+      note: the specific usage limits of the free tier are not stated
+
+    data_path:
+      status: known
+      value: >-
+        Claude calls NotFair's hosted MCP endpoint, and NotFair calls the Google Ads API with the
+        connection authorised in your workspace. Results come back into the conversation.
+      evidence_ids: [notfair-ads-guide]
+
+    limits:
+      status: known
+      value:
+        - "A third party sits between Claude and Google Ads, holding the Google Ads connection in its own workspace"
+        - "Claude Code is served by a separate plugin rather than the remote connector"
+        - "Results arrive in the conversation rather than in a queryable store, so a wide report competes with the rest of the context"
+      evidence_ids: [notfair-ads-guide]
+
+    setup_steps:
+      - text: Create a NotFair workspace and connect your Google Ads account inside it.
+        evidence_ids: [notfair-ads-guide]
+
+    claude_configuration:
+      - text: Add the NotFair connector in Claude and complete the OAuth authorisation.
+        evidence_ids: [notfair-ads-guide]
+      - text: On a Claude Team or Enterprise plan, ask your organization owner to enable the connector first.
+        evidence_ids: [notfair-ads-guide]
+      - text: For Claude Code, install the NotFair plugin instead of the remote connector.
+        evidence_ids: [notfair-ads-guide]
+
+    sample_query: Which keywords are burning budget with no conversions this month? Propose negative keywords, but do not apply anything yet.
+
+    success_check:
+      text: >-
+        Ask Claude for yesterday's spend by campaign. Figures matching your Google Ads account
+        confirm the workspace connection reaches the right customer ID.
+      evidence_ids: [notfair-ads-guide]
+
+  - id: manual-export
+    name: Manual export and upload
+    provider: Google
+    method: file_upload
+    description: >-
+      Download the statistics table you are looking at and attach it to a conversation. Google Ads
+      offers the widest choice of formats of any source here, and can email a scheduled copy.
+
+    maintainer:
+      status: known
+      value: manual
+      evidence_ids: [ads-export-help, claude-upload-files]
+      note: There is no connector in this route; you move the file yourself
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [ads-export-help, claude-upload-files]
+
+    directory_listing:
+      status: not_applicable
+      value: null
+      evidence_ids: [claude-upload-files]
+      note: A file upload is a built-in part of the Claude interface, not a connector you add
+
+    links:
+      overview: https://support.google.com/google-ads/answer/2404176
+      setup: https://support.claude.com/en/articles/8241126-upload-files-to-claude
+
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [claude-upload-files]
+        note: >-
+          Anthropic documents uploading through the + button in the chat box and through a project's
+          Files section; the article does not name individual Claude apps
+      claude_desktop:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Claude Desktop
+      claude_code:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Claude Code
+      cowork:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Cowork
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [ads-export-help]
+      note: An export is a one-way copy; nothing in this route changes campaigns
+
+    data_available:
+      status: known
+      value:
+        - "The statistics table on any page in the account, as currently filtered and segmented"
+        - "Formats: Excel CSV, TSV, PDF, XLSX, XML, and Google Sheets"
+      evidence_ids: [ads-export-help]
+      note: the article does not enumerate named report types
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: the article states no date-range cap on an export
+
+    refresh:
+      status: known
+      value:
+        - A report can be scheduled and emailed at a chosen frequency, such as daily or weekly, in formats including CSV and PDF
+        - Reports for individual accounts start running at 1 A.M. in your account time zone, and manager accounts at 5 A.M.
+      evidence_ids: [ads-export-help]
+      note: >-
+        The schedule delivers a file by email; loading it into Claude is still a manual upload each
+        time
+
+    multi_source:
+      status: known
+      value:
+        - Up to 20 files can be attached to a single chat, so several tables can be compared in one conversation
+      evidence_ids: [claude-upload-files]
+
+    prerequisites:
+      status: known
+      value:
+        - Access to the Google Ads account, and the direct access level for people who receive scheduled report emails
+        - A Claude account, and code execution and file creation enabled if you upload XLSX rather than CSV
+      evidence_ids: [ads-export-help, claude-upload-files]
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no pricing page was checked for this record
+
+    data_path:
+      status: known
+      value: >-
+        You download the statistics table from Google Ads and attach it to a conversation. The
+        contents sit in the model's context rather than in a queryable store, so a wide export
+        competes with the rest of the conversation.
+      evidence_ids: [ads-export-help, claude-upload-files]
+
+    limits:
+      status: known
+      value:
+        - "Saved reports you have not opened in over 18 months are automatically removed from the account"
+        - "Chat uploads are capped at 500MB per file and 20 files per chat; project files are capped at 30MB each"
+        - "Uploading XLSX requires code execution and file creation to be enabled on the account, which CSV does not"
+      evidence_ids: [ads-export-help, claude-upload-files]
+      note: no row cap on the export itself is stated
+
+    setup_steps:
+      - text: Open the page with the statistics table you want, and apply the filters and segments you need.
+        evidence_ids: [ads-export-help]
+      - text: "Click the download icon above the table, click Download, and choose a format such as Excel CSV."
+        evidence_ids: [ads-export-help]
+      - text: "To repeat it, click Schedule instead and choose a frequency and format."
+        evidence_ids: [ads-export-help]
+
+    claude_configuration:
+      - text: In Claude, click the + button in the lower left of the chat box, choose Add files or photos, and select the export, or drag it into the chat window.
+        evidence_ids: [claude-upload-files]
+      - text: For a file you want to reuse across conversations, add it to a project's Files section instead of a single chat.
+        evidence_ids: [claude-upload-files]
+
+    sample_query: Here is our campaign performance export. Which campaigns have the worst cost per conversion, and what is the trend by week?
+
+    success_check:
+      text: >-
+        Ask Claude how many rows the file contains and to name the columns. A reply matching your
+        export confirms the whole file was read rather than truncated.
+      evidence_ids: [claude-upload-files]
+
+recommendations:
+  - job: Reporting on spend over time or alongside analytics and CRM data
+    option_id: coupler-io
+    reason: >-
+      Queries run against a stored dataset rather than the Ads API, which sidesteps the quota errors
+      that bite on large backfills, and one data flow can join Google Ads with GA4 or CRM data
+      before Claude sees it.
+    evidence_ids: [cpl-mcp, cpl-ads-issues, cpl-ads-overview]
+  - job: Asking about live campaigns, or acting on them with approval
+    option_id: notfair
+    reason: >-
+      It reads live Google Ads data and can propose pausing campaigns, adjusting bids, or adding
+      negative keywords, with every write shown to you for confirmation, and it works on Claude web,
+      Desktop, and Cowork without a Google Ads developer token.
+    evidence_ids: [notfair-ads-guide]
+  - job: A one-off question about a table you are already looking at
+    option_id: manual-export
+    reason: >-
+      Export the statistics table in any of six formats and attach it. Nothing to install, and
+      Google can email a scheduled copy if you need it regularly.
+    evidence_ids: [ads-export-help, claude-upload-files]
+
+faq:
+  - question: Does Google's own Google Ads MCP server work with Claude?
+    answer: >-
+      Google publishes the server and documents it fully, but its page never names Claude, Claude
+      Code, or Claude Desktop. The configuration example is generic and the deployment section uses
+      Gemini's settings file as its example. So there is no vendor-tested Claude setup to follow,
+      which is a real difference from Google's Analytics server, where a Claude Code command is
+      given.
+    evidence_ids: [google-ads-mcp-docs]
+  - question: Can Claude pause a campaign or change my bids?
+    answer: >-
+      Only through NotFair, and only with your explicit approval: it shows every proposed write and
+      requires confirmation. Google's own server is strictly read-only and states it cannot modify
+      bids, pause campaigns, or create assets. Coupler.io is read-only against Google Ads.
+    evidence_ids: [notfair-ads-guide, google-ads-mcp-docs, cpl-mcp]
+  - question: Do I need a Google Ads developer token?
+    answer: >-
+      Not any more for Google's own server: developer tokens were sunset on 9 September 2026, and
+      API access levels are now tied to your Google Cloud project, which needs Explorer, Basic, or
+      Standard access. NotFair states you do not need your own token because it uses its own
+      connection.
+    evidence_ids: [google-ads-mcp-docs, notfair-ads-guide]
+  - question: Why does an import fail with a quota error?
+    answer: >-
+      The Google Ads API quota can be exhausted globally or per account, returning a 429 with a
+      retry delay. The documented fix is to wait roughly 4 hours for the quota to reset, and to pull
+      large backfills in monthly or quarterly chunks rather than years at once.
+    evidence_ids: [cpl-ads-issues, cpl-ads-best]
+  - question: Why are some campaigns or keywords missing from my data?
+    answer: >-
+      The Google Ads API does not return rows where every metric is zero, so anything with no
+      activity in the period simply does not appear. Separately, low-volume search terms are grouped
+      under Other search terms to meet Google's privacy thresholds, and custom columns built in the
+      Google Ads interface are not available through the API at all.
+    evidence_ids: [cpl-ads-issues, cpl-ads-data]
+  - question: Why do my conversion numbers keep changing?
+    answer: >-
+      Google Ads data is typically available within a few hours, but conversions may take 24 to 72
+      hours to finalise. A report pulled this morning about yesterday will often disagree with the
+      same report pulled next week, which matters most on routes that snapshot the data.
+    evidence_ids: [cpl-ads-data, cpl-ads-faq]
+  - question: Does my manager account give Claude access to all my sub-accounts?
+    answer: >-
+      No. Manager (MCC) access does not automatically grant data access to sub-accounts; each ad
+      account needs explicit Standard or Admin access. Note also that each ad account you select
+      counts as one account toward your Coupler.io plan limit, because Google Ads is a tenant-based
+      source.
+    evidence_ids: [cpl-ads-issues, cpl-ads-faq]
+
+related_source_ids: []
