@@ -1,28 +1,20 @@
-name: Deploy
+name: Deploy to GitHub Pages
 
 on:
-  workflow_dispatch:
-    inputs:
-      confirm:
-        description: Type "deploy" to confirm this is an authorised release.
-        required: true
-        type: string
+  push:
+    branches: [main]
 
 permissions:
   contents: read
 
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  artifact:
-    if: github.ref == 'refs/heads/main'
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check the confirmation
-        run: |
-          if [ "${{ inputs.confirm }}" != "deploy" ]; then
-            echo "Confirmation text did not match." >&2
-            exit 1
-          fi
-
       - uses: actions/checkout@v5
 
       - uses: actions/setup-node@v5
@@ -32,24 +24,33 @@ jobs:
 
       - run: npm ci
 
-      - name: Production readiness
-        run: npm run validate -- --production
+      - name: Types
+        run: npm run typecheck
 
-      - run: npm test
+      - name: Tests
+        run: npm test
 
-      - name: Build the artifact
+      - name: Committed generated files are current
+        run: npm run check:generated
+
+      - name: Production build, search index, and internal links
         run: npm run build
 
-      - name: Upload the validated artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: site
-          path: site/dist
-          retention-days: 30
+      - uses: actions/configure-pages@v6
 
-      - name: Publishing is not configured
-        run: |
-          echo "A validated artifact was produced but not published."
-          echo "Owner actions still required: select a host, configure the domain and"
-          echo "production metadata, add the publish step, and keep the previous"
-          echo "deployment available for rollback."
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
