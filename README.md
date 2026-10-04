@@ -14,8 +14,8 @@ It is an editorial directory, not a connector service. It does not authenticate 
 
 ## Sources
 
-| Source | Routes |
-| --- | --- |
+| Source | Routes | Page |
+| --- | --- | --- |
 | QuickBooks Online | 4 | — |
 
 ## How claims are recorded

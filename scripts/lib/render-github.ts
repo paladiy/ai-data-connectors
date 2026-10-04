@@ -31,8 +31,8 @@ export function renderReadme(model: Model): string {
   const table =
     model.sources.length > 0
       ? [
-          "| Source | Routes |",
-          "| --- | --- |",
+          "| Source | Routes | Page |",
+          "| --- | --- | --- |",
           ...model.sources.map((source) =>
             [
               "",
