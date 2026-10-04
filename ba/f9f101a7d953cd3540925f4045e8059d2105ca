@@ -1,0 +1,35 @@
+scripts/lib/freshness.ts
+  s_516dc6ce68b8a5::t_1f009eb101b722 1-59
+tests/ops.test.ts
+  s_516dc6ce68b8a5::t_e5af6a2b94e357 1-63
+.github/ISSUE_TEMPLATE/correction.yml
+  s_516dc6ce68b8a5::t_43f466f28d0232 1-73
+.github/workflows/ci.yml
+  s_516dc6ce68b8a5::t_15a4359373e170 1-58
+.github/workflows/deploy.yml
+  s_516dc6ce68b8a5::t_715f8b629b333c 1-60
+scripts/check-freshness.ts
+  s_516dc6ce68b8a5::t_4ddf4b170c2288 1-14
+scripts/check-links.ts
+  s_516dc6ce68b8a5::t_f56c44bd3564c4 1-19
+scripts/lib/links.ts
+  s_516dc6ce68b8a5::t_73859881968c76 1-49
+scripts/review.ts
+  s_516dc6ce68b8a5::t_dd7123403ceb9b 1-96
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "baf9f101a7d953cd3540925f4045e8059d2105ca",
+  "prompts": {},
+  "sessions": {
+    "s_516dc6ce68b8a5": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "1dbc9967-8bf3-4699-a118-c52e2feaa754",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
