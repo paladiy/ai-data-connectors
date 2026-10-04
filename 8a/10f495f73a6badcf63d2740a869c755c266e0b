@@ -1,0 +1,36 @@
+site/src/content/docs/about.md
+  s_12e2ab7e3188f2::t_bc03fd1b4539a3 3,9-11,13,20
+README.md
+  s_12e2ab7e3188f2::t_bc03fd1b4539a3 3,9,11,15-21
+site/src/components/Directory.tsx
+  s_12e2ab7e3188f2::t_0b1ea4f770d15a 210
+scripts/lib/render-site.ts
+  s_12e2ab7e3188f2::t_bc03fd1b4539a3 116
+tests/readme-and-pages.test.ts
+  s_12e2ab7e3188f2::t_c4fe87273666df 101,135,138
+scripts/lib/render-github.ts
+  s_12e2ab7e3188f2::t_bc03fd1b4539a3 34-35,53,55
+scripts/lib/render-source-page.ts
+  s_12e2ab7e3188f2::t_a0c2afc10c90b8 227-231
+site/src/styles/custom.css
+  s_12e2ab7e3188f2::t_0b1ea4f770d15a 812-817
+  s_12e2ab7e3188f2::t_bc03fd1b4539a3 818-823
+data/site.yaml
+  s_12e2ab7e3188f2::t_0b1ea4f770d15a 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "8a10f495f73a6badcf63d2740a869c755c266e0b",
+  "prompts": {},
+  "sessions": {
+    "s_12e2ab7e3188f2": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "e9630ace-dc44-4f6c-97fc-4ec9307ad324",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
