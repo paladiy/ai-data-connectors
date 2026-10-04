@@ -18,11 +18,9 @@
 }
 
 /* ---------- Directory (home page) ----------
-   A reference index: alphabetical groups with a letter gutter, three layouts for different
-   jobs (List to compare, Grid to browse, Index to scan 200+ names), and filters that work
-   on the same markup. */
+   The directory UI is a React island built from Mantine components (components/Directory.tsx).
+   This section only bridges Mantine to Starlight's theme and handles page-level layout. */
 
-/* The home page uses the splash template; give the directory more room than prose gets. */
 [data-page-template="splash"] .sl-markdown-content,
 [data-page-template="splash"] main > .content-panel {
   --sl-content-width: 64rem;
@@ -30,14 +28,6 @@
 
 [data-page-template="splash"] .sl-container {
   max-width: 64rem;
-}
-
-.dx {
-  --dx-line: var(--sl-color-hairline);
-  --dx-muted: var(--sl-color-gray-3);
-  --dx-surface: var(--sl-color-bg-nav);
-  --dx-accent: var(--sl-color-accent-high);
-  margin-block-start: 1.5rem;
 }
 
 .sr-only {
@@ -49,432 +39,131 @@
   white-space: nowrap;
 }
 
-/* Toolbar: search, layout, filters, letters. Sticks under the site header on large screens. */
+.dx {
+  /* Map Mantine tokens onto Starlight's so both themes follow the site palette. */
+  --mantine-font-family: inherit;
+  --mantine-color-body: transparent;
+  --mantine-color-text: var(--sl-color-text);
+  --mantine-color-dimmed: var(--sl-color-gray-3);
+  --mantine-color-anchor: var(--sl-color-text-accent);
+  --mantine-color-default-border: var(--sl-color-hairline);
+  --mantine-primary-color-filled: var(--sl-color-accent);
+  --mantine-primary-color-filled-hover: var(--sl-color-accent-high);
+  --dx-line: var(--sl-color-hairline);
+  --dx-surface: var(--sl-color-bg-nav);
+  margin-block-start: 1.5rem;
+}
+
+/* Starlight spaces siblings with a top margin; Mantine layouts manage their own gaps. */
+.dx :where(.mantine-Stack-root, .mantine-Group-root, .mantine-SimpleGrid-root) > * {
+  margin-top: 0;
+}
+
+.dx h2,
+.dx h3,
+.dx p {
+  margin: 0;
+}
+
 .dx-toolbar {
-  display: grid;
-  gap: 0.75rem;
   padding-block: 0.5rem 0.75rem;
 }
 
-/* Starlight spaces siblings with a top margin; the directory controls manage their own gaps. */
-.dx-toolbar > *,
-.dx-meta > * {
-  margin: 0 !important;
-}
-
-.dx-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.dx-search {
-  position: relative;
-  flex: 1 1 18rem;
-}
-
-.dx-search input {
-  width: 100%;
-  padding: 0.7rem 2.4rem 0.7rem 0.9rem;
-  border: 1px solid var(--sl-color-gray-4);
-  border-radius: 0.4rem;
-  background: var(--sl-color-black);
-  color: var(--sl-color-white);
-  font: inherit;
-  font-size: var(--sl-text-base);
-}
-
-.dx-search input:focus-visible {
-  outline: 2px solid var(--dx-accent);
-  outline-offset: 1px;
-}
-
-.dx-key {
-  position: absolute;
-  inset-block: 50% auto;
-  inset-inline-end: 0.7rem;
-  transform: translateY(-50%);
-  padding: 0.05rem 0.4rem;
-  border: 1px solid var(--sl-color-gray-4);
-  border-radius: 0.25rem;
-  color: var(--dx-muted);
-  font: inherit;
-  font-size: var(--sl-text-xs);
-  pointer-events: none;
-}
-
-.dx-search input:focus + .dx-key,
-.dx-search input:not(:placeholder-shown) + .dx-key {
-  display: none;
-}
-
-/* Layout switch: a segmented control. */
-.dx-views {
-  display: inline-flex;
-  border: 1px solid var(--sl-color-gray-4);
-  border-radius: 0.4rem;
-  overflow: hidden;
-}
-
-.dx-views button {
-  padding: 0 1rem;
-  border: 0;
-  border-inline-start: 1px solid var(--sl-color-gray-4);
-  background: transparent;
-  color: var(--dx-muted);
-  font: inherit;
-  font-size: var(--sl-text-sm);
-  cursor: pointer;
-}
-
-.dx-views button:first-child {
-  border-inline-start: 0;
-}
-
-.dx-views button[aria-pressed="true"] {
-  background: var(--dx-accent);
-  color: var(--sl-color-black);
-  font-weight: 600;
-}
-
-.dx-views button:not([aria-pressed="true"]):hover {
-  color: var(--sl-color-white);
-  background: var(--dx-surface);
-}
-
-.dx-views button:focus-visible,
-.dx-chip:focus-visible,
-.dx-clear:focus-visible,
-.dx-clear-inline:focus-visible,
-.dx-letters a:focus-visible,
-.dx-name:focus-visible {
-  outline: 2px solid var(--dx-accent);
-  outline-offset: 2px;
-}
-
-/* Method filters. */
-.dx-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  align-items: center;
-}
-
-.dx-filters-label {
-  margin-inline-end: 0.25rem;
-  color: var(--dx-muted);
-  font-size: var(--sl-text-sm);
-}
-
-.dx-chip {
-  padding: 0.25rem 0.7rem;
-  border: 1px solid var(--sl-color-gray-4);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--sl-color-text);
-  font: inherit;
-  font-size: var(--sl-text-sm);
-  cursor: pointer;
-}
-
-.dx-chip:hover {
-  border-color: var(--dx-accent);
-}
-
-.dx-chip[aria-pressed="true"] {
-  border-color: var(--dx-accent);
-  background: color-mix(in srgb, var(--dx-accent) 22%, transparent);
-  color: var(--sl-color-white);
+@media (min-width: 50rem) {
+  .dx-toolbar {
+    position: sticky;
+    top: var(--sl-nav-height);
+    z-index: 5;
+    background: var(--sl-color-bg);
+    border-block-end: 1px solid var(--dx-line);
+  }
 }
 
 .dx-chip-count {
-  margin-inline-start: 0.2rem;
-  color: var(--dx-muted);
+  opacity: 0.6;
   font-variant-numeric: tabular-nums;
 }
 
-.dx-clear,
-.dx-clear-inline {
-  border: 0;
-  background: none;
-  color: var(--dx-accent);
-  font: inherit;
-  font-size: var(--sl-text-sm);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-/* Letter rail. Letters with no visible entries dim and drop out of the tab order. */
-.dx-letters {
-  display: flex;
-  gap: 0.2rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.dx-letters a,
-.dx-letter-off {
-  min-width: 2rem;
-  padding: 0.3rem 0.25rem;
-  border-radius: 0.25rem;
-  text-align: center;
-  font-size: var(--sl-text-sm);
-  font-variant-numeric: tabular-nums;
-}
-
-.dx-letters a {
-  color: var(--sl-color-white);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.dx-letters a:hover {
-  background: var(--dx-surface);
-}
-
-.dx-letters a.is-off,
-.dx-letter-off {
-  color: var(--sl-color-gray-5);
-  font-weight: 400;
-  pointer-events: none;
-}
-
-.dx-meta {
-  position: sticky;
-  top: var(--sl-nav-height, 3.5rem);
-  z-index: 5;
-  padding-block: 0.4rem;
-  background: var(--sl-color-bg);
-  border-block: 1px solid var(--dx-line);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
-}
-
-.dx-count {
-  margin: 0 !important;
-  color: var(--dx-muted);
-  font-size: var(--sl-text-sm);
-}
-
-/* Groups: a letter gutter beside the entries. */
+/* Alphabetical groups with a letter gutter. */
 .dx-group {
   display: grid;
-  grid-template-columns: 2.75rem 1fr;
-  column-gap: 0.5rem;
-  padding-block: 1.25rem;
-  border-block-end: 1px solid var(--dx-line);
-  scroll-margin-top: calc(var(--sl-nav-height, 3.5rem) + 3rem);
-}
-
-.dx-group[hidden],
-.dx-item[hidden],
-.dx-noresults[hidden],
-.dx-clear[hidden] {
-  display: none;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  scroll-margin-top: calc(var(--sl-nav-height) + 9rem);
 }
 
 .dx-letter {
   position: sticky;
-  top: calc(var(--sl-nav-height, 3.5rem) + 3rem);
+  top: calc(var(--sl-nav-height) + 9rem);
   align-self: start;
-  margin: 0 !important;
-  color: var(--dx-accent);
-  font-size: 2rem !important;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.dx-list {
-  display: grid;
-  margin: 0 !important;
-  padding: 0 !important;
-  list-style: none;
-}
-
-.dx-item {
-  position: relative;
-  margin: 0 !important;
-  content-visibility: auto;
-  contain-intrinsic-size: auto 5rem;
-}
-
-.dx-item p,
-.dx-item ul {
-  margin: 0 !important;
-}
-
-.dx-name {
-  font-weight: 600;
-  font-size: var(--sl-text-lg);
-  color: var(--sl-color-white);
-  text-decoration: none;
+  font-size: var(--sl-text-xl);
+  color: var(--sl-color-gray-3);
 }
 
 /* The whole entry is the click target. */
+.dx-item {
+  position: relative;
+}
+
 .dx-name::after {
   content: "";
   position: absolute;
   inset: 0;
 }
 
-.dx-item:hover .dx-name {
-  color: var(--dx-accent);
-  text-decoration: underline;
-}
-
-.dx-summary {
-  color: var(--sl-color-text);
-  font-size: var(--sl-text-sm);
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-}
-
-.dx-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  padding: 0 !important;
-  list-style: none;
-}
-
-.dx-tags li {
-  margin: 0 !important;
-  padding: 0.05rem 0.5rem;
-  border: 1px solid var(--dx-line);
-  border-radius: 0.25rem;
-  color: var(--dx-muted);
-  font-size: var(--sl-text-xs);
-}
-
-.dx-routes {
-  color: var(--dx-muted);
-  font-size: var(--sl-text-sm);
-  white-space: nowrap;
-}
-
-.dx-routes-n {
-  color: var(--sl-color-white);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-.dx-aliases {
-  color: var(--dx-muted);
-  font-size: var(--sl-text-xs);
-}
-
-/* View: list. One row per source, columns line up so rows can be compared. */
-.dx[data-view="list"] .dx-item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas:
-    "name routes"
-    "summary summary"
-    "tags tags"
-    "aliases aliases";
-  gap: 0.2rem 1rem;
-  padding: 0.9rem 0.75rem;
+/* List: one row per source, columns aligned so rows can be compared. */
+.dx-list-list > .dx-item {
   border-block-start: 1px solid var(--dx-line);
 }
-
-.dx[data-view="list"] .dx-item:first-child {
+.dx-list-list > .dx-item:first-child {
   border-block-start: 0;
 }
-
-.dx[data-view="list"] .dx-item:hover {
+.dx-list-list > .dx-item:hover,
+.dx-item-index:hover {
   background: var(--dx-surface);
 }
+.dx-col-name {
+  flex: 0 0 min(16rem, 30%);
+  min-width: 0;
+}
+.dx-col-body {
+  flex: 1;
+  min-width: 0;
+}
+.dx-col-routes {
+  flex: 0 0 6.5rem;
+  text-align: end;
+}
 
-.dx[data-view="list"] .dx-name { grid-area: name; }
-.dx[data-view="list"] .dx-routes { grid-area: routes; align-self: center; }
-.dx[data-view="list"] .dx-summary { grid-area: summary; max-width: 70ch; }
-.dx[data-view="list"] .dx-tags { grid-area: tags; margin-block-start: 0.25rem !important; }
-.dx[data-view="list"] .dx-aliases { grid-area: aliases; }
-
-@media (min-width: 50rem) {
-  .dx[data-view="list"] .dx-item {
-    grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr) 6.5rem;
-    grid-template-areas:
-      "name summary routes"
-      "aliases summary routes"
-      ".  tags routes";
-    align-items: start;
+@media (max-width: 50rem) {
+  .dx-item-list {
+    flex-wrap: wrap !important;
   }
-  .dx[data-view="list"] .dx-routes { text-align: end; }
+  .dx-col-name,
+  .dx-col-body {
+    flex: 1 1 100%;
+  }
+  .dx-col-routes {
+    text-align: start;
+  }
 }
 
-/* View: grid. Tiles for browsing. */
-.dx[data-view="grid"] .dx-list {
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 0.75rem;
-}
-
-.dx[data-view="grid"] .dx-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.9rem;
-  border: 1px solid var(--dx-line);
-  border-radius: 0.5rem;
+/* Grid: tiles for browsing. */
+.dx-item.mantine-Card-root {
   background: var(--dx-surface);
 }
-
-.dx[data-view="grid"] .dx-item:hover {
-  border-color: var(--dx-accent);
+.dx-item.mantine-Card-root:hover {
+  border-color: var(--sl-color-accent-high);
 }
 
-.dx[data-view="grid"] .dx-summary {
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-}
-
-.dx[data-view="grid"] .dx-tags { order: 3; margin-block-start: auto !important; }
-.dx[data-view="grid"] .dx-routes { order: 4; }
-.dx[data-view="grid"] .dx-aliases { display: none; }
-
-/* View: index. Names only, in columns: the densest way to scan 200+ entries. */
-.dx[data-view="index"] .dx-list {
-  display: block;
+/* Index: names only, in columns: the densest way to scan 200+ entries. */
+.dx-list-index {
   columns: 13rem;
   column-gap: 1.5rem;
 }
-
-.dx[data-view="index"] .dx-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
+.dx-item-index {
   padding: 0.3rem 0.4rem;
   border-radius: 0.25rem;
   break-inside: avoid;
-  contain-intrinsic-size: auto 2rem;
-}
-
-.dx[data-view="index"] .dx-item:hover {
-  background: var(--dx-surface);
-}
-
-.dx[data-view="index"] .dx-name { font-size: var(--sl-text-base); font-weight: 500; }
-.dx[data-view="index"] .dx-summary,
-.dx[data-view="index"] .dx-tags,
-.dx[data-view="index"] .dx-aliases { display: none; }
-.dx[data-view="index"] .dx-routes { font-size: var(--sl-text-xs); }
-
-.dx-noresults,
-.dx-empty {
-  padding: 2rem 0;
-  color: var(--sl-color-text);
-}
-
-.dx-foot {
-  margin-block-start: 2rem;
-  font-size: var(--sl-text-sm);
 }
 
 @media (max-width: 30rem) {
@@ -483,7 +172,7 @@
   }
   .dx-letter {
     position: static;
-    margin-block-end: 0.5rem !important;
+    margin-block-end: 0.5rem;
   }
 }
 

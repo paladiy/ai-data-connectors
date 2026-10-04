@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import react from "@astrojs/react";
 
 const generated = fileURLToPath(new URL("./src/generated/site.json", import.meta.url));
 
@@ -20,6 +21,7 @@ export default defineConfig({
   trailingSlash: "always",
   build: { format: "directory" },
   integrations: [
+    react(),
     starlight({
       title: site.name,
       description: site.tagline,
@@ -27,7 +29,7 @@ export default defineConfig({
       editLink: site.repo ? { baseUrl: `https://github.com/${site.repo}/edit/main/` } : undefined,
       lastUpdated: false,
       pagination: false,
-      customCss: ["./src/styles/custom.css"],
+      customCss: ["@mantine/core/styles.layer.css", "./src/styles/custom.css"],
       components: { Head: "./src/components/Head.astro" },
       sidebar: [
         { label: "All sources", link: "/" },

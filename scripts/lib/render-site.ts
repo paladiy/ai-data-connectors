@@ -278,8 +278,8 @@ export function renderIndexPage(model: Model): string {
       tableOfContents: false,
       head,
     }),
-    `import Directory from "../../components/Directory.astro";`,
-    "<Directory />",
+    `import Directory from "../../components/Directory.tsx";`,
+    "<Directory client:load />",
   ]);
 }
 
