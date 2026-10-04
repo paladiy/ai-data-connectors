@@ -105,7 +105,7 @@ describe("site outputs", () => {
               public: false,
             },
           ],
-          file: "data/sources/fixture-source.yaml",
+          file: "sources/fixture-source/source.yaml",
         },
       ],
     });

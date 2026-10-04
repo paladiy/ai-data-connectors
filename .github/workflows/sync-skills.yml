@@ -56,7 +56,7 @@ jobs:
           # Only the snapshot and what is generated from it; nothing else can ride along.
           add-paths: |
             data/upstream/
-            guides/
+            sources/*/README.md
             README.md
             llms.txt
           commit-message: |

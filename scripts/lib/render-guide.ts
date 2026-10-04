@@ -2,6 +2,7 @@ import type { Claim } from "../../schemas/common.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import { buildInstall, type InstallLink, type ToolInstall } from "./install.ts";
 import { escapeRichText, escapeText, formatValue, joinSections, link } from "./markdown.ts";
+import { GUIDE_FILE, guideFile } from "./paths.ts";
 import {
   orderFaq,
   type Model,
@@ -228,14 +229,14 @@ function relatedSection(source: ModelSource): string | null {
   return [
     "## Related connectors",
     "",
-    ...source.related.map((related) => `- ${link(related.name, `./${related.slug}.md`)}`),
+    ...source.related.map((related) => `- ${link(related.name, `../${related.slug}/${GUIDE_FILE}`)}`),
   ].join("\n");
 }
 
 export function guidePath(site: SiteConfig, slug: string): string {
   return site.repo
-    ? `https://raw.githubusercontent.com/${site.repo}/main/guides/${slug}.md`
-    : `guides/${slug}.md`;
+    ? `https://raw.githubusercontent.com/${site.repo}/main/${guideFile(slug)}`
+    : guideFile(slug);
 }
 
 function affiliation(site: SiteConfig): string {

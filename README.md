@@ -47,11 +47,11 @@ Each source below has a researched guide, readable here in Markdown, that explai
 
 | Source | Example question | Guides |
 | --- | --- | --- |
-| Google Ads | “Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?” | [Setup guide](guides/google-ads.md) · [Google Ads on Coupler.io](https://www.coupler.io/claude-integrations/google-ads-to-claude) |
-| Google Analytics 4 | “Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?” | [Setup guide](guides/google-analytics-4.md) · [Google Analytics 4 on Coupler.io](https://www.coupler.io/claude-integrations/google-analytics-to-claude) |
-| Google Search Console | “Which pages lost the most clicks year over year, and did their average position or their CTR move first?” | [Setup guide](guides/google-search-console.md) · [Google Search Console on Coupler.io](https://www.coupler.io/claude-integrations/google-search-console-to-claude) |
-| Pipedrive | “Which deals have sat in the same stage longest, and what are they worth in total by owner?” | [Setup guide](guides/pipedrive.md) · [Pipedrive on Coupler.io](https://www.coupler.io/claude-integrations/pipedrive-to-claude) |
-| QuickBooks Online | “Which vendors did we spend the most with last quarter, and how does that compare with the quarter before?” | [Setup guide](guides/quickbooks-online.md) · [QuickBooks Online on Coupler.io](https://www.coupler.io/claude-integrations/quickbooks-to-claude) |
+| Google Ads | “Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?” | [Setup guide](sources/google-ads/README.md) · [Google Ads on Coupler.io](https://www.coupler.io/claude-integrations/google-ads-to-claude) |
+| Google Analytics 4 | “Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?” | [Setup guide](sources/google-analytics-4/README.md) · [Google Analytics 4 on Coupler.io](https://www.coupler.io/claude-integrations/google-analytics-to-claude) |
+| Google Search Console | “Which pages lost the most clicks year over year, and did their average position or their CTR move first?” | [Setup guide](sources/google-search-console/README.md) · [Google Search Console on Coupler.io](https://www.coupler.io/claude-integrations/google-search-console-to-claude) |
+| Pipedrive | “Which deals have sat in the same stage longest, and what are they worth in total by owner?” | [Setup guide](sources/pipedrive/README.md) · [Pipedrive on Coupler.io](https://www.coupler.io/claude-integrations/pipedrive-to-claude) |
+| QuickBooks Online | “Which vendors did we spend the most with last quarter, and how does that compare with the quarter before?” | [Setup guide](sources/quickbooks-online/README.md) · [QuickBooks Online on Coupler.io](https://www.coupler.io/claude-integrations/quickbooks-to-claude) |
 
 ## Frequently asked questions
 
@@ -85,9 +85,9 @@ No for the chat assistants: data flows are configured in Coupler.io's interface,
 
 ### About this repository
 
-This repository holds one maintained dataset describing how to get data from a business source into LLMs and AI tools with Coupler.io, and generates this README, a Markdown guide per source in `guides/`, the website, and a public JSON dataset from it.
+This repository holds one maintained dataset describing how to get data from a business source into LLMs and AI tools with Coupler.io, and generates this README, a Markdown guide per source, the website, and a public JSON dataset from it.
 
-The guides in `guides/` are plain Markdown with no HTML and no scripts, so they can be read, cloned, and indexed straight from the repository without the website.
+Each source has its own folder in `sources/`: `source.yaml` is the record, and `README.md` is the guide generated from it. The guides are plain Markdown with no HTML and no scripts, so they can be read, cloned, and indexed straight from the repository without the website.
 
 It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a source appears once it is documented with cited evidence.
 

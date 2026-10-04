@@ -4,6 +4,7 @@ import { Source } from "../schemas/source.ts";
 import { committedOutputs, generateOutputs } from "../scripts/lib/generate.ts";
 import { buildModel } from "../scripts/lib/model.ts";
 import { escapeText } from "../scripts/lib/markdown.ts";
+import { GUIDE_FILE_PATTERN } from "../scripts/lib/paths.ts";
 import { renderReadme } from "../scripts/lib/render-github.ts";
 import { renderSourcePage } from "../scripts/lib/render-site.ts";
 import { fixtureContent, fixtureSite, fixtureRecord } from "./fixtures/content.ts";
@@ -154,14 +155,14 @@ describe("README rendering", () => {
   it("lists every record with its Coupler.io sample question and its Markdown guide", () => {
     const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
     expect(readme).toContain(
-      "| Fixture Source SYNTHETIC-FIXTURE | “Show last month's fixture totals.” | [Setup guide](guides/fixture-source.md) |",
+      "| Fixture Source SYNTHETIC-FIXTURE | “Show last month's fixture totals.” | [Setup guide](sources/fixture-source/README.md) |",
     );
   });
 
   it("links guides relatively, so they work without a configured website", () => {
     const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
     expect(readme).not.toContain("localhost:4321/sources/");
-    expect(readme).toContain("(guides/fixture-source.md)");
+    expect(readme).toContain("(sources/fixture-source/README.md)");
   });
 
   it("links the Coupler.io landing page cited in a record's evidence", () => {
@@ -224,16 +225,15 @@ describe("generation", () => {
 
   it("commits the README and one Markdown guide per source", () => {
     const committed = committedOutputs(generateOutputs(fixtureContent([fixtureRecord()])));
-    expect([...committed.files.keys()]).toEqual(["guides/fixture-source.md", "llms.txt", "README.md"]);
-    expect(committed.ownedDirectories).toEqual(["guides"]);
+    expect([...committed.files.keys()]).toEqual(["llms.txt", "README.md", "sources/fixture-source/README.md"]);
+    expect(committed.ownedDirectories).toEqual([]);
+    expect(committed.ownedFiles).toEqual([{ directory: "sources", pattern: GUIDE_FILE_PATTERN }]);
   });
 
-  it("owns only the directories it regenerates", () => {
-    expect(generateOutputs(fixtureContent([])).ownedDirectories).toEqual([
-      "site/src/generated",
-      "site/src/content/docs/sources",
-      "guides",
-    ]);
+  it("owns only the directories and guide files it regenerates", () => {
+    const outputs = generateOutputs(fixtureContent([]));
+    expect(outputs.ownedDirectories).toEqual(["site/src/generated", "site/src/content/docs/sources"]);
+    expect(outputs.ownedFiles).toEqual([{ directory: "sources", pattern: GUIDE_FILE_PATTERN }]);
   });
 
   it("emits no build timestamp", () => {

@@ -24,7 +24,7 @@ describe("cross-reference validation", () => {
     const a = record();
     const b = Source.parse(fixtureSource({ slug: "other-source" }));
     const problems = messages(fixtureContent([a, b]));
-    expect(problems).toContain(`id: duplicate source id "fixture-source" (also in data/sources/fixture-source.yaml)`);
+    expect(problems).toContain(`id: duplicate source id "fixture-source" (also in sources/fixture-source/source.yaml)`);
   });
 
   it("rejects unresolved evidence ids", () => {

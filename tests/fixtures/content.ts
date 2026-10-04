@@ -3,6 +3,7 @@ import { SiteConfig } from "../../schemas/site.ts";
 import { Source } from "../../schemas/source.ts";
 import type { UpstreamSkill } from "../../schemas/skills.ts";
 import type { Content, SkillsSnapshot, SourceBundle } from "../../scripts/lib/load.ts";
+import { sourceFile } from "../../scripts/lib/paths.ts";
 import { fixtureAiTools, fixtureSource } from "./factory.ts";
 
 export const fixtureSite = SiteConfig.parse({
@@ -21,7 +22,7 @@ export function fixtureRecord(overrides: Record<string, unknown> = {}): Source {
 }
 
 export function bundle(record: Source, privateEvidence: SourceBundle["privateEvidence"] = []): SourceBundle {
-  return { record, privateEvidence, file: `data/sources/${record.slug}.yaml` };
+  return { record, privateEvidence, file: sourceFile(record.slug) };
 }
 
 export function fixtureSkills(skills: UpstreamSkill[]): SkillsSnapshot {

@@ -21,7 +21,7 @@ const PRIVATE_CONTENT_MARKERS: RegExp[] = [
 
 const CONTENT_PATHS: RegExp[] = [
   /^data\//,
-  /^guides\//,
+  /^sources\//,
   /^site\/(src|public)\//,
   /^README\.md$/,
   /^llms\.txt$/,

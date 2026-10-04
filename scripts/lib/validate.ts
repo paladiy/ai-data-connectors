@@ -305,7 +305,7 @@ function productionProblems(content: Content): Problem[] {
     add("maintainer.relationship_confirmed", "the owner must confirm the disclosed relationship");
   }
   if (content.sources.length === 0) {
-    problems.push({ file: "data/sources", path: "(any)", message: "no source record to deploy" });
+    problems.push({ file: "sources", path: "(any)", message: "no source record to deploy" });
   }
   return problems;
 }

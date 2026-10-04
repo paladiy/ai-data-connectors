@@ -43,10 +43,9 @@ beforeAll(() => {
   cpSync(path.join(repo, "site", "public"), path.join(root, "site", "public"), { recursive: true });
   cpSync(path.join(repo, "data"), path.join(root, "data"), { recursive: true });
 
-  const sources = path.join(root, "data", "sources");
-  rmSync(sources, { recursive: true, force: true });
-  mkdirSync(sources, { recursive: true });
-  writeFileSync(path.join(sources, "fixture-analytics.yaml"), stringify(analyticsFixture()));
+  const source = path.join(root, "sources", "fixture-analytics");
+  mkdirSync(source, { recursive: true });
+  writeFileSync(path.join(source, "source.yaml"), stringify(analyticsFixture()));
 
   const content = loadContent(root);
   expect(validateContent(content, { allowReservedHosts: true })).toEqual([]);
@@ -131,7 +130,7 @@ describe("production build", () => {
   it("ships the search UI", () => {
     const html = readFileSync(path.join(dist, "index.html"), "utf8");
     expect(html).toContain('id="dx-search-input"');
-    expect(existsSync(path.join(dist, "guides"))).toBe(false);
+    expect(existsSync(path.join(dist, "sources", "fixture-analytics", "README.md"))).toBe(false);
   });
 
   it("allows indexing and advertises the sitemap in robots.txt", () => {

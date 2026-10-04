@@ -1,7 +1,8 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmdirSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { Content } from "./load.ts";
 import { buildModel, type Model } from "./model.ts";
+import { GUIDE_FILE_PATTERN, guideFile, SOURCES_DIR } from "./paths.ts";
 import { renderGuide, renderLlmsIndex } from "./render-guide.ts";
 import { renderReadme } from "./render-github.ts";
 import {
@@ -14,9 +15,16 @@ import {
 } from "./render-site.ts";
 import { renderToolCss } from "./render-source-page.ts";
 
+/** Files under `directory` whose repository path matches `pattern`; the rest of the directory is not generated. */
+export interface OwnedFiles {
+  directory: string;
+  pattern: RegExp;
+}
+
 export interface Outputs {
   files: Map<string, string>;
   ownedDirectories: string[];
+  ownedFiles: OwnedFiles[];
 }
 
 function githubOutputs(model: Model): Map<string, string> {
@@ -26,7 +34,7 @@ function githubOutputs(model: Model): Map<string, string> {
   ]);
   for (const source of model.sources) {
     files.set(
-      `guides/${source.slug}.md`,
+      guideFile(source.slug),
       renderGuide(source, model.site, model.ai_tools, model.skills_snapshot),
     );
   }
@@ -55,8 +63,11 @@ export const SITE_OUTPUT_DIRECTORIES = [
   "site/src/content/docs/sources",
 ];
 
-/** Owned so that removing a source record also removes its committed guide. */
-export const COMMITTED_OUTPUT_DIRECTORIES = ["guides"];
+/**
+ * Guides share their folders with the hand-edited source records, so only the guide files are owned:
+ * removing a source record removes its committed guide and leaves everything else alone.
+ */
+export const COMMITTED_OWNED_FILES: OwnedFiles[] = [{ directory: SOURCES_DIR, pattern: GUIDE_FILE_PATTERN }];
 
 export function generateOutputs(content: Content): Outputs {
   const model = buildModel(content);
@@ -67,16 +78,17 @@ export function generateOutputs(content: Content): Outputs {
   ]);
   return {
     files: sortFiles(files),
-    ownedDirectories: [...SITE_OUTPUT_DIRECTORIES, ...COMMITTED_OUTPUT_DIRECTORIES],
+    ownedDirectories: [...SITE_OUTPUT_DIRECTORIES],
+    ownedFiles: [...COMMITTED_OWNED_FILES],
   };
 }
 
 const COMMITTED = (file: string) =>
-  file === "README.md" || file === "llms.txt" || file.startsWith("guides/");
+  file === "README.md" || file === "llms.txt" || GUIDE_FILE_PATTERN.test(file);
 
 export function committedOutputs(outputs: Outputs): Outputs {
   const files = new Map([...outputs.files].filter(([file]) => COMMITTED(file)));
-  return { files, ownedDirectories: [...COMMITTED_OUTPUT_DIRECTORIES] };
+  return { files, ownedDirectories: [], ownedFiles: [...COMMITTED_OWNED_FILES] };
 }
 
 function sortFiles(files: Map<string, string>): Map<string, string> {
@@ -88,13 +100,26 @@ function listFiles(root: string, directory: string): string[] {
   if (!existsSync(absolute)) return [];
   return readdirSync(absolute, { recursive: true, withFileTypes: true })
     .filter((entry) => entry.isFile())
-    .map((entry) => path.relative(root, path.join(entry.parentPath, entry.name)))
+    .map((entry) => path.relative(root, path.join(entry.parentPath, entry.name)).split(path.sep).join("/"))
     .sort();
+}
+
+function listOwnedFiles(root: string, owned: OwnedFiles): string[] {
+  return listFiles(root, owned.directory).filter((file) => owned.pattern.test(file));
 }
 
 export function writeOutputs(root: string, outputs: Outputs): string[] {
   for (const directory of outputs.ownedDirectories) {
     rmSync(path.join(root, directory), { recursive: true, force: true });
+  }
+  for (const owned of outputs.ownedFiles) {
+    for (const file of listOwnedFiles(root, owned)) {
+      if (outputs.files.has(file)) continue;
+      const absolute = path.join(root, file);
+      rmSync(absolute);
+      const folder = path.dirname(absolute);
+      if (readdirSync(folder).length === 0) rmdirSync(folder);
+    }
   }
   const written: string[] = [];
   for (const [file, contents] of outputs.files) {
@@ -118,10 +143,12 @@ export function diffOutputs(root: string, outputs: Outputs): Difference[] {
     if (!existsSync(absolute)) differences.push({ file, reason: "missing" });
     else if (readFileSync(absolute, "utf8") !== contents) differences.push({ file, reason: "stale" });
   }
-  for (const directory of outputs.ownedDirectories) {
-    for (const file of listFiles(root, directory)) {
-      if (!outputs.files.has(file)) differences.push({ file, reason: "unexpected" });
-    }
+  const owned = [
+    ...outputs.ownedDirectories.flatMap((directory) => listFiles(root, directory)),
+    ...outputs.ownedFiles.flatMap((files) => listOwnedFiles(root, files)),
+  ];
+  for (const file of owned) {
+    if (!outputs.files.has(file)) differences.push({ file, reason: "unexpected" });
   }
   return differences.sort((a, b) => a.file.localeCompare(b.file));
 }

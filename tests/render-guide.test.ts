@@ -91,6 +91,11 @@ describe("Markdown guide", () => {
     const site = SiteConfig.parse({ ...fixtureSite, url: "https://directory.example/" });
     const guide = guideFor({}, site);
     expect(guide).toContain("This guide is also published at [https://directory.example/sources/fixture-source/]");
+
+    const other = fixtureRecord({ id: "other-source", slug: "other-source" });
+    const model = buildModel(fixtureContent([fixtureRecord({ related_source_ids: ["other-source"] }), other]));
+    const source = model.sources.find((s) => s.id === "fixture-source")!;
+    expect(renderGuide(source, model.site, model.ai_tools)).toContain("](../other-source/README.md)");
   });
 
   it("leaves the website line out until a production URL is configured", () => {
@@ -120,11 +125,11 @@ describe("Markdown guide", () => {
               public: false,
             },
           ],
-          file: "data/sources/fixture-source.yaml",
+          file: "sources/fixture-source/source.yaml",
         },
       ],
     });
-    const guide = generateOutputs(leaky).files.get("guides/fixture-source.md")!;
+    const guide = generateOutputs(leaky).files.get("sources/fixture-source/README.md")!;
     expect(guide).not.toContain("fixture-internal-doc");
     expect(guide).not.toContain("Internal note");
   });
@@ -206,21 +211,21 @@ describe("repository llms.txt", () => {
   it("lists each guide with its summary and the AI tools it installs into", () => {
     const index = indexFor();
     expect(index).toContain(
-      "- [Connect Fixture Source SYNTHETIC-FIXTURE to ChatGPT, Claude, Gemini, and other LLMs](guides/fixture-source.md): Fixture summary covering two routes. Install steps for Fixture Chat, Fixture Agent.",
+      "- [Connect Fixture Source SYNTHETIC-FIXTURE to ChatGPT, Claude, Gemini, and other LLMs](sources/fixture-source/README.md): Fixture summary covering two routes. Install steps for Fixture Chat, Fixture Agent.",
     );
   });
 
   it("points at raw Markdown on GitHub once the repository is configured", () => {
     const site = SiteConfig.parse({ ...fixtureSite, repo: "owner/name", url: "https://directory.example/" });
     const index = indexFor(site);
-    expect(index).toContain("(https://raw.githubusercontent.com/owner/name/main/guides/fixture-source.md)");
+    expect(index).toContain("(https://raw.githubusercontent.com/owner/name/main/sources/fixture-source/README.md)");
     expect(index).toContain("- [Website](https://directory.example/)");
     expect(index).toContain("https://directory.example/connectors.json");
   });
 
   it("falls back to repository-relative paths and omits the unconfigured website", () => {
     const index = indexFor();
-    expect(index).toContain("(guides/fixture-source.md)");
+    expect(index).toContain("(sources/fixture-source/README.md)");
     expect(index).toContain("- [README](README.md)");
     expect(index).not.toContain("localhost:4321");
   });

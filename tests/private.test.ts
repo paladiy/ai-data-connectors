@@ -12,14 +12,14 @@ describe("private document guard", () => {
       "research/qbo.md",
       "data/private/quickbooks-online.yaml",
       "notes.private.md",
-      "guides/x.internal.md",
+      "sources/x/notes.internal.md",
     ]) {
       expect(isPrivatePath(file), file).toBe(true);
     }
   });
 
   it("allows public repository files", () => {
-    for (const file of ["AGENTS.md", "CLAUDE.md", "README.md", "data/sources/pipedrive.yaml"]) {
+    for (const file of ["AGENTS.md", "CLAUDE.md", "README.md", "sources/pipedrive/source.yaml"]) {
       expect(isPrivatePath(file), file).toBe(false);
     }
   });
@@ -36,14 +36,14 @@ describe("private document guard", () => {
 
   it("flags tracked content and output files containing internal references", () => {
     const files = {
-      "data/sources/a.yaml": "evidence:\n  - id: x\n    internal_ref: abc\n",
-      "data/sources/b.yaml": "id: b\n",
+      "sources/a/source.yaml": "evidence:\n  - id: x\n    internal_ref: abc\n",
+      "sources/b/source.yaml": "id: b\n",
       "site/src/content/docs/a.md": "internal_ref: abc\n",
       "site/public/connectors.json": '{"internal_ref": "abc"}\n',
     };
     const violations = findPrivateViolations(Object.keys(files), (f) => files[f as keyof typeof files]);
     expect(violations).toEqual([
-      expect.stringContaining("data/sources/a.yaml"),
+      expect.stringContaining("sources/a/source.yaml"),
       expect.stringContaining("site/src/content/docs/a.md"),
       expect.stringContaining("site/public/connectors.json"),
     ]);

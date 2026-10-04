@@ -82,7 +82,7 @@ describe("model", () => {
       ],
     });
     const content = fixtureContent([], {
-      sources: [{ record, privateEvidence, file: "data/sources/fixture-source.yaml" }],
+      sources: [{ record, privateEvidence, file: "sources/fixture-source/source.yaml" }],
     });
     const option = buildModel(content).sources[0]!.options.find((o) => o.id === "fx-route")!;
     expect(option.limits.evidence_ids).toEqual(["fx-docs"]);
@@ -106,7 +106,7 @@ describe("public dataset", () => {
       options: [fixtureOption({ limits: known("Note.", ["fx-docs", "fx-internal"]) }), fixtureOurOption()],
     });
     const content = fixtureContent([], {
-      sources: [{ record, privateEvidence, file: "data/sources/fixture-source.yaml" }],
+      sources: [{ record, privateEvidence, file: "sources/fixture-source/source.yaml" }],
     });
     const json = serializePublicDataset(buildModel(content));
     expect(json).not.toContain("internal_ref");

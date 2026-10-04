@@ -6,6 +6,7 @@ import { AiToolsFile } from "../../schemas/ai-tool.ts";
 import { SiteConfig } from "../../schemas/site.ts";
 import { SkillsLock, UpstreamSkillsIndex } from "../../schemas/skills.ts";
 import { sha256 } from "./hash.ts";
+import { SOURCE_FILE, SOURCES_DIR, sourceFile } from "./paths.ts";
 import { PrivateEvidenceFile, Source } from "../../schemas/source.ts";
 import type { Evidence } from "../../schemas/common.ts";
 
@@ -90,19 +91,26 @@ export function loadContent(root: string = process.cwd()): Content {
   const site = parseFile(SiteConfig, path.join(root, "data", "site.yaml"), "data/site.yaml");
   const aiTools = parseFile(AiToolsFile, path.join(root, "data", "ai-tools.yaml"), "data/ai-tools.yaml");
 
-  const sourcesDir = path.join(root, "data", "sources");
-  const files = existsSync(sourcesDir)
-    ? readdirSync(sourcesDir).filter((f) => f.endsWith(".yaml")).sort()
-    : [];
-
   const problems: string[] = [];
+  const folders: string[] = [];
+  const sourcesDir = path.join(root, SOURCES_DIR);
+  if (existsSync(sourcesDir)) {
+    for (const entry of readdirSync(sourcesDir, { recursive: true, withFileTypes: true })) {
+      if (!entry.isFile() || !/\.ya?ml$/.test(entry.name)) continue;
+      const relative = path.relative(root, path.join(entry.parentPath, entry.name)).split(path.sep).join("/");
+      const folder = path.relative(sourcesDir, entry.parentPath);
+      if (entry.name === SOURCE_FILE && folder !== "" && !folder.includes(path.sep)) folders.push(folder);
+      else problems.push(`${relative}: a source record must be ${SOURCES_DIR}/<slug>/${SOURCE_FILE}`);
+    }
+  }
+
   const sources: SourceBundle[] = [];
-  for (const file of files) {
-    const label = `data/sources/${file}`;
+  for (const folder of folders.sort()) {
+    const label = sourceFile(folder);
     try {
-      const record = parseFile(Source, path.join(sourcesDir, file), label);
-      if (`${record.slug}.yaml` !== file) {
-        problems.push(`${label}: file name must match the slug "${record.slug}"`);
+      const record = parseFile(Source, path.join(root, label), label);
+      if (record.slug !== folder) {
+        problems.push(`${label}: folder name must match the slug "${record.slug}"`);
       }
       sources.push({ record, privateEvidence: loadPrivateEvidence(root, record.id), file: label });
     } catch (error) {
