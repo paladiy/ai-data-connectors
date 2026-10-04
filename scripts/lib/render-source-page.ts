@@ -1,3 +1,4 @@
+import { buildInstall, type InstallLink, type OptionInstall, type ToolInstall } from "./install.ts";
 import { formatValue } from "./markdown.ts";
 import type { ModelAiTool, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
 
@@ -68,15 +69,6 @@ function richText(value: string): string {
   return e(value).replace(/`([^`]+)`/g, "<code>$1</code>");
 }
 
-function withTool(value: string, tool: ModelAiTool): string {
-  return value.split("{destination}").join(tool.name).split("{tool}").join(tool.in_text ?? tool.name);
-}
-
-function toolsFor(option: ModelOption, aiTools: ModelAiTools): ModelAiTool[] {
-  const wanted = new Set(option.works_with);
-  return aiTools.tools.filter((tool) => wanted.has(tool.id));
-}
-
 function toolTiles(option: ModelOption, tools: ModelAiTool[], aiTools: ModelAiTools): string[] {
   const tiles = tools.map((tool, i) => {
     const meta = [tool.vendor, tool.connection_label].filter(Boolean).join(" · ");
@@ -98,41 +90,28 @@ function toolTiles(option: ModelOption, tools: ModelAiTool[], aiTools: ModelAiTo
   return out;
 }
 
-function toolLinks(tool: ModelAiTool): string {
-  const links = [anchor(`Coupler.io guide for ${tool.name}`, tool.links.setup)];
-  if (tool.links.vendor) links.push(anchor(`${tool.vendor ?? tool.name} documentation`, tool.links.vendor));
-  if (tool.links.directory) links.push(anchor(`Coupler.io in ${tool.links.directory.name}`, tool.links.directory.url));
-  return `<p class="sp-links">${links.join("")}</p>`;
+function linkParagraph(links: InstallLink[]): string {
+  return `<p class="sp-links">${links.map((item) => anchor(item.label, item.url)).join("")}</p>`;
 }
 
-function toolPanel(option: ModelOption, tool: ModelAiTool): string {
+function toolPanel(install: ToolInstall): string {
   const out: string[] = [];
-  const intro = [
-    tool.connection_note,
-    tool.available_in.length > 0 ? `Works in ${tool.available_in.join(", ")}.` : undefined,
-  ].filter((part): part is string => Boolean(part));
-  if (intro.length > 0) out.push(`<p class="sp-tool-intro">${intro.map(e).join(" ")}</p>`);
+  if (install.intro.length > 0) out.push(`<p class="sp-tool-intro">${install.intro.map(e).join(" ")}</p>`);
 
-  if (option.setup_steps.length > 0) {
+  for (const group of install.groups) {
     out.push(
-      `<p class="sp-label">In Coupler.io</p>`,
-      `<ol>${option.setup_steps.map((step) => `<li>${richText(withTool(step.text, tool))}</li>`).join("")}</ol>`,
+      `<p class="sp-label">${e(group.title)}</p>`,
+      `<ol>${group.steps.map((step) => `<li>${richText(step)}</li>`).join("")}</ol>`,
     );
   }
-  for (const setup of tool.setups) {
-    out.push(
-      `<p class="sp-label">In ${e(setup.title ?? tool.name)}</p>`,
-      `<ol>${setup.steps.map((step) => `<li>${richText(step.text)}</li>`).join("")}</ol>`,
-    );
+  if (install.success_check) {
+    out.push(`<p class="sp-label">Check it worked</p>`, `<p>${richText(install.success_check)}</p>`);
   }
-  if (option.success_check) {
-    out.push(`<p class="sp-label">Check it worked</p>`, `<p>${richText(withTool(option.success_check.text, tool))}</p>`);
+  if (install.notes.length > 0) {
+    out.push(`<p class="sp-label">Good to know</p>`, list(install.notes.map(richText)));
   }
-  if (tool.notes.length > 0) {
-    out.push(`<p class="sp-label">Good to know</p>`, list(tool.notes.map((note) => richText(note.text))));
-  }
-  out.push(toolLinks(tool));
-  return `<div class="sp-tool-panel" data-tool="${e(tool.id)}">${out.join("")}</div>`;
+  out.push(linkParagraph(install.links));
+  return `<div class="sp-tool-panel" data-tool="${e(install.tool.id)}">${out.join("")}</div>`;
 }
 
 export function renderToolCss(aiTools: ModelAiTools): string {
@@ -145,26 +124,16 @@ export function renderToolCss(aiTools: ModelAiTools): string {
     .join("\n");
 }
 
-function setupTime(option: ModelOption): string {
-  const claim = option.setup_time;
-  if (!claim || claim.status !== "known" || !claim.value) return "";
-  const { min_minutes: min, max_minutes: max, basis } = claim.value;
-  const range = min === max ? `${min} minutes` : `${min} to ${max} minutes`;
-  return `<p><strong>Setup time:</strong> ${e(range)}. <span class="sp-muted">${e(basis)}</span></p>`;
-}
-
-function installBody(option: ModelOption, tools: ModelAiTool[]): string[] {
-  const out: string[] = tools.map((tool) => toolPanel(option, tool));
-  out.push(setupTime(option));
-
-  const links: string[] = [];
-  if (option.links.setup) links.push(anchor("Provider setup instructions", option.links.setup));
-  if (option.links.overview && option.links.overview !== option.links.setup) {
-    links.push(anchor("Overview", option.links.overview));
+function installBody(install: OptionInstall): string[] {
+  const out: string[] = install.tools.map(toolPanel);
+  if (install.setup_time) {
+    out.push(
+      `<p><strong>Setup time:</strong> ${e(install.setup_time.range)}. ` +
+        `<span class="sp-muted">${e(install.setup_time.basis)}</span></p>`,
+    );
   }
-  if (option.links.pricing) links.push(anchor("Pricing", option.links.pricing));
-  if (links.length > 0) out.push(`<p class="sp-links">${links.join("")}</p>`);
-  return out.filter((part) => part !== "");
+  if (install.links.length > 0) out.push(linkParagraph(install.links));
+  return out;
 }
 
 function section(option: ModelOption, kind: "works" | "install", title: string, body: string[]): string {
@@ -193,12 +162,13 @@ function compactTab(option: ModelOption, index: number): string {
 function panel(option: ModelOption, aiTools: ModelAiTools): string {
   const limited = option.route_status.status === "known" && option.route_status.value !== "available";
   const intro = option.description ? `<p class="sp-panel-intro">${e(option.description)}</p>` : "";
-  const tools = toolsFor(option, aiTools);
+  const install = buildInstall(option, aiTools);
+  const tools = install.tools.map((entry) => entry.tool);
   return (
     `<div class="sp-panel${limited ? " sp-panel--limited" : ""}" data-option="${e(option.id)}">` +
     intro +
     section(option, "works", "Works with", toolTiles(option, tools, aiTools)) +
-    section(option, "install", "How to install", installBody(option, tools)) +
+    section(option, "install", "How to install", installBody(install)) +
     `</div>`
   );
 }
