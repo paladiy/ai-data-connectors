@@ -1,0 +1,19 @@
+tests/readme-and-pages.test.ts
+  s_12f20bbd241aea::t_c161232b88f1d2 111,115-116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e54346bda90fdc2d6a889233175c468eeaa04008",
+  "prompts": {},
+  "sessions": {
+    "s_12f20bbd241aea": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c9b539df-3ec9-4b54-8548-527d91d057a8",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
