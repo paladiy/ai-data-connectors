@@ -99,22 +99,37 @@ function bestFor(source: ModelSource, option: ModelOption): string | null {
   return jobs.length > 0 ? jobs.map((job) => job.job).join("; ") : null;
 }
 
+/** Decorative 24px line icons, one per Claude surface. */
+const svg = (paths: string) =>
+  `<svg class="sp-surf-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${paths}</svg>`;
+
+const SURFACE_ICONS: Record<(typeof SURFACES)[number], string> = {
+  // Browser window.
+  claude_web: svg(`<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9h18"/><circle cx="6.2" cy="6.8" r=".5"/><circle cx="8.6" cy="6.8" r=".5"/>`),
+  // Desktop monitor.
+  claude_desktop: svg(`<rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M9 20h6M12 16.5V20"/>`),
+  // Terminal prompt.
+  claude_code: svg(`<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="m7.5 10 3 2.5-3 2.5M13 15h3.5"/>`),
+  // Shared workspace: two people.
+  cowork: svg(`<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.4-3 2.6-4.8 5.5-4.8s5.1 1.8 5.5 4.8"/><path d="M15.5 5.7a3 3 0 0 1 0 5.6M17.2 14.5c2 .6 3.1 2.2 3.3 4.5"/>`),
+};
+
+/** One tile per surface, so support reads at a glance; the state is also written out, never colour alone. */
 function worksIn(option: ModelOption): string {
-  const supported: string[] = [];
-  const unconfirmed: string[] = [];
-  for (const surface of SURFACES) {
+  const tiles = SURFACES.map((surface) => {
     const claim = option.surfaces[surface] as Claim<string>;
-    if (claim.status === "known" && claim.value === "supported") supported.push(SURFACE_LABELS[surface]);
-    else if (claim.status === "known" && claim.value === "limited") supported.push(`${SURFACE_LABELS[surface]} (limited)`);
-    else if (claim.status === "known" && claim.value === "unsupported") continue;
-    else unconfirmed.push(SURFACE_LABELS[surface]);
-  }
-  const lines: string[] = [];
-  if (supported.length > 0) lines.push(`<p><strong>Works in:</strong> ${supported.map(e).join(", ")}</p>`);
-  if (unconfirmed.length > 0) {
-    lines.push(`<p class="sp-muted">Not documented for ${unconfirmed.map(e).join(", ")}.</p>`);
-  }
-  return lines.join("");
+    let state: "supported" | "limited" | "unsupported" | "unknown" = "unknown";
+    if (claim.status === "known" && claim.value === "supported") state = "supported";
+    else if (claim.status === "known" && claim.value === "limited") state = "limited";
+    else if (claim.status === "known" && claim.value === "unsupported") state = "unsupported";
+    const text = { supported: "Works", limited: "Limited", unsupported: "Not supported", unknown: "Not documented" }[state];
+    return (
+      `<li class="sp-surf sp-surf--${state}">${SURFACE_ICONS[surface]}` +
+      `<span class="sp-surf-name">${e(SURFACE_LABELS[surface])}</span>` +
+      `<span class="sp-surf-state">${text}</span></li>`
+    );
+  });
+  return `<p class="sp-label">Works in</p><ul class="sp-surfaces">${tiles.join("")}</ul>`;
 }
 
 function setupTime(option: ModelOption): string {

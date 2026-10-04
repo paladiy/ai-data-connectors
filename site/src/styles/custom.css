@@ -427,6 +427,61 @@
 .sp-label + * {
   margin-block-start: 0.25rem !important;
 }
+
+/* Works in: one tile per Claude surface. */
+.sp-route-body ul.sp-surfaces {
+  list-style: none;
+  padding: 0;
+  margin-block-start: 0.5rem !important;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: 0.625rem;
+}
+.sp-route-body ul.sp-surfaces > li.sp-surf {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.5rem;
+  color: var(--sl-color-gray-3);
+}
+.sp-surf-icon {
+  margin-block-end: 0.35rem;
+}
+.sp-surf-name {
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--sl-color-white);
+}
+.sp-surf-state {
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-2);
+}
+.sp-surf--supported {
+  border-color: var(--sl-color-accent) !important;
+  background: var(--sl-color-bg-nav);
+  color: var(--sl-color-text-accent) !important;
+}
+.sp-surf--supported .sp-surf-state {
+  color: var(--sl-color-text-accent);
+}
+.sp-surf--limited {
+  border-style: dashed !important;
+  border-color: var(--sl-color-accent) !important;
+  color: var(--sl-color-text-accent) !important;
+}
+.sp-surf--unsupported,
+.sp-surf--unknown {
+  border-style: dashed !important;
+}
+.sp-surf--unsupported .sp-surf-name,
+.sp-surf--unknown .sp-surf-name {
+  color: var(--sl-color-gray-2);
+  font-weight: 500;
+}
 .sp-links {
   display: flex;
   flex-wrap: wrap;

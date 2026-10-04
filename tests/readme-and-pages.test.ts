@@ -113,7 +113,8 @@ describe("connector page rendering", () => {
     const guide = guideFor();
     expect(guide).toContain("Read-only");
     expect(guide).not.toContain(">read<");
-    expect(guide).toContain("<strong>Works in:</strong> Claude web, Claude desktop");
+    expect(guide).toContain('<p class="sp-label">Works in</p><ul class="sp-surfaces">');
+    expect(guide).toContain('<span class="sp-surf-name">Claude web</span><span class="sp-surf-state">Works</span>');
   });
 
   it("builds a prefilled correction link once the repository is configured", () => {
