@@ -151,8 +151,7 @@
                       "source_vendor",
                       "anthropic",
                       "third_party",
-                      "community",
-                      "manual"
+                      "community"
                     ]
                   },
                   {
@@ -186,8 +185,7 @@
               "remote_mcp",
               "local_mcp",
               "data_platform",
-              "automation",
-              "file_upload"
+              "automation"
             ]
           },
           "route_status": {

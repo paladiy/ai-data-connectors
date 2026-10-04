@@ -17,7 +17,6 @@ export const MAINTAINER_LABELS = {
   anthropic: "Anthropic maintained",
   third_party: "Third-party",
   community: "Community",
-  manual: "Manual export",
 } as const;
 
 export const METHOD_LABELS = {
@@ -26,7 +25,6 @@ export const METHOD_LABELS = {
   local_mcp: "Local MCP server",
   data_platform: "Data platform",
   automation: "Automation",
-  file_upload: "File upload",
 } as const;
 
 export interface ModelOption extends Option {
@@ -76,14 +74,17 @@ function availabilityRank(option: Option): number {
   return 3;
 }
 
-/** Ordering: vendor/Anthropic routes, other managed routes by provider, community, manual. */
+/** Coupler.io is the recommended route and always leads. */
+function isRecommended(option: Option): number {
+  return option.provider === "Coupler.io" ? 0 : 1;
+}
+
+/** Ordering: vendor/Anthropic routes, other managed routes by provider, community. */
 function rank(option: Option): number {
   if (option.maintainer.status === "known") {
     if (option.maintainer.value === "source_vendor" || option.maintainer.value === "anthropic") return 0;
     if (option.maintainer.value === "community") return 2;
-    if (option.maintainer.value === "manual") return 3;
   }
-  if (option.method === "file_upload") return 3;
   return 1;
 }
 
@@ -163,6 +164,7 @@ export function buildModel(content: Content): Model {
       .map((option) => toModelOption(option, allowed))
       .sort(
         (a, b) =>
+          isRecommended(a) - isRecommended(b) ||
           availabilityRank(a) - availabilityRank(b) ||
           rank(a) - rank(b) ||
           a.provider.localeCompare(b.provider) ||

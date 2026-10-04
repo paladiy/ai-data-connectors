@@ -194,3 +194,25 @@ describe("production readiness", () => {
     expect(messages(fixtureContent([]), true)).toContain("(any): no source record to deploy");
   });
 });
+
+describe("route limits", () => {
+  const message = "options: list Coupler.io plus at most two alternatives, official routes first";
+  const withOptions = (options: unknown[]) =>
+    messages(
+      fixtureContent([
+        Source.parse(
+          fixtureSource({
+            options,
+            recommendations: [{ job: "x", option_id: "a", reason: "r", evidence_ids: ["fx-docs"] }],
+          }),
+        ),
+      ]),
+    );
+
+  it("allows Coupler.io plus two alternatives and no more", () => {
+    expect(withOptions([fixtureOurOption(), fixtureOption({ id: "a" }), fixtureOption({ id: "b" })])).not.toContain(message);
+    expect(
+      withOptions([fixtureOurOption(), fixtureOption({ id: "a" }), fixtureOption({ id: "b" }), fixtureOption({ id: "c" })]),
+    ).toContain(message);
+  });
+});

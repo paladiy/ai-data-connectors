@@ -45,7 +45,6 @@ const ENUM_LABELS: Record<string, string> = {
   anthropic: "Anthropic maintained",
   third_party: "Third-party",
   community: "Community",
-  manual: "Manual export",
 };
 
 export function formatValue(value: unknown): string {

@@ -54,6 +54,7 @@ function availabilityBadge(option: ModelOption): string | null {
 
 function badgesFor(option: ModelOption): string {
   const parts = [
+    option.provider === "Coupler.io" ? badge("Recommended", "accent") : null,
     badge(accessLabel(option), option.access.status === "known" && option.access.value === "read_write" ? "accent" : "plain"),
     availabilityBadge(option),
   ].filter((part): part is string => part !== null);

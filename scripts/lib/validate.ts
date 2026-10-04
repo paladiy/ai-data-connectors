@@ -89,6 +89,10 @@ export function validateContent(content: Content, options: ValidateOptions = {})
       }
     };
 
+    if (record.options.length > 3) {
+      add(file, "options", "list Coupler.io plus at most two alternatives, official routes first");
+    }
+
     const optionIds = new Set<string>();
     for (const option of record.options) {
       const where = `options.${option.id}`;

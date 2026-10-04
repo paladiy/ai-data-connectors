@@ -26,10 +26,9 @@ describe("model", () => {
     expect(buildModel(content).sources.map((s) => s.slug)).toEqual(["a-source", "b-source"]);
   });
 
-  it("orders options by maintainer rank, then provider", () => {
+  it("leads with Coupler.io, then orders alternatives by maintainer rank and provider", () => {
     const record = fixtureRecord({
       options: [
-        fixtureOption({ id: "manual", provider: "Zed Co", maintainer: known("manual"), method: "file_upload" }),
         fixtureOurOption(),
         fixtureOption({ id: "community", provider: "Alpha Co", maintainer: known("community") }),
         fixtureOption({ id: "vendor", provider: "Mid Co", maintainer: known("source_vendor") }),
@@ -37,7 +36,7 @@ describe("model", () => {
       recommendations: [{ job: "x", option_id: "vendor", reason: "r", evidence_ids: ["fx-docs"] }],
     });
     const [source] = buildModel(fixtureContent([record])).sources;
-    expect(source!.options.map((o) => o.id)).toEqual(["vendor", "fx-ours", "community", "manual"]);
+    expect(source!.options.map((o) => o.id)).toEqual(["fx-ours", "vendor", "community"]);
   });
 
   it("ranks routes a reader cannot use today below available ones, whoever maintains them", () => {

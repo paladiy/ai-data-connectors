@@ -10,14 +10,13 @@ import {
   TextOrList,
 } from "./common.ts";
 
-export const Maintainer = z.enum(["source_vendor", "anthropic", "third_party", "community", "manual"]);
+export const Maintainer = z.enum(["source_vendor", "anthropic", "third_party", "community"]);
 export const Method = z.enum([
   "native_connector",
   "remote_mcp",
   "local_mcp",
   "data_platform",
   "automation",
-  "file_upload",
 ]);
 export const RouteStatus = z.enum(["available", "limited", "unavailable"]);
 export const SurfaceSupport = z.enum(["supported", "limited", "unsupported"]);

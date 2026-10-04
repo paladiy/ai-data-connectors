@@ -83,16 +83,16 @@ describe("connector page rendering", () => {
     expect(guide).toContain("Not applicable. The API returns live data only.");
   });
 
-  it("orders vendor-maintained routes ahead of ours and manual export last", () => {
+  it("leads with Coupler.io, then vendor-maintained routes", () => {
     const guide = guideFor({
       options: [
-        fixtureOption({ id: "manual", name: "Manual export", provider: "Zed", maintainer: known("manual"), method: "file_upload" }),
+        fixtureOption({ id: "community", name: "Community server", provider: "Zed", maintainer: known("community") }),
         fixtureOurOption(),
         fixtureOption({ id: "vendor", name: "Vendor connector", provider: "Mid", maintainer: known("source_vendor") }),
       ],
       recommendations: [{ job: "x", option_id: "vendor", reason: "r", evidence_ids: ["fx-docs"] }],
     });
-    const order = ["Vendor connector", "Fixture Ours", "Manual export"].map((name) => guide.indexOf(name));
+    const order = ["Fixture Ours", "Vendor connector", "Community server"].map((name) => guide.indexOf(name));
     expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
