@@ -26,26 +26,63 @@ export function correctionUrl(site: SiteConfig, source: ModelSource): string | n
 
 const COUPLER_LANDING_PREFIX = "https://www.coupler.io/claude-integrations/";
 
+const DOCS = "https://docs.coupler.io/destinations/categories/ai";
+
 const LINKS = {
   coupler: "https://www.coupler.io/",
-  claudeIntegration: "https://www.coupler.io/claude-integrations",
   aiIntegrations: "https://www.coupler.io/ai-integrations",
   claudeDirectory: "https://claude.com/connectors/coupler-io",
-  claudeDocs: "https://docs.coupler.io/destinations/categories/ai/claude",
   mcpDocs: "https://docs.coupler.io/ai/mcp",
   refreshDocs: "https://docs.coupler.io/functionality/flow-settings/how-to-set-up-automatic-data-refresh",
-  freeProDocs: "https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans",
+  claudeFreeProDocs: "https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans",
 };
 
-const OTHER_AI_TOOLS: Array<[string, string]> = [
-  ["ChatGPT", "https://docs.coupler.io/destinations/categories/ai/chatgpt"],
-  ["Cursor", "https://docs.coupler.io/destinations/categories/ai/cursor"],
-  ["Perplexity", "https://docs.coupler.io/destinations/categories/ai/perplexity"],
-  ["Gemini CLI", "https://docs.coupler.io/destinations/categories/ai/gemini"],
-  ["Gemini Enterprise", "https://docs.coupler.io/destinations/categories/ai/gemini_enterprise"],
-  ["Microsoft Copilot Studio", "https://docs.coupler.io/destinations/categories/ai/ms_copilot_studio"],
-  ["OpenClaw", "https://docs.coupler.io/destinations/categories/ai/openclaw"],
-  ["Any MCP-compatible client (Custom MCP)", "https://docs.coupler.io/destinations/categories/ai/custom_mcp"],
+const AI_TOOLS: Array<{ name: string; connects: string; setup: string }> = [
+  {
+    name: "Claude",
+    connects: "Coupler.io connector from Claude's connectors directory. Works in Claude web, desktop, mobile, Cowork, and Claude Code.",
+    setup: `${DOCS}/claude`,
+  },
+  {
+    name: "ChatGPT",
+    connects: "Coupler.io app in ChatGPT, authorized with your Coupler.io account.",
+    setup: `${DOCS}/chatgpt`,
+  },
+  {
+    name: "Gemini CLI",
+    connects: "A `gemini mcp add` command generated in the destination step, then `/mcp auth coupler`.",
+    setup: `${DOCS}/gemini`,
+  },
+  {
+    name: "Gemini Enterprise",
+    connects: "Custom MCP data store with OAuth credentials created in Coupler.io.",
+    setup: `${DOCS}/gemini_enterprise`,
+  },
+  {
+    name: "Microsoft Copilot Studio",
+    connects: "MCP tool on a Copilot Studio agent, using OAuth 2.0 with dynamic discovery.",
+    setup: `${DOCS}/ms_copilot_studio`,
+  },
+  {
+    name: "Cursor",
+    connects: "Add to Cursor from Cursor's MCP directory, then sign in to Coupler.io.",
+    setup: `${DOCS}/cursor`,
+  },
+  {
+    name: "Perplexity",
+    connects: "Local Coupler.io MCP server running in Docker with a personal access token.",
+    setup: `${DOCS}/perplexity`,
+  },
+  {
+    name: "OpenClaw",
+    connects: "The coupler-io skill from ClawHub, which connects the MCP server through mcporter.",
+    setup: `${DOCS}/openclaw`,
+  },
+  {
+    name: "Any MCP-compatible client",
+    connects: "Custom MCP: the server URL and a personal access token, for clients such as Zapier, n8n, Make, or your own application.",
+    setup: `${DOCS}/custom_mcp`,
+  },
 ];
 
 function couplerLandingPage(source: ModelSource): string | null {
@@ -56,16 +93,26 @@ function sampleQuery(source: ModelSource): string | null {
   return source.options.find((option) => option.provider === "Coupler.io")?.sample_query ?? null;
 }
 
+function toolTable(): string {
+  return [
+    "| AI tool | How it connects | Setup guide |",
+    "| --- | --- | --- |",
+    ...AI_TOOLS.map(
+      (tool) => `| ${escapeCell(tool.name)} | ${tool.connects} | ${link(`${tool.name} setup`, tool.setup)} |`,
+    ),
+  ].join("\n");
+}
+
 function sourceTable(model: Model, home: string | null): string {
   if (model.sources.length === 0) return "No sources have been added yet.";
   return [
-    "| Source | Ask Claude, for example | Guides |",
+    "| Source | Example question | Guides |",
     "| --- | --- | --- |",
     ...model.sources.map((source) => {
       const landing = couplerLandingPage(source);
       const guides = [
         home ? link("Setup guide", new URL(`/sources/${source.slug}/`, home).toString()) : null,
-        landing ? link(`${source.name} to Claude on Coupler.io`, landing) : null,
+        landing ? link(`${source.name} on Coupler.io`, landing) : null,
       ].filter((item): item is string => item !== null);
       const query = sampleQuery(source);
       return `| ${escapeCell(source.name)} | ${query ? `“${escapeText(query)}”` : "—"} | ${guides.join(" · ") || "—"} |`;
@@ -85,75 +132,79 @@ export function renderReadme(model: Model): string {
     `# ${escapeText(site.name)}`,
     `**${escapeText(site.tagline)}**`,
     [
-      `AI Data Connectors is a guide to bringing business data into Claude with ${link("Coupler.io", LINKS.coupler)}. Coupler.io imports data from more than 400 apps, such as Google Ads, Google Analytics 4, QuickBooks, and Pipedrive, keeps it fresh on a schedule, and serves it to Claude through its own MCP server. You then ask questions about your numbers in plain language, with no SQL, exports, or copy-paste.`,
+      `AI Data Connectors is a guide to bringing business data into LLMs and AI tools with ${link("Coupler.io", LINKS.coupler)}. Coupler.io imports data from more than 400 apps, such as Google Ads, Google Analytics 4, QuickBooks, and Pipedrive, keeps it fresh on a schedule, and serves it to ChatGPT, Claude, Gemini, Microsoft Copilot Studio, Cursor, Perplexity, or any MCP-compatible client through its own MCP server. You then ask questions about your numbers in plain language, with no SQL, exports, or copy-paste.`,
       "",
       [
-        link("Connect your data to Claude", LINKS.claudeIntegration),
-        link("Coupler.io in the Claude connectors directory", LINKS.claudeDirectory),
-        link("Setup documentation", LINKS.claudeDocs),
+        link("Coupler.io AI integrations", LINKS.aiIntegrations),
+        link("How the Coupler.io MCP server works", LINKS.mcpDocs),
         home ? link("Browse the directory", home) : null,
       ]
         .filter((item): item is string => item !== null)
         .join(" · "),
     ].join("\n"),
-    "## How to connect your business data to Claude",
+    "## How to connect your business data to an LLM",
     [
-      `1. **Connect.** In Coupler.io, create a data flow: pick one or more sources, filter and shape the data, and choose Claude as the destination.`,
+      "1. **Connect.** In Coupler.io, create a data flow: pick one or more sources, filter and shape the data, and choose your AI tool as the destination.",
       `2. **Schedule.** Run the flow once, then set it to refresh automatically. Coupler.io supports intervals from every 15 minutes to monthly, depending on your plan (${link("refresh docs", LINKS.refreshDocs)}).`,
-      `3. **Ask.** Add the Coupler.io connector in Claude, open a new chat, and ask, for example, “Which campaigns generated the most conversions last month?” Claude asks permission to use the Coupler.io tools the first time.`,
-      `4. **Act.** Ask follow-up questions, compare periods, and turn the answers into budget, pipeline, or forecasting decisions.`,
+      "3. **Ask.** Connect Coupler.io in your AI tool, open a new chat, and ask, for example, “Which campaigns generated the most conversions last month?”",
+      "4. **Act.** Ask follow-up questions, compare periods, and turn the answers into budget, pipeline, or forecasting decisions.",
       "",
-      "The same connector works in Claude web, Claude desktop, Claude mobile, Cowork, and Claude Code.",
+      "One data flow can have several destinations, so the same dataset can serve ChatGPT for one team and Claude or Copilot Studio for another.",
     ].join("\n"),
-    "## Why use Coupler.io to connect data to Claude",
+    "## Supported LLMs and AI tools",
     [
-      `- **Your source systems stay out of reach.** Claude never connects to Google Ads, QuickBooks, or your CRM directly. It queries the datasets Coupler.io has imported, and those queries are read-only.`,
-      `- **Large datasets just work.** Queries run on Coupler.io's side through the ${link("Coupler.io MCP server", LINKS.mcpDocs)}, so a large dataset does not have to fit into Claude's context window.`,
-      "- **Many sources, one conversation.** A single data flow can join or append several sources, for example ad spend with GA4 sessions and CRM deals, before Claude sees the data.",
-      "- **You decide what Claude sees.** Claude only sees datasets from data flows that have Claude as their destination, and you can drop columns or filter rows before they leave Coupler.io.",
-      "- **Verified and compliant.** The Coupler.io connector is listed in Claude's connectors directory as Anthropic verified, and Coupler.io states it is SOC 2 Type II certified and GDPR and HIPAA compliant.",
+      `Every Coupler.io AI destination runs on the same ${link("Coupler.io MCP server", LINKS.mcpDocs)}. Each tool sees only the datasets from data flows that have it as a destination.`,
+      "",
+      toolTable(),
+    ].join("\n"),
+    "## Why use Coupler.io to connect data to AI",
+    [
+      "- **Your source systems stay out of reach.** The AI never connects to Google Ads, QuickBooks, or your CRM directly. It queries the datasets Coupler.io has imported, and those queries are read-only.",
+      "- **Large datasets just work.** Queries run on Coupler.io's side, so a large dataset does not have to fit into the model's context window.",
+      "- **One pipeline, any model.** Build the data flow once and send it to as many AI tools as you use, instead of maintaining a separate integration per model.",
+      "- **Many sources, one conversation.** A single data flow can join or append several sources, for example ad spend with GA4 sessions and CRM deals, before the AI sees the data.",
+      "- **You decide what the AI sees.** Drop columns or filter rows before data leaves Coupler.io, and choose per data flow which tools receive it.",
+      `- **Verified and compliant.** Coupler.io is listed in ${link("Claude's connectors directory", LINKS.claudeDirectory)} as Anthropic verified, and states it is SOC 2 Type II certified and GDPR and HIPAA compliant.`,
       "- **No code required.** You set everything up in Coupler.io's interface and ask your questions in plain language.",
     ].join("\n"),
-    "## Data sources you can connect to Claude",
+    "## Data sources you can connect",
     [
-      `Each source below has a researched guide that explains what data Coupler.io imports, how often it refreshes, and which limits to expect. Coupler.io supports far more apps than are listed here; see the ${link("full list of Claude integrations", LINKS.claudeIntegration)}.`,
+      `Each source below has a researched guide that explains what data Coupler.io imports, how often it refreshes, and which limits to expect. Coupler.io supports far more apps than are listed here; see ${link("all 400+ apps", LINKS.aiIntegrations)}.`,
       "",
       sourceTable(model, home),
-    ].join("\n"),
-    "## Use the same data in other AI tools",
-    [
-      `The Coupler.io MCP server also connects your data to other AI assistants and agents. Add each tool as a destination on a data flow to make its datasets available there. See ${link("Coupler.io AI integrations", LINKS.aiIntegrations)}.`,
-      "",
-      ...OTHER_AI_TOOLS.map(([name, url]) => `- ${link(name, url)}`),
     ].join("\n"),
     "## Frequently asked questions",
     faq([
       [
-        "How do I connect my business data to Claude?",
-        `Create a data flow in Coupler.io with your source and Claude as the destination, run it, and add the Coupler.io connector in Claude. The ${link("Claude destination guide", LINKS.claudeDocs)} walks through Claude web, desktop, Cowork, and Claude Code.`,
+        "How do I connect my business data to ChatGPT, Claude, or another LLM?",
+        "Create a data flow in Coupler.io with your source and your AI tool as the destination, run it, and connect Coupler.io inside that tool. The setup guide for each tool is linked in the table above.",
       ],
       [
-        "Can Claude change the data in my apps?",
-        `No. Claude reads the datasets Coupler.io has imported, and those queries are read-only. With your confirmation, Claude can change your Coupler.io workspace, for example by creating a data flow or triggering a refresh, but it cannot edit your campaigns, invoices, or deals. See ${link("what the MCP server can and cannot do", LINKS.mcpDocs)}.`,
+        "Can I use the same data in several AI tools?",
+        "Yes. Add each tool as a destination on the data flow. A tool only sees datasets from data flows that list it as a destination, so adding Claude does not make the data visible in ChatGPT.",
       ],
       [
-        "How fresh is the data Claude sees?",
+        "Can the AI change the data in my apps?",
+        `No. The AI reads the datasets Coupler.io has imported, and those queries are read-only. With your confirmation, it can change your Coupler.io workspace, for example by creating a data flow or triggering a refresh, but it cannot edit your campaigns, invoices, or deals. See ${link("what the MCP server can and cannot do", LINKS.mcpDocs)}.`,
+      ],
+      [
+        "How fresh is the data the AI sees?",
         "As fresh as your schedule. Each run replaces the dataset, and Coupler.io supports refresh intervals from every 15 minutes to monthly, depending on your plan. Start a new chat after a run to pick up the latest data.",
       ],
       [
-        "Does it work on Claude Free and Pro plans?",
-        `Yes, with a caveat. On individual Free and Pro plans, the official connector can connect but fail to load its tools. The documented workaround is to add Coupler.io as a custom connector using the URL from your Coupler.io account (${link("troubleshooting guide", LINKS.freeProDocs)}). On Team and Enterprise plans, an admin adds the connector.`,
+        "Does it work on free AI plans?",
+        `Coupler.io says its ChatGPT app works on all ChatGPT plans, though the Free plan may not be enough for thorough analysis. On individual Claude Free and Pro plans, the official connector can connect but fail to load its tools; the documented workaround is a custom connector URL (${link("troubleshooting guide", LINKS.claudeFreeProDocs)}).`,
       ],
       [
         "Do I need technical skills?",
-        "No. Data flows are configured in Coupler.io's interface, and you analyze the data by asking Claude questions in plain language.",
+        "No for the chat assistants: data flows are configured in Coupler.io's interface, and you ask questions in plain language. Developer tools such as Gemini CLI, Perplexity's local server, or a custom MCP client need a terminal command or a JSON config.",
       ],
     ]),
     "---",
     "## For developers and contributors",
     "### About this repository",
     [
-      "This repository holds one maintained dataset describing how to get data from a business source into Claude with Coupler.io, and generates the README, the website, and a public JSON dataset from it.",
+      "This repository holds one maintained dataset describing how to get data from a business source into LLMs and AI tools with Coupler.io, and generates the README, the website, and a public JSON dataset from it.",
       "",
       "It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a source appears once it is documented with cited evidence.",
       "",

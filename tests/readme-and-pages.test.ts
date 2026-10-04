@@ -159,11 +159,19 @@ describe("README rendering", () => {
     expect(readme).toContain("(https://www.coupler.io/claude-integrations/fixture-to-claude)");
   });
 
+  it("lists the AI tools beyond Claude", () => {
+    const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
+    for (const tool of ["| Claude |", "| ChatGPT |", "| Gemini CLI |", "| Microsoft Copilot Studio |", "| Any MCP-compatible client |"]) {
+      expect(readme).toContain(tool);
+    }
+  });
+
   it("puts the Coupler.io overview before the developer material", () => {
     const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
     const order = [
-      "## How to connect your business data to Claude",
-      "## Data sources you can connect to Claude",
+      "## How to connect your business data to an LLM",
+      "## Supported LLMs and AI tools",
+      "## Data sources you can connect",
       "## Frequently asked questions",
       "## For developers and contributors",
       "### Repository commands",

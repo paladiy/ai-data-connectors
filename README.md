@@ -1,75 +1,83 @@
 # AI Data Connectors
 
-**Connect your business data to Claude with Coupler.io, source by source.**
+**Connect your business data to ChatGPT, Claude, Gemini, and any other LLM with Coupler.io, source by source.**
 
-AI Data Connectors is a guide to bringing business data into Claude with [Coupler.io](https://www.coupler.io/). Coupler.io imports data from more than 400 apps, such as Google Ads, Google Analytics 4, QuickBooks, and Pipedrive, keeps it fresh on a schedule, and serves it to Claude through its own MCP server. You then ask questions about your numbers in plain language, with no SQL, exports, or copy-paste.
+AI Data Connectors is a guide to bringing business data into LLMs and AI tools with [Coupler.io](https://www.coupler.io/). Coupler.io imports data from more than 400 apps, such as Google Ads, Google Analytics 4, QuickBooks, and Pipedrive, keeps it fresh on a schedule, and serves it to ChatGPT, Claude, Gemini, Microsoft Copilot Studio, Cursor, Perplexity, or any MCP-compatible client through its own MCP server. You then ask questions about your numbers in plain language, with no SQL, exports, or copy-paste.
 
-[Connect your data to Claude](https://www.coupler.io/claude-integrations) · [Coupler.io in the Claude connectors directory](https://claude.com/connectors/coupler-io) · [Setup documentation](https://docs.coupler.io/destinations/categories/ai/claude)
+[Coupler.io AI integrations](https://www.coupler.io/ai-integrations) · [How the Coupler.io MCP server works](https://docs.coupler.io/ai/mcp)
 
-## How to connect your business data to Claude
+## How to connect your business data to an LLM
 
-1. **Connect.** In Coupler.io, create a data flow: pick one or more sources, filter and shape the data, and choose Claude as the destination.
+1. **Connect.** In Coupler.io, create a data flow: pick one or more sources, filter and shape the data, and choose your AI tool as the destination.
 2. **Schedule.** Run the flow once, then set it to refresh automatically. Coupler.io supports intervals from every 15 minutes to monthly, depending on your plan ([refresh docs](https://docs.coupler.io/functionality/flow-settings/how-to-set-up-automatic-data-refresh)).
-3. **Ask.** Add the Coupler.io connector in Claude, open a new chat, and ask, for example, “Which campaigns generated the most conversions last month?” Claude asks permission to use the Coupler.io tools the first time.
+3. **Ask.** Connect Coupler.io in your AI tool, open a new chat, and ask, for example, “Which campaigns generated the most conversions last month?”
 4. **Act.** Ask follow-up questions, compare periods, and turn the answers into budget, pipeline, or forecasting decisions.
 
-The same connector works in Claude web, Claude desktop, Claude mobile, Cowork, and Claude Code.
+One data flow can have several destinations, so the same dataset can serve ChatGPT for one team and Claude or Copilot Studio for another.
 
-## Why use Coupler.io to connect data to Claude
+## Supported LLMs and AI tools
 
-- **Your source systems stay out of reach.** Claude never connects to Google Ads, QuickBooks, or your CRM directly. It queries the datasets Coupler.io has imported, and those queries are read-only.
-- **Large datasets just work.** Queries run on Coupler.io's side through the [Coupler.io MCP server](https://docs.coupler.io/ai/mcp), so a large dataset does not have to fit into Claude's context window.
-- **Many sources, one conversation.** A single data flow can join or append several sources, for example ad spend with GA4 sessions and CRM deals, before Claude sees the data.
-- **You decide what Claude sees.** Claude only sees datasets from data flows that have Claude as their destination, and you can drop columns or filter rows before they leave Coupler.io.
-- **Verified and compliant.** The Coupler.io connector is listed in Claude's connectors directory as Anthropic verified, and Coupler.io states it is SOC 2 Type II certified and GDPR and HIPAA compliant.
+Every Coupler.io AI destination runs on the same [Coupler.io MCP server](https://docs.coupler.io/ai/mcp). Each tool sees only the datasets from data flows that have it as a destination.
+
+| AI tool | How it connects | Setup guide |
+| --- | --- | --- |
+| Claude | Coupler.io connector from Claude's connectors directory. Works in Claude web, desktop, mobile, Cowork, and Claude Code. | [Claude setup](https://docs.coupler.io/destinations/categories/ai/claude) |
+| ChatGPT | Coupler.io app in ChatGPT, authorized with your Coupler.io account. | [ChatGPT setup](https://docs.coupler.io/destinations/categories/ai/chatgpt) |
+| Gemini CLI | A `gemini mcp add` command generated in the destination step, then `/mcp auth coupler`. | [Gemini CLI setup](https://docs.coupler.io/destinations/categories/ai/gemini) |
+| Gemini Enterprise | Custom MCP data store with OAuth credentials created in Coupler.io. | [Gemini Enterprise setup](https://docs.coupler.io/destinations/categories/ai/gemini_enterprise) |
+| Microsoft Copilot Studio | MCP tool on a Copilot Studio agent, using OAuth 2.0 with dynamic discovery. | [Microsoft Copilot Studio setup](https://docs.coupler.io/destinations/categories/ai/ms_copilot_studio) |
+| Cursor | Add to Cursor from Cursor's MCP directory, then sign in to Coupler.io. | [Cursor setup](https://docs.coupler.io/destinations/categories/ai/cursor) |
+| Perplexity | Local Coupler.io MCP server running in Docker with a personal access token. | [Perplexity setup](https://docs.coupler.io/destinations/categories/ai/perplexity) |
+| OpenClaw | The coupler-io skill from ClawHub, which connects the MCP server through mcporter. | [OpenClaw setup](https://docs.coupler.io/destinations/categories/ai/openclaw) |
+| Any MCP-compatible client | Custom MCP: the server URL and a personal access token, for clients such as Zapier, n8n, Make, or your own application. | [Any MCP-compatible client setup](https://docs.coupler.io/destinations/categories/ai/custom_mcp) |
+
+## Why use Coupler.io to connect data to AI
+
+- **Your source systems stay out of reach.** The AI never connects to Google Ads, QuickBooks, or your CRM directly. It queries the datasets Coupler.io has imported, and those queries are read-only.
+- **Large datasets just work.** Queries run on Coupler.io's side, so a large dataset does not have to fit into the model's context window.
+- **One pipeline, any model.** Build the data flow once and send it to as many AI tools as you use, instead of maintaining a separate integration per model.
+- **Many sources, one conversation.** A single data flow can join or append several sources, for example ad spend with GA4 sessions and CRM deals, before the AI sees the data.
+- **You decide what the AI sees.** Drop columns or filter rows before data leaves Coupler.io, and choose per data flow which tools receive it.
+- **Verified and compliant.** Coupler.io is listed in [Claude's connectors directory](https://claude.com/connectors/coupler-io) as Anthropic verified, and states it is SOC 2 Type II certified and GDPR and HIPAA compliant.
 - **No code required.** You set everything up in Coupler.io's interface and ask your questions in plain language.
 
-## Data sources you can connect to Claude
+## Data sources you can connect
 
-Each source below has a researched guide that explains what data Coupler.io imports, how often it refreshes, and which limits to expect. Coupler.io supports far more apps than are listed here; see the [full list of Claude integrations](https://www.coupler.io/claude-integrations).
+Each source below has a researched guide that explains what data Coupler.io imports, how often it refreshes, and which limits to expect. Coupler.io supports far more apps than are listed here; see [all 400+ apps](https://www.coupler.io/ai-integrations).
 
-| Source | Ask Claude, for example | Guides |
+| Source | Example question | Guides |
 | --- | --- | --- |
-| Google Ads | “Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?” | [Google Ads to Claude on Coupler.io](https://www.coupler.io/claude-integrations/google-ads-to-claude) |
-| Google Analytics 4 | “Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?” | [Google Analytics 4 to Claude on Coupler.io](https://www.coupler.io/claude-integrations/google-analytics-to-claude) |
-| Google Search Console | “Which pages lost the most clicks year over year, and did their average position or their CTR move first?” | [Google Search Console to Claude on Coupler.io](https://www.coupler.io/claude-integrations/google-search-console-to-claude) |
-| Pipedrive | “Which deals have sat in the same stage longest, and what are they worth in total by owner?” | [Pipedrive to Claude on Coupler.io](https://www.coupler.io/claude-integrations/pipedrive-to-claude) |
-| QuickBooks Online | “Which vendors did we spend the most with last quarter, and how does that compare with the quarter before?” | [QuickBooks Online to Claude on Coupler.io](https://www.coupler.io/claude-integrations/quickbooks-to-claude) |
-
-## Use the same data in other AI tools
-
-The Coupler.io MCP server also connects your data to other AI assistants and agents. Add each tool as a destination on a data flow to make its datasets available there. See [Coupler.io AI integrations](https://www.coupler.io/ai-integrations).
-
-- [ChatGPT](https://docs.coupler.io/destinations/categories/ai/chatgpt)
-- [Cursor](https://docs.coupler.io/destinations/categories/ai/cursor)
-- [Perplexity](https://docs.coupler.io/destinations/categories/ai/perplexity)
-- [Gemini CLI](https://docs.coupler.io/destinations/categories/ai/gemini)
-- [Gemini Enterprise](https://docs.coupler.io/destinations/categories/ai/gemini_enterprise)
-- [Microsoft Copilot Studio](https://docs.coupler.io/destinations/categories/ai/ms_copilot_studio)
-- [OpenClaw](https://docs.coupler.io/destinations/categories/ai/openclaw)
-- [Any MCP-compatible client (Custom MCP)](https://docs.coupler.io/destinations/categories/ai/custom_mcp)
+| Google Ads | “Which campaigns increased spend but lost conversions last month, and how much of that was impression share lost to budget?” | [Google Ads on Coupler.io](https://www.coupler.io/claude-integrations/google-ads-to-claude) |
+| Google Analytics 4 | “Which landing pages lost the most organic sessions this month compared with last, and did their conversion rate move with the traffic?” | [Google Analytics 4 on Coupler.io](https://www.coupler.io/claude-integrations/google-analytics-to-claude) |
+| Google Search Console | “Which pages lost the most clicks year over year, and did their average position or their CTR move first?” | [Google Search Console on Coupler.io](https://www.coupler.io/claude-integrations/google-search-console-to-claude) |
+| Pipedrive | “Which deals have sat in the same stage longest, and what are they worth in total by owner?” | [Pipedrive on Coupler.io](https://www.coupler.io/claude-integrations/pipedrive-to-claude) |
+| QuickBooks Online | “Which vendors did we spend the most with last quarter, and how does that compare with the quarter before?” | [QuickBooks Online on Coupler.io](https://www.coupler.io/claude-integrations/quickbooks-to-claude) |
 
 ## Frequently asked questions
 
-### How do I connect my business data to Claude?
+### How do I connect my business data to ChatGPT, Claude, or another LLM?
 
-Create a data flow in Coupler.io with your source and Claude as the destination, run it, and add the Coupler.io connector in Claude. The [Claude destination guide](https://docs.coupler.io/destinations/categories/ai/claude) walks through Claude web, desktop, Cowork, and Claude Code.
+Create a data flow in Coupler.io with your source and your AI tool as the destination, run it, and connect Coupler.io inside that tool. The setup guide for each tool is linked in the table above.
 
-### Can Claude change the data in my apps?
+### Can I use the same data in several AI tools?
 
-No. Claude reads the datasets Coupler.io has imported, and those queries are read-only. With your confirmation, Claude can change your Coupler.io workspace, for example by creating a data flow or triggering a refresh, but it cannot edit your campaigns, invoices, or deals. See [what the MCP server can and cannot do](https://docs.coupler.io/ai/mcp).
+Yes. Add each tool as a destination on the data flow. A tool only sees datasets from data flows that list it as a destination, so adding Claude does not make the data visible in ChatGPT.
 
-### How fresh is the data Claude sees?
+### Can the AI change the data in my apps?
+
+No. The AI reads the datasets Coupler.io has imported, and those queries are read-only. With your confirmation, it can change your Coupler.io workspace, for example by creating a data flow or triggering a refresh, but it cannot edit your campaigns, invoices, or deals. See [what the MCP server can and cannot do](https://docs.coupler.io/ai/mcp).
+
+### How fresh is the data the AI sees?
 
 As fresh as your schedule. Each run replaces the dataset, and Coupler.io supports refresh intervals from every 15 minutes to monthly, depending on your plan. Start a new chat after a run to pick up the latest data.
 
-### Does it work on Claude Free and Pro plans?
+### Does it work on free AI plans?
 
-Yes, with a caveat. On individual Free and Pro plans, the official connector can connect but fail to load its tools. The documented workaround is to add Coupler.io as a custom connector using the URL from your Coupler.io account ([troubleshooting guide](https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans)). On Team and Enterprise plans, an admin adds the connector.
+Coupler.io says its ChatGPT app works on all ChatGPT plans, though the Free plan may not be enough for thorough analysis. On individual Claude Free and Pro plans, the official connector can connect but fail to load its tools; the documented workaround is a custom connector URL ([troubleshooting guide](https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans)).
 
 ### Do I need technical skills?
 
-No. Data flows are configured in Coupler.io's interface, and you analyze the data by asking Claude questions in plain language.
+No for the chat assistants: data flows are configured in Coupler.io's interface, and you ask questions in plain language. Developer tools such as Gemini CLI, Perplexity's local server, or a custom MCP client need a terminal command or a JSON config.
 
 ---
 
@@ -77,7 +85,7 @@ No. Data flows are configured in Coupler.io's interface, and you analyze the dat
 
 ### About this repository
 
-This repository holds one maintained dataset describing how to get data from a business source into Claude with Coupler.io, and generates the README, the website, and a public JSON dataset from it.
+This repository holds one maintained dataset describing how to get data from a business source into LLMs and AI tools with Coupler.io, and generates the README, the website, and a public JSON dataset from it.
 
 It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a source appears once it is documented with cited evidence.
 
