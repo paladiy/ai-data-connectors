@@ -3,7 +3,7 @@ tagline: Connect your business data to ChatGPT, Claude, Gemini, and any other LL
 
 url: http://localhost:4321
 
-repo: null
+repo: paladiy/ai-data-connectors
 
 maintainer:
   name: Olexander Paladiy

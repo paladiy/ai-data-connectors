@@ -113,7 +113,7 @@ Each capability is stored as a claim with a status. A known claim cites the evid
 
 ### Corrections
 
-Corrections are reported as repository issues using the correction template, and each source page links to a prefilled issue for its source.
+Open an issue in [paladiy/ai-data-connectors](https://github.com/paladiy/ai-data-connectors/issues) using the correction template. Each source page links to a prefilled issue for that source.
 
 ---
 
