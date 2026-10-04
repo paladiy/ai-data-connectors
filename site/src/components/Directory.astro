@@ -1,0 +1,112 @@
+---
+import directory from "../generated/directory.json";
+
+const { sources, categories } = directory;
+const usedCategories = categories.filter((category) =>
+  sources.some((source) => source.category === category.id),
+);
+---
+
+<section class="directory" aria-labelledby="directory-heading">
+  <h2 id="directory-heading">Find a data source</h2>
+
+  <div class="directory-controls">
+    <div class="field">
+      <label for="directory-search">Search by name</label>
+      <input
+        id="directory-search"
+        type="search"
+        autocomplete="off"
+        placeholder="For example, GA4"
+        aria-describedby="directory-count"
+      />
+    </div>
+    <div class="field">
+      <label for="directory-category">Category</label>
+      <select id="directory-category">
+        <option value="">All categories</option>
+        {usedCategories.map((category) => <option value={category.id}>{category.name}</option>)}
+      </select>
+    </div>
+  </div>
+
+  <p id="directory-count" role="status" aria-live="polite">
+    Showing {sources.length} {sources.length === 1 ? "source" : "sources"}.
+  </p>
+
+  {
+    sources.length === 0 ? (
+      <p class="directory-empty">
+        A source appears here once its connection options have been verified against cited evidence.
+      </p>
+    ) : (
+      <ul class="directory-list" role="list">
+        {sources.map((source) => (
+          <li
+            class="directory-item"
+            data-category={source.category}
+            data-name={source.name.toLowerCase()}
+            data-aliases={source.aliases.join(" ").toLowerCase()}
+            data-providers={source.providers.join(" ").toLowerCase()}
+          >
+            <h3><a href={`/sources/${source.slug}/`}>{source.name}</a></h3>
+            <p class="directory-summary">{source.summary}</p>
+            <p class="directory-meta">
+              <span class="directory-category">{source.category_name}</span>
+              <span>
+                {source.verified_routes} verified {source.verified_routes === 1 ? "route" : "routes"}
+              </span>
+              {!source.published && <span class="directory-draft">Preview</span>}
+            </p>
+            {source.aliases.length > 0 && (
+              <p class="directory-aliases">Also searched as {source.aliases.join(", ")}.</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <p class="directory-noresults" hidden>
+    No source matches that search.
+    <button type="button" class="directory-reset">Clear filters</button>
+  </p>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>(".directory");
+  if (section) {
+    const search = section.querySelector<HTMLInputElement>("#directory-search")!;
+    const category = section.querySelector<HTMLSelectElement>("#directory-category")!;
+    const items = [...section.querySelectorAll<HTMLElement>(".directory-item")];
+    const count = section.querySelector<HTMLElement>("#directory-count")!;
+    const noResults = section.querySelector<HTMLElement>(".directory-noresults")!;
+    const reset = section.querySelector<HTMLButtonElement>(".directory-reset")!;
+
+    function apply() {
+      const term = search.value.trim().toLowerCase();
+      const wanted = category.value;
+      let visible = 0;
+
+      for (const item of items) {
+        const haystack = [item.dataset.name, item.dataset.aliases, item.dataset.providers].join(" ");
+        const matches = (term === "" || haystack.includes(term)) && (wanted === "" || item.dataset.category === wanted);
+        item.hidden = !matches;
+        if (matches) visible += 1;
+      }
+
+      count.textContent = `Showing ${visible} ${visible === 1 ? "source" : "sources"}.`;
+      noResults.hidden = visible > 0 || items.length === 0;
+    }
+
+    search.addEventListener("input", apply);
+    category.addEventListener("change", apply);
+    reset.addEventListener("click", () => {
+      search.value = "";
+      category.value = "";
+      apply();
+      search.focus();
+    });
+    apply();
+  }
+</script>

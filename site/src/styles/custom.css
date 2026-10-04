@@ -1,0 +1,122 @@
+/* Wide comparison tables stay reachable on narrow screens without losing the header row. */
+.sl-markdown-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.sl-markdown-content table th,
+.sl-markdown-content table td {
+  min-width: 9rem;
+  vertical-align: top;
+}
+
+.sl-markdown-content table th:first-child,
+.sl-markdown-content table td:first-child {
+  min-width: 11rem;
+}
+
+.review-overdue,
+.directory-draft {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--sl-color-orange);
+  border-radius: 0.25rem;
+  color: var(--sl-color-orange-high);
+  font-size: var(--sl-text-xs);
+  font-weight: 600;
+}
+
+.directory-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block: 1rem;
+}
+
+.directory-controls .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1 1 14rem;
+}
+
+.directory-controls label {
+  font-size: var(--sl-text-sm);
+  font-weight: 600;
+}
+
+.directory-controls input,
+.directory-controls select {
+  padding: 0.5rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.3rem;
+  background: var(--sl-color-black);
+  color: var(--sl-color-white);
+  font: inherit;
+}
+
+.directory-controls input:focus-visible,
+.directory-controls select:focus-visible,
+.directory-reset:focus-visible,
+.directory-item a:focus-visible {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+
+.directory-list {
+  display: grid;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+}
+
+.directory-item {
+  padding: 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+}
+
+.directory-item h3 {
+  margin-block: 0 0.35rem;
+  font-size: var(--sl-text-lg);
+}
+
+.directory-summary,
+.directory-aliases,
+.directory-meta {
+  margin-block: 0.35rem 0;
+  font-size: var(--sl-text-sm);
+}
+
+.directory-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--sl-color-gray-3);
+}
+
+.directory-aliases {
+  color: var(--sl-color-gray-3);
+}
+
+.directory-reset {
+  margin-inline-start: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.3rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 30rem) {
+  .directory-list {
+    grid-template-columns: 1fr;
+  }
+}

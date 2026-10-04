@@ -1,0 +1,14 @@
+---
+import Default from "@astrojs/starlight/components/Head.astro";
+
+const drafts = import.meta.env.DRAFTS === "1" || process.env.DRAFTS === "1";
+---
+
+<Default><slot /></Default>
+{drafts && <meta name="robots" content="noindex, nofollow" />}
+
+<script>
+  import { markOverdueReviews } from "../lib/review.ts";
+
+  markOverdueReviews(document, new Date());
+</script>
