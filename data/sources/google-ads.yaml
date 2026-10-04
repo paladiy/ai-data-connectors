@@ -8,11 +8,12 @@ aliases:
   - AdWords
   - Google Adwords
 summary: >-
-  Google ships an official Google Ads MCP server, but its documentation never names a Claude app,
-  so following it means wiring up a generic MCP client yourself. The practical routes are a
-  scheduled import or a third-party connector that can act on campaigns with your approval. This guide compares what each reaches and what it costs you in setup.
+  Google Ads is Google's advertising platform for search, display, and video campaigns. Its data
+  covers campaigns, ad groups, ads, keywords, spend, clicks, impressions, and conversions. To
+  analyze it in Claude, you can use scheduled Coupler.io imports, Google's official read-only MCP
+  server, or the NotFair connector, which can also propose campaign changes for your approval.
 
-meta_description: Compare ways to connect Google Ads to Claude, with evidence for every capability claim.
+meta_description: "Connect Google Ads campaign, spend, and conversion data to Claude: Coupler.io import, Google's official MCP server, or NotFair. Compared with cited evidence."
 
 research:
   searched_on: "2026-10-04"

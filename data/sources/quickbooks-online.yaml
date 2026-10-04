@@ -18,12 +18,12 @@ aliases:
   - QuickBooks
   - Intuit QuickBooks
 summary: >-
-  QuickBooks Online holds the transactions behind your financial reports. Claude can reach them
-  three ways: through scheduled Coupler.io imports, through Intuit's connector in Claude's
-  directory, or through Intuit's open-source server that runs on your machine. The routes differ in how much of QuickBooks they expose, whether Claude can
-  change anything, and how much setup they ask for.
+  QuickBooks Online is Intuit's cloud accounting software. It stores invoices, customers, vendors,
+  transactions, and financial reports such as profit and loss and A/R aging. To analyze that data in
+  Claude, you can use scheduled Coupler.io imports, Intuit's connector in Claude's directory, or
+  Intuit's open-source MCP server that runs on your machine.
 
-meta_description: Compare ways to connect QuickBooks Online to Claude, with evidence for every capability claim.
+meta_description: "Connect QuickBooks Online invoices, customers, and financial reports to Claude: Coupler.io import, Intuit's connector, or Intuit's local MCP server. Evidence-based."
 
 research:
   searched_on: "2026-10-04"

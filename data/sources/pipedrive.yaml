@@ -7,12 +7,12 @@ name: Pipedrive
 aliases:
   - Pipedrive CRM
 summary: >-
-  Pipedrive holds the deals, contacts, and activities behind your sales reporting, and the routes
-  into Claude differ in a way that matters: one keeps the CRM live and writable, another imports it
-  into a dataset Claude can query at length. This guide compares what each exposes, where it runs,
-  and the limits that show up on a large account.
+  Pipedrive is a sales CRM that stores deals, contacts, organizations, and activities. To analyze
+  that data in Claude, you can use Pipedrive's own connector in Claude's directory, which reads live
+  data and can create and update records, or scheduled Coupler.io imports, which load one entity at
+  a time into a queryable dataset.
 
-meta_description: Compare ways to connect Pipedrive to Claude, with evidence for every capability claim.
+meta_description: "Connect Pipedrive deals, contacts, and activities to Claude: Pipedrive's own live connector or scheduled Coupler.io imports. Compared with cited evidence."
 
 research:
   searched_on: "2026-10-04"

@@ -8,12 +8,12 @@ aliases:
   - GA4
   - Google Analytics
 summary: >-
-  Google publishes an official GA4 server for Claude, but it is experimental, read-only, and the
-  only Claude app its documentation names is Claude Code. The other routes trade that friction for
-  scheduling or blending. This guide compares what each exposes and the GA4 limits that
-  follow you down every path.
+  Google Analytics 4 (GA4) is Google's web and app analytics product. Its data covers traffic,
+  users, sessions, events, conversions, and acquisition sources. To analyze it in Claude, you can
+  use scheduled Coupler.io imports, Google's official experimental read-only MCP server, or Zapier's
+  Google Analytics connector.
 
-meta_description: Compare ways to connect Google Analytics 4 to Claude, with evidence for every capability claim.
+meta_description: "Connect Google Analytics 4 traffic, event, and conversion data to Claude: Coupler.io import, Google's official MCP server, or Zapier. Compared with cited evidence."
 
 research:
   searched_on: "2026-10-04"

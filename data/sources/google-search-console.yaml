@@ -9,11 +9,12 @@ aliases:
   - Search Console
   - Webmaster Tools
 summary: >-
-  Search Console is the one source here with no MCP server from Google, so the routes into Claude
-  are a scheduled import, a hosted third-party service, or a server you run yourself. This guide
-  compares what each route reaches and what it asks of you.
+  Google Search Console is Google's free tool for monitoring how a website performs in Google
+  Search. Its data covers queries, clicks, impressions, average position, pages, and URL index
+  status. Google offers no MCP server for it, so Claude reaches it through scheduled Coupler.io
+  imports, the hosted GSC PAP service, or a community MCP server you run yourself.
 
-meta_description: Compare ways to connect Google Search Console to Claude, with evidence for every capability claim.
+meta_description: "Connect Google Search Console queries, clicks, impressions, and index status to Claude: Coupler.io import, GSC PAP, or a community MCP server. Compared with evidence."
 
 research:
   searched_on: "2026-10-04"
