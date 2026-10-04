@@ -7,7 +7,7 @@ import { escapeText } from "../scripts/lib/markdown.ts";
 import { renderReadme } from "../scripts/lib/render-github.ts";
 import { renderSourcePage } from "../scripts/lib/render-site.ts";
 import { fixtureContent, fixtureSite, fixtureRecord } from "./fixtures/content.ts";
-import { FIXTURE_MARKER, fixtureOption, fixtureOurOption, fixtureSource, unknown, known } from "./fixtures/factory.ts";
+import { FIXTURE_MARKER, fixtureOption, fixtureOurOption, fixtureSource, known } from "./fixtures/factory.ts";
 
 const guideFor = (overrides: Record<string, unknown> = {}, site = fixtureSite) => {
   const model = buildModel(fixtureContent([fixtureRecord(overrides)], { site }));
@@ -47,39 +47,9 @@ describe("connector page rendering", () => {
     const guide = guideFor();
   });
 
-  it("shows undocumented capabilities as unknown rather than as a no", () => {
-    const guide = guideFor({ options: [fixtureOption({ pricing: unknown() }), fixtureOurOption()] });
-    expect(guide).toContain('<p class="sp-label">Cost</p><p class="sp-muted">Unknown</p>');
-    expect(guide).not.toContain("Cost</p><p>No");
-  });
-
-  it("keeps the note on an unknown claim so the page says what was checked", () => {
-    const guide = guideFor({
-      options: [
-        fixtureOption({
-          pricing: {
-            status: "unknown",
-            value: null,
-            evidence_ids: [],
-            note: "the directory page could not be read",
-          },
-        }),
-        fixtureOurOption(),
-      ],
-    });
-    expect(guide).toContain("Unknown. the directory page could not be read");
-  });
-
-  it("explains a not-applicable claim", () => {
-    const guide = guideFor({
-      options: [
-        fixtureOption({
-          pricing: { status: "not_applicable", value: null, evidence_ids: [], note: "The API returns live data only." },
-        }),
-        fixtureOurOption(),
-      ],
-    });
-    expect(guide).toContain("Not applicable. The API returns live data only.");
+  it("leaves cost out of the install steps", () => {
+    const guide = guideFor({ options: [fixtureOption({ pricing: known("Free") }), fixtureOurOption()] });
+    expect(guide).not.toContain('<p class="sp-label">Cost</p>');
   });
 
   it("leads with Coupler.io, then vendor-maintained routes", () => {

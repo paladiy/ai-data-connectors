@@ -1,4 +1,3 @@
-import type { Claim } from "../../schemas/common.ts";
 import { formatValue } from "./markdown.ts";
 import type { ModelAiTool, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
 
@@ -49,18 +48,6 @@ function badgesFor(option: ModelOption, tag: "p" | "span" = "p"): string {
     availabilityBadge(option),
   ].filter((part): part is string => part !== null);
   return `<${tag} class="sp-badges">${parts.join("")}</${tag}>`;
-}
-
-function claimBlock(claim: Claim<unknown>): string {
-  if (claim.status === "known") {
-    const value = claim.value;
-    const body = Array.isArray(value)
-      ? list(value.map((entry) => e(formatValue(entry))))
-      : `<p>${e(formatValue(value))}</p>`;
-    return claim.note ? `${body}<p class="sp-note">${e(claim.note)}</p>` : body;
-  }
-  const label = claim.status === "not_applicable" ? "Not applicable" : "Unknown";
-  return `<p class="sp-muted">${label}${claim.note ? `. ${e(claim.note)}` : ""}</p>`;
 }
 
 export function descriptionSection(source: ModelSource): string[] {
@@ -175,8 +162,7 @@ function setupTime(option: ModelOption): string {
 }
 
 function installBody(option: ModelOption, tools: ModelAiTool[]): string[] {
-  const out: string[] = [`<p class="sp-label">Cost</p>`, claimBlock(option.pricing)];
-  out.push(...tools.map((tool) => toolPanel(option, tool)));
+  const out: string[] = tools.map((tool) => toolPanel(option, tool));
   out.push(setupTime(option));
 
   const links: string[] = [];
