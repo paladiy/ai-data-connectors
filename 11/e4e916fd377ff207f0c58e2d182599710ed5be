@@ -1,0 +1,30 @@
+data/sources/google-search-console.yaml
+  s_809c09ea550806::t_003f50df5e3c29 13-14,36-37,681-684
+data/sources/google-analytics-4.yaml
+  s_809c09ea550806::t_acfc60966350c8 35-36
+  s_809c09ea550806::t_82d2821a2d70e6 13
+data/sources/pipedrive.yaml
+  s_809c09ea550806::t_a0131420726e46 34-35,507-508,520,528,531-532
+README.md
+  s_809c09ea550806::t_de1e21c45867cf 17-21
+data/sources/quickbooks-online.yaml
+  s_809c09ea550806::t_a0131420726e46 22-23,44-46,689,691
+data/sources/google-ads.yaml
+  s_809c09ea550806::t_a0131420726e46 13,34-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "11e4e916fd377ff207f0c58e2d182599710ed5be",
+  "prompts": {},
+  "sessions": {
+    "s_809c09ea550806": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "54b49573-3afc-42bc-9a3a-82cd4e18f656",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
