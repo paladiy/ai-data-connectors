@@ -3,7 +3,7 @@ import { SiteConfig } from "../schemas/site.ts";
 import { generateOutputs } from "../scripts/lib/generate.ts";
 import { escapeRichText } from "../scripts/lib/markdown.ts";
 import { buildModel } from "../scripts/lib/model.ts";
-import { renderGuide } from "../scripts/lib/render-guide.ts";
+import { renderGuide, renderLlmsIndex } from "../scripts/lib/render-guide.ts";
 import { fixtureContent, fixtureSite, fixtureRecord } from "./fixtures/content.ts";
 import { fixtureOption, fixtureOurOption, known, unknown } from "./fixtures/factory.ts";
 
@@ -131,5 +131,45 @@ describe("Markdown guide", () => {
 
   it("produces identical bytes from identical inputs", () => {
     expect(guideFor()).toBe(guideFor());
+  });
+});
+
+describe("repository llms.txt", () => {
+  const indexFor = (site = fixtureSite) =>
+    renderLlmsIndex(buildModel(fixtureContent([fixtureRecord()], { site })));
+
+  it("discloses the Coupler.io relationship before listing anything", () => {
+    const index = indexFor();
+    expect(index.indexOf("not an independent comparison")).toBeLessThan(index.indexOf("## Guides"));
+    expect(index).toContain("Maintained by Fixture Maintainer.");
+    expect(index).toContain("Not affiliated with Anthropic, OpenAI, or Google.");
+  });
+
+  it("names the employer only once the relationship is confirmed", () => {
+    const confirmed = SiteConfig.parse({ ...fixtureSite, maintainer: { name: "Fixture Maintainer", relationship_confirmed: true } });
+    expect(indexFor()).not.toContain("who works at Coupler.io");
+    expect(indexFor(confirmed)).toContain("Fixture Maintainer, who works at Coupler.io");
+  });
+
+  it("lists each guide with its summary and the AI tools it installs into", () => {
+    const index = indexFor();
+    expect(index).toContain(
+      "- [Connect Fixture Source SYNTHETIC-FIXTURE to ChatGPT, Claude, Gemini, and other LLMs](guides/fixture-source.md): Fixture summary covering two routes. Install steps for Fixture Chat, Fixture Agent.",
+    );
+  });
+
+  it("points at raw Markdown on GitHub once the repository is configured", () => {
+    const site = SiteConfig.parse({ ...fixtureSite, repo: "owner/name", url: "https://directory.example/" });
+    const index = indexFor(site);
+    expect(index).toContain("(https://raw.githubusercontent.com/owner/name/main/guides/fixture-source.md)");
+    expect(index).toContain("- [Website](https://directory.example/)");
+    expect(index).toContain("https://directory.example/connectors.json");
+  });
+
+  it("falls back to repository-relative paths and omits the unconfigured website", () => {
+    const index = indexFor();
+    expect(index).toContain("(guides/fixture-source.md)");
+    expect(index).toContain("- [README](README.md)");
+    expect(index).not.toContain("localhost:4321");
   });
 });

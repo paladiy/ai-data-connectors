@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync
 import path from "node:path";
 import type { Content } from "./load.ts";
 import { buildModel, type Model } from "./model.ts";
-import { renderGuide } from "./render-guide.ts";
+import { renderGuide, renderLlmsIndex } from "./render-guide.ts";
 import { renderReadme } from "./render-github.ts";
 import {
   buildDirectoryData,
@@ -20,7 +20,10 @@ export interface Outputs {
 }
 
 function githubOutputs(model: Model): Map<string, string> {
-  const files = new Map<string, string>([["README.md", renderReadme(model)]]);
+  const files = new Map<string, string>([
+    ["README.md", renderReadme(model)],
+    ["llms.txt", renderLlmsIndex(model)],
+  ]);
   for (const source of model.sources) {
     files.set(`guides/${source.slug}.md`, renderGuide(source, model.site, model.ai_tools));
   }
@@ -65,7 +68,8 @@ export function generateOutputs(content: Content): Outputs {
   };
 }
 
-const COMMITTED = (file: string) => file === "README.md" || file.startsWith("guides/");
+const COMMITTED = (file: string) =>
+  file === "README.md" || file === "llms.txt" || file.startsWith("guides/");
 
 export function committedOutputs(outputs: Outputs): Outputs {
   const files = new Map([...outputs.files].filter(([file]) => COMMITTED(file)));

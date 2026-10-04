@@ -220,7 +220,7 @@ describe("generation", () => {
 
   it("commits the README and one Markdown guide per source", () => {
     const committed = committedOutputs(generateOutputs(fixtureContent([fixtureRecord()])));
-    expect([...committed.files.keys()]).toEqual(["guides/fixture-source.md", "README.md"]);
+    expect([...committed.files.keys()]).toEqual(["guides/fixture-source.md", "llms.txt", "README.md"]);
     expect(committed.ownedDirectories).toEqual(["guides"]);
   });
 

@@ -2,7 +2,7 @@ import type { Claim } from "../../schemas/common.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import { buildInstall, type InstallLink, type ToolInstall } from "./install.ts";
 import { escapeRichText, escapeText, formatValue, joinSections, link } from "./markdown.ts";
-import { orderFaq, type ModelAiTools, type ModelOption, type ModelSource } from "./model.ts";
+import { orderFaq, type Model, type ModelAiTools, type ModelOption, type ModelSource } from "./model.ts";
 import { correctionUrl, pageTitle, websiteUrl } from "./render-github.ts";
 
 const GENERATED_NOTE =
@@ -199,6 +199,70 @@ function relatedSection(source: ModelSource): string | null {
     "",
     ...source.related.map((related) => `- ${link(related.name, `./${related.slug}.md`)}`),
   ].join("\n");
+}
+
+export function guidePath(site: SiteConfig, slug: string): string {
+  return site.repo
+    ? `https://raw.githubusercontent.com/${site.repo}/main/guides/${slug}.md`
+    : `guides/${slug}.md`;
+}
+
+function affiliation(site: SiteConfig): string {
+  const who = site.maintainer.relationship_confirmed
+    ? `${site.maintainer.name}, who works at Coupler.io`
+    : site.maintainer.name;
+  return (
+    `Maintained by ${who}. These guides document and recommend Coupler.io, a commercial product, ` +
+    "so this is not an independent comparison. Not affiliated with Anthropic, OpenAI, or Google."
+  );
+}
+
+function toolNames(source: ModelSource, aiTools: ModelAiTools): string[] {
+  const used = new Set(source.options.flatMap((option) => option.works_with));
+  return aiTools.tools.filter((tool) => used.has(tool.id)).map((tool) => tool.name);
+}
+
+/**
+ * Repository-level index of the committed guides. Separate from the site's /llms.txt, which points
+ * at HTML pages; this one points at the Markdown files so a reader never needs the website.
+ */
+export function renderLlmsIndex(model: Model): string {
+  const { site } = model;
+  const lines = [
+    `# ${site.name}`,
+    "",
+    `> ${site.tagline}`,
+    "",
+    affiliation(site),
+    "",
+    'Every capability below is recorded as a claim with the page it was read from. Anything the vendor does not document is labelled "Not documented" rather than as unsupported, and coverage is not exhaustive.',
+    "",
+    "Each guide is a single plain-Markdown file covering one data source: what Coupler.io imports from it, how the data reaches the AI tool, what the limits are, install steps for each AI tool, and the sources behind every claim.",
+    "",
+  ];
+
+  if (model.sources.length > 0) {
+    lines.push("## Guides", "");
+    for (const source of model.sources) {
+      const tools = toolNames(source, model.ai_tools);
+      const install = tools.length > 0 ? ` Install steps for ${tools.join(", ")}.` : "";
+      lines.push(`- [${pageTitle(source)}](${guidePath(site, source.slug)}): ${source.summary}${install}`);
+    }
+    lines.push("");
+  }
+
+  lines.push("## Optional", "");
+  if (site.repo) {
+    lines.push(`- [README](https://github.com/${site.repo}#readme): how Coupler.io connects any of these sources to an LLM, and the full source list.`);
+  } else {
+    lines.push("- [README](README.md): how Coupler.io connects any of these sources to an LLM, and the full source list.");
+  }
+  const home = websiteUrl(site, "/");
+  if (home) lines.push(`- [Website](${home}): the same guides as HTML, with search.`);
+  const dataset = websiteUrl(site, "/connectors.json");
+  if (dataset) lines.push(`- [Public dataset, schema version 1](${dataset}): every claim and its evidence as JSON.`);
+
+  return `${lines.join("\n")}\n`;
 }
 
 export function renderGuide(source: ModelSource, site: SiteConfig, aiTools: ModelAiTools): string {

@@ -19,7 +19,13 @@ const PRIVATE_CONTENT_MARKERS: RegExp[] = [
   /"internal_ref"\s*:/,
 ];
 
-const CONTENT_PATHS: RegExp[] = [/^data\//, /^guides\//, /^site\/(src|public)\//, /^README\.md$/];
+const CONTENT_PATHS: RegExp[] = [
+  /^data\//,
+  /^guides\//,
+  /^site\/(src|public)\//,
+  /^README\.md$/,
+  /^llms\.txt$/,
+];
 
 export function isPrivatePath(file: string): boolean {
   return PRIVATE_PATH_PATTERNS.some((pattern) => pattern.test(file));
