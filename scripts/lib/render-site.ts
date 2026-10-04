@@ -120,7 +120,7 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
     frontmatter({
       title: pageTitle(source),
       description: source.meta_description,
-      tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 2 },
+      tableOfContents: false,
       head,
     }),
     ...descriptionSection(source),
