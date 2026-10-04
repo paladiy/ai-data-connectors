@@ -1,0 +1,33 @@
+scripts/lib/render-site.ts
+  s_b909ef1ccfa9a7::t_16ae08769128f1 278,296-297,310-312
+site/src/components/Directory.astro
+  s_b909ef1ccfa9a7::t_16ae08769128f1 4-38,41-63,66-101,105,107-139,141,145-147,149-150,154-187,190,194-199,202-221,224-227,229-260,262-277
+tests/build.test.ts
+  s_39c484ff9cc777::t_7efcc8384c4902 132
+site/src/styles/custom.css
+  s_b909ef1ccfa9a7::t_16ae08769128f1 20-69,72,75-120,123-129,131-140,144,146,149-155,159-261,263-291,295-304,307-308,310-323,326-327,329-333,336,339-449,451-454,457-458,461-475,479,482-491
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a2306e272e4d79afbbea3a7d0525e7bce43b2319",
+  "prompts": {},
+  "sessions": {
+    "s_39c484ff9cc777": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "572d0d7e-bb14-4b9f-b558-c2e197b8f2de",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    },
+    "s_b909ef1ccfa9a7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "8c0c0417-2d62-499b-b9de-ef3413a26c3e",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
