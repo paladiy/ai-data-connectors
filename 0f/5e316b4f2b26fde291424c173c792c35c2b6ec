@@ -1,0 +1,44 @@
+data/site.yaml
+  s_520592eba7192e::t_7c45afa8a28a09 4
+sources/quickbooks-online/README.md
+  s_520592eba7192e::t_2e549d78b0c1a5 352-353
+sources/google-analytics-4/README.md
+  s_520592eba7192e::t_2e549d78b0c1a5 367-368
+sources/pipedrive/README.md
+  s_520592eba7192e::t_2e549d78b0c1a5 357-358
+sources/facebook-ads/README.md
+  s_520592eba7192e::t_2e549d78b0c1a5 385-386
+llms.txt
+  s_520592eba7192e::t_2e549d78b0c1a5 23-24
+README.md
+  s_520592eba7192e::t_2e549d78b0c1a5 7,50-55,95
+sources/google-ads/README.md
+  s_520592eba7192e::t_2e549d78b0c1a5 285-286
+tests/build.test.ts
+  s_520592eba7192e::t_cb419ca7f269fc 36-40
+  s_520592eba7192e::t_f1bed6d74375e5 11-12
+  s_520592eba7192e::t_c73e42a185effa 60
+  s_520592eba7192e::t_87f9bf90985420 67
+  s_520592eba7192e::t_f5530aaf5ade88 98
+  s_520592eba7192e::t_180dd9f9f6d1f8 116
+  s_520592eba7192e::t_d5c41c797d4009 34
+  s_520592eba7192e::t_a9e67a42f37295 35
+sources/google-search-console/README.md
+  s_520592eba7192e::t_2e549d78b0c1a5 361-362
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0f5e316b4f2b26fde291424c173c792c35c2b6ec",
+  "prompts": {},
+  "sessions": {
+    "s_520592eba7192e": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "523d1a7a-744e-4978-a8ae-5f1eb4c9a03a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
