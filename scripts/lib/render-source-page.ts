@@ -69,7 +69,15 @@ function richText(value: string): string {
   return e(value).replace(/`([^`]+)`/g, "<code>$1</code>");
 }
 
-function toolTiles(option: ModelOption, tools: ModelAiTool[], aiTools: ModelAiTools): string[] {
+function toolAside(aiTools: ModelAiTools): string[] {
+  const out = [`<p>Pick the AI tool you use. The install steps below change to match it.</p>`];
+  if (aiTools.shared_notes.length > 0) {
+    out.push(list(aiTools.shared_notes.map((note) => e(note.text)), "sp-tool-shared"));
+  }
+  return out;
+}
+
+function toolTiles(option: ModelOption, tools: ModelAiTool[]): string[] {
   const tiles = tools.map((tool, i) => {
     const meta = [tool.vendor, tool.connection_label].filter(Boolean).join(" · ");
     return (
@@ -80,14 +88,7 @@ function toolTiles(option: ModelOption, tools: ModelAiTool[], aiTools: ModelAiTo
       `</label>`
     );
   });
-  const out = [
-    `<p>Pick the AI tool you use. The install steps below change to match it.</p>`,
-    `<div class="sp-tools" role="radiogroup" aria-label="AI tool">${tiles.join("")}</div>`,
-  ];
-  if (aiTools.shared_notes.length > 0) {
-    out.push(list(aiTools.shared_notes.map((note) => e(note.text)), "sp-tool-shared"));
-  }
-  return out;
+  return [`<div class="sp-tools" role="radiogroup" aria-label="AI tool">${tiles.join("")}</div>`];
 }
 
 function linkParagraph(links: InstallLink[]): string {
@@ -136,9 +137,15 @@ function installBody(install: OptionInstall): string[] {
   return out;
 }
 
-function section(option: ModelOption, kind: "works" | "install", title: string, body: string[]): string {
+function section(
+  option: ModelOption,
+  kind: "works" | "install",
+  title: string,
+  body: string[],
+  aside: string[] = [],
+): string {
   return (
-    `<section class="sp-route"><div class="sp-route-head"><h3 id="${kind}-${e(option.id)}">${e(title)}</h3></div>` +
+    `<section class="sp-route"><div class="sp-route-head"><h3 id="${kind}-${e(option.id)}">${e(title)}</h3>${aside.join("")}</div>` +
     `<div class="sp-route-body">${body.join("")}</div></section>`
   );
 }
@@ -167,7 +174,7 @@ function panel(option: ModelOption, aiTools: ModelAiTools): string {
   return (
     `<div class="sp-panel${limited ? " sp-panel--limited" : ""}" data-option="${e(option.id)}">` +
     intro +
-    section(option, "works", "Works with", toolTiles(option, tools, aiTools)) +
+    section(option, "works", "Works with", toolTiles(option, tools), toolAside(aiTools)) +
     section(option, "install", "How to install", installBody(install)) +
     `</div>`
   );

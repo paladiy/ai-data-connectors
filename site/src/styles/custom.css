@@ -412,7 +412,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
   gap: 0.625rem;
-  margin-block-start: 0.5rem !important;
 }
 .sp-tool-tile {
   position: relative;
@@ -453,10 +452,15 @@
 .sp-tool-tile:has(.sp-tool-radio:checked) .sp-tool-meta {
   color: var(--sl-color-text-accent);
 }
-.sp-route-body ul.sp-tool-shared {
-  margin-block-start: 1rem !important;
+.sp-tool-shared {
+  margin: 0.75rem 0 0;
+  padding-inline-start: 1.25rem;
+  list-style: disc;
   font-size: var(--sl-text-sm);
   color: var(--sl-color-gray-3);
+}
+.sp-tool-shared li + li {
+  margin-block-start: 0.35rem;
 }
 .sp-tool-panel {
   display: none;
