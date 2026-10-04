@@ -1,0 +1,19 @@
+scripts/lib/render-site.ts
+  s_da9ce55c125f24::t_eaa426c4f992b5 123
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "fe8e442cc3d13e8c8e76d074c4adc79c908ec72c",
+  "prompts": {},
+  "sessions": {
+    "s_da9ce55c125f24": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "3507b18a-756b-44e8-be3a-e544a51a36f0",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
