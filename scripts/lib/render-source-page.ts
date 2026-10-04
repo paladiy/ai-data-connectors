@@ -2,7 +2,7 @@ import type { Claim } from "../../schemas/common.ts";
 import { buildInstall, type InstallLink, type OptionInstall, type ToolInstall } from "./install.ts";
 import { formatValue } from "./markdown.ts";
 import type { ModelAiTool, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
-import { SKILLS_INDEX_URL, SKILLS_REPO_URL } from "../../site/src/lib/skills.ts";
+import { renderSkillCards, type SkillCard } from "../../site/src/lib/skills.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import { sitePath } from "./site-url.ts";
 
@@ -240,13 +240,26 @@ export function routesSection(source: ModelSource, aiTools: ModelAiTools): strin
   ];
 }
 
+function recordedCard(skill: ModelSource["related_skills"][number]): SkillCard {
+  return {
+    name: skill.name,
+    title: skill.name,
+    summary: skill.description,
+    url: skill.url,
+    category: null,
+    questions: [],
+    also_needs: skill.also_needs,
+  };
+}
+
+/** Rendered from the committed snapshot; the browser re-renders it only if the live index differs. */
 export function skillsSection(source: ModelSource): string[] {
   const names = JSON.stringify([source.name, ...source.aliases]);
+  const recorded = source.related_skills.map(recordedCard);
   return [
     "## Related skills",
-    `<div class="sp-skills not-content" data-skills-names="${e(names)}" data-skills-source="${e(source.name)}" data-skills-index="${e(SKILLS_INDEX_URL)}" data-skills-repo="${e(SKILLS_REPO_URL)}">` +
-      `<p class="sp-muted sp-skills-status">Loading skills from the <a href="${e(SKILLS_REPO_URL)}">coupler-io/skills</a> repository…</p>` +
-      `<noscript><p class="sp-muted">Skills are loaded live. See the <a href="${e(SKILLS_REPO_URL)}">coupler-io/skills</a> repository.</p></noscript>` +
+    `<div class="sp-skills not-content" data-skills-names="${e(names)}" data-skills-source="${e(source.name)}" data-skills-recorded="${e(JSON.stringify(recorded))}">` +
+      renderSkillCards([...recorded, ...source.skills], source.name) +
       `</div>`,
   ];
 }

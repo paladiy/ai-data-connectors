@@ -37,9 +37,6 @@
   border-radius: 0.5rem;
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
-.sk-card[hidden] {
-  display: none;
-}
 .sk-card:hover,
 .sk-card:focus-within {
   border-color: var(--sl-color-accent);
@@ -123,9 +120,14 @@
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
+.sk-more-wrap {
+  margin-block-start: 1.25rem;
+}
 .sk-more {
   display: block;
-  margin: 1.25rem auto 0;
+  width: fit-content;
+  margin: 0 auto;
+  list-style: none;
   padding: 0.5rem 1.25rem;
   font: inherit;
   font-size: var(--sl-text-sm);
@@ -143,6 +145,13 @@
 .sk-more:focus-visible {
   outline: 2px solid var(--sl-color-accent-high);
   outline-offset: 3px;
+}
+.sk-more::-webkit-details-marker {
+  display: none;
+}
+.sk-more-wrap[open] .sk-more-show,
+.sk-more-wrap:not([open]) .sk-more-hide {
+  display: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .sk-card {

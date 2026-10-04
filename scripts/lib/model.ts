@@ -3,14 +3,7 @@ import type { Claim, Evidence } from "../../schemas/common.ts";
 import type { Option, RelatedSkill, Source } from "../../schemas/source.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import type { Content } from "./load.ts";
-import {
-  matchSkills,
-  otherSources,
-  skillQuestions,
-  skillSummary,
-  skillTitle,
-  skillUrl,
-} from "../../site/src/lib/skills.ts";
+import { matchSkills, toSkillCard, type SkillCard } from "../../site/src/lib/skills.ts";
 import { isUsableRoute } from "./validate.ts";
 
 export const CONNECTION_LABELS = {
@@ -77,14 +70,7 @@ export interface ModelSource {
   related: Array<{ id: string; slug: string; name: string }>;
 }
 
-export interface ModelSkill {
-  name: string;
-  title: string;
-  summary: string;
-  url: string;
-  questions: string[];
-  also_needs: string[];
-}
+export type ModelSkill = SkillCard;
 
 export interface Model {
   site: SiteConfig;
@@ -197,14 +183,7 @@ function toModelOption(option: Option, allowed: Set<string>, tools: AiTool[]): M
 function skillsFor(record: Source, content: Content): ModelSkill[] {
   if (!content.skills) return [];
   const names = [record.name, ...record.aliases];
-  return matchSkills(content.skills.index.skills, names).map((skill) => ({
-    name: skill.name,
-    title: skillTitle(skill.name, names),
-    summary: skillSummary(skill),
-    url: skillUrl(skill),
-    questions: skillQuestions(skill),
-    also_needs: otherSources(skill, names),
-  }));
+  return matchSkills(content.skills.index.skills, names).map((skill) => toSkillCard(skill, names));
 }
 
 export function buildModel(content: Content): Model {

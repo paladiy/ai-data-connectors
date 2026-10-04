@@ -75,109 +75,26 @@ import Default from "@astrojs/starlight/components/Head.astro";
 </script>
 
 <script>
-  // Related skills: read the live coupler-io/skills index in the browser and list the skills for
-  // this source. The matching and labelling rules are shared with the generated Markdown guides.
-  import {
-    CATEGORY_LABELS,
-    matchSkills,
-    otherSources,
-    skillQuestions,
-    skillSummary,
-    skillTitle,
-    skillUrl,
-    type IndexedSkill,
-  } from "../lib/skills.ts";
+  // Related skills: the cards are rendered at build time from the pinned snapshot. The live
+  // coupler-io/skills index replaces them only when it lists different skills for this source.
+  import { matchSkills, renderSkillCards, SKILLS_INDEX_URL, toSkillCard, type IndexedSkill, type SkillCard } from "../lib/skills.ts";
 
-  async function loadSkills() {
+  async function refreshSkills() {
     const box = document.querySelector<HTMLElement>(".sp-skills");
     if (!box) return;
-    const status = box.querySelector<HTMLElement>(".sp-skills-status");
-    const repo = box.dataset.skillsRepo ?? "";
-    const fail = () => {
-      if (!status) return;
-      const a = document.createElement("a");
-      a.href = repo;
-      a.textContent = "coupler-io/skills";
-      status.replaceChildren("Could not load skills. Browse them in the ", a, " repository.");
-    };
     try {
       const names: string[] = JSON.parse(box.dataset.skillsNames ?? "[]");
-      const res = await fetch(box.dataset.skillsIndex ?? "", { headers: { Accept: "application/json" } });
-      if (!res.ok) return fail();
+      const recorded: SkillCard[] = JSON.parse(box.dataset.skillsRecorded ?? "[]");
+      const res = await fetch(SKILLS_INDEX_URL, { headers: { Accept: "application/json" } });
+      if (!res.ok) return;
       const index = (await res.json()) as { skills?: IndexedSkill[] };
-      // Skills for this source alone come first; cross-source skills follow.
-      const ordered = matchSkills(index.skills ?? [], names);
-      if (ordered.length === 0) {
-        if (status) status.textContent = "No source-specific skill listed yet.";
-        return;
-      }
-      const current = box.dataset.skillsSource ?? "";
-      const PAGE = 4;
-      const make = (tag: string, className: string, text?: string) => {
-        const el = document.createElement(tag);
-        el.className = className;
-        if (text !== undefined) el.textContent = text;
-        return el;
-      };
-
-      const list = make("ul", "sk-grid");
-      ordered.forEach((skill, i) => {
-        const li = make("li", "sk-card");
-        if (i >= PAGE) li.hidden = true;
-
-        const h = make("h3", "sk-name");
-        const a = make("a", "sk-title", skillTitle(skill.name, names)) as HTMLAnchorElement;
-        a.href = skillUrl(skill, repo);
-        a.title = skill.name;
-        h.append(a);
-        li.append(h);
-
-        const asks = skillQuestions(skill).slice(0, 2);
-        if (asks.length > 0) {
-          const ul = make("ul", "sk-asks");
-          ul.setAttribute("aria-label", "Example questions");
-          for (const ask of asks) ul.append(make("li", "", ask));
-          li.append(ul);
-        } else {
-          li.append(make("p", "sk-desc", skillSummary(skill)));
-        }
-
-        const foot = make("div", "sk-foot");
-        const tags = make("span", "sk-tags");
-        tags.append(make("span", "sp-badge", CATEGORY_LABELS[skill.category ?? ""] ?? "Skill"));
-        const others = otherSources(skill, names);
-        if (others.length > 0) tags.append(make("span", "sp-badge sp-badge--muted", `+ ${others.length} more ${others.length === 1 ? "source" : "sources"}`));
-        foot.append(tags, make("span", "sk-view", "View skill"));
-        li.append(foot);
-        list.append(li);
-      });
-
-      const intro = document.createElement("p");
-      intro.textContent = `A skill gives Claude instructions for a task. It does not connect any data, so connect ${current} first.`;
-      box.replaceChildren(intro, list);
-
-      const hiddenCards = () => [...list.querySelectorAll<HTMLElement>(".sk-card[hidden]")];
-      if (ordered.length > PAGE) {
-        const more = make("button", "sk-more") as HTMLButtonElement;
-        more.type = "button";
-        const label = () => {
-          const left = hiddenCards().length;
-          more.textContent = `Load more (${left})`;
-        };
-        label();
-        more.addEventListener("click", () => {
-          const next = hiddenCards().slice(0, PAGE);
-          next.forEach((el) => (el.hidden = false));
-          (next[0]?.querySelector("a") as HTMLElement | null)?.focus();
-          if (hiddenCards().length === 0) more.remove();
-          else label();
-        });
-        box.append(more);
-      }
-    } catch {
-      fail();
-    }
+      if (!Array.isArray(index.skills) || index.skills.length === 0) return;
+      const cards = [...recorded, ...matchSkills(index.skills, names).map((skill) => toSkillCard(skill, names))];
+      const shown = [...box.querySelectorAll<HTMLElement>(".sk-card")].map((card) => card.dataset.skill);
+      if (cards.map((card) => card.name).join("\n") === shown.join("\n")) return;
+      box.innerHTML = renderSkillCards(cards, box.dataset.skillsSource ?? "");
+    } catch {}
   }
 
-  loadSkills();
+  refreshSkills();
 </script>

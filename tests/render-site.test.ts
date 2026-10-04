@@ -4,7 +4,7 @@ import { SiteConfig } from "../schemas/site.ts";
 import { generateOutputs } from "../scripts/lib/generate.ts";
 import { buildModel } from "../scripts/lib/model.ts";
 import { renderSourcePage } from "../scripts/lib/render-site.ts";
-import { fixtureContent, fixtureSite, fixtureRecord } from "./fixtures/content.ts";
+import { fixtureContent, fixtureSite, fixtureRecord, fixtureSkills } from "./fixtures/content.ts";
 import { fixtureOption, fixtureOurOption, known } from "./fixtures/factory.ts";
 
 function pageFor(overrides: Record<string, unknown> = {}, site = fixtureSite) {
@@ -201,9 +201,66 @@ describe("source page structure", () => {
     expect(page).toContain("No related connectors listed yet.");
   });
 
-  it("renders related skills as a live placeholder, not from recorded data", () => {
-    const page = pageFor();
-    expect(page).toContain("data-skills-names=");
-    expect(page).toContain("raw.githubusercontent.com/coupler-io/skills/main/skills-index.json");
+});
+
+describe("source page related skills", () => {
+  const skill = (name: string, extra: Record<string, unknown> = {}) => ({
+    name,
+    path: `finance/${name}`,
+    category: "finance",
+    sources: ["Fixture Source SYNTHETIC-FIXTURE"],
+    description: 'Use for "am I on track" and "will I overspend", even without the word pacing.',
+    ...extra,
+  });
+
+  const pageWith = (skills: ReturnType<typeof skill>[], overrides: Record<string, unknown> = {}) => {
+    const model = buildModel(fixtureContent([fixtureRecord(overrides)], { skills: fixtureSkills(skills) }));
+    return renderSourcePage(model.sources[0]!, model.site, model.ai_tools);
+  };
+
+  it("renders the matched skills into the page from the snapshot", () => {
+    const page = pageWith([skill("fixture-source-budget-pacing")]);
+    expect(page).toContain('<li class="sk-card" data-skill="fixture-source-budget-pacing">');
+    expect(page).toContain(
+      '<h3 class="sk-name"><a class="sk-title" href="https://github.com/coupler-io/skills/tree/main/finance/fixture-source-budget-pacing"',
+    );
+    expect(page).toContain("<li>Am I on track</li><li>Will I overspend</li>");
+    expect(page).toContain('<span class="sp-badge">Finance</span>');
+    expect(page).toContain("It connects no data, so connect Fixture Source SYNTHETIC-FIXTURE first.");
+    expect(page).not.toContain("Loading skills");
+  });
+
+  it("puts cards beyond the first four behind a toggle that works without JavaScript", () => {
+    const page = pageWith(["a", "b", "c", "d", "e", "f"].map((letter) => skill(`fixture-source-${letter}`)));
+    const [shown, more] = page.split('<details class="sk-more-wrap">');
+    expect(shown!.match(/class="sk-card"/g)).toHaveLength(4);
+    expect(more!.match(/class="sk-card"/g)).toHaveLength(2);
+    expect(more).toContain("Show 2 more skills");
+  });
+
+  it("lists recorded skills first and passes them to the browser", () => {
+    const page = pageWith([skill("fixture-source-budget-pacing")], {
+      related_skills: [
+        {
+          name: "Recorded skill",
+          description: "Recorded description.",
+          url: "https://skills.example.test/recorded",
+          evidence_ids: ["fx-docs"],
+        },
+      ],
+    });
+    expect(page.indexOf('data-skill="Recorded skill"')).toBeLessThan(page.indexOf('data-skill="fixture-source-budget-pacing"'));
+    expect(page).toContain('<p class="sk-desc">Recorded description.</p>');
+    expect(page).toContain("data-skills-recorded=");
+  });
+
+  it("says so when no skill matches", () => {
+    expect(pageWith([skill("other-skill", { sources: ["Stripe"] })])).toContain("No source-specific skill is listed yet.");
+  });
+
+  it("escapes upstream text", () => {
+    const page = pageWith([skill("fixture-source-x", { description: "", short_description: "Runs <script>alert(1)</script>" })]);
+    expect(page).not.toContain("<script>alert(1)");
+    expect(page).toContain("Runs &lt;script&gt;alert(1)&lt;/script&gt;");
   });
 });

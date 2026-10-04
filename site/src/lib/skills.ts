@@ -1,7 +1,8 @@
 /**
  * Matching and presentation rules for the upstream coupler-io/skills index. Shared by the
  * generator, which reads the committed snapshot, and by the browser, which reads the live index,
- * so a page and its Markdown guide pick and label the same skills. Pure: no Node, no DOM.
+ * so a page and its Markdown guide pick and label the same skills, and the page's static cards
+ * match the ones the browser renders. Pure: no Node, no DOM.
  */
 
 export interface IndexedSkill {
@@ -106,4 +107,88 @@ export function skillQuestions(skill: IndexedSkill): string[] {
 
 export function skillUrl(skill: IndexedSkill, repo: string = SKILLS_REPO_URL): string {
   return `${repo}/tree/main/${skill.path.split("/").map(encodeURIComponent).join("/")}`;
+}
+
+/** A skill as a source page and its Markdown guide present it. */
+export interface SkillCard {
+  name: string;
+  title: string;
+  summary: string;
+  url: string;
+  category: string | null;
+  questions: string[];
+  also_needs: string[];
+}
+
+export function toSkillCard(skill: IndexedSkill, names: string[]): SkillCard {
+  return {
+    name: skill.name,
+    title: skillTitle(skill.name, names),
+    summary: skillSummary(skill),
+    url: skillUrl(skill),
+    category: skill.category ?? null,
+    questions: skillQuestions(skill),
+    also_needs: otherSources(skill, names),
+  };
+}
+
+/** Cards beyond this many sit behind a "Show more" toggle. */
+export const SKILLS_PAGE = 4;
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+const e = escapeHtml;
+
+function cardHtml(card: SkillCard): string {
+  const asks = card.questions.slice(0, 2);
+  const body =
+    asks.length > 0
+      ? `<ul class="sk-asks" aria-label="Example questions">${asks.map((ask) => `<li>${e(ask)}</li>`).join("")}</ul>`
+      : `<p class="sk-desc">${e(card.summary)}</p>`;
+  const others = card.also_needs.length;
+  const more =
+    others > 0
+      ? `<span class="sp-badge sp-badge--muted">+ ${others} more ${others === 1 ? "source" : "sources"}</span>`
+      : "";
+  const label = CATEGORY_LABELS[card.category ?? ""] ?? "Skill";
+  return (
+    `<li class="sk-card" data-skill="${e(card.name)}">` +
+    `<h3 class="sk-name"><a class="sk-title" href="${e(card.url)}" title="${e(card.name)}">${e(card.title)}</a></h3>` +
+    body +
+    `<div class="sk-foot"><span class="sk-tags"><span class="sp-badge">${e(label)}</span>${more}</span>` +
+    `<span class="sk-view">View skill</span></div>` +
+    `</li>`
+  );
+}
+
+/**
+ * The related-skills block as one line of HTML: the generator writes it into the page, and the
+ * browser renders it again from the live index, so both always produce the same markup.
+ */
+export function renderSkillCards(cards: SkillCard[], sourceName: string): string {
+  if (cards.length === 0) {
+    return (
+      `<p class="sp-muted">No source-specific skill is listed yet. ` +
+      `Browse the <a href="${e(SKILLS_REPO_URL)}">${e(SKILLS_REPO)}</a> repository.</p>`
+    );
+  }
+  const grid = (items: SkillCard[]) => `<ul class="sk-grid">${items.map(cardHtml).join("")}</ul>`;
+  const first = cards.slice(0, SKILLS_PAGE);
+  const rest = cards.slice(SKILLS_PAGE);
+  const intro = `<p>A skill gives the AI tool instructions for a task. It connects no data, so connect ${e(sourceName)} first.</p>`;
+  const more =
+    rest.length > 0
+      ? `<details class="sk-more-wrap"><summary class="sk-more">` +
+        `<span class="sk-more-show">Show ${rest.length} more ${rest.length === 1 ? "skill" : "skills"}</span>` +
+        `<span class="sk-more-hide">Show fewer skills</span>` +
+        `</summary>${grid(rest)}</details>`
+      : "";
+  return intro + grid(first) + more;
 }
