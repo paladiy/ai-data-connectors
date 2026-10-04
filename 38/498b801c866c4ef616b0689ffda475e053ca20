@@ -1,0 +1,21 @@
+AGENTS.md
+  s_516dc6ce68b8a5::t_52fc6972dc206a 1-48
+CLAUDE.md
+  s_516dc6ce68b8a5::t_bfda2d738ee364 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "38498b801c866c4ef616b0689ffda475e053ca20",
+  "prompts": {},
+  "sessions": {
+    "s_516dc6ce68b8a5": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "1dbc9967-8bf3-4699-a118-c52e2feaa754",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
