@@ -35,7 +35,8 @@ function resolveTarget(root: string, pagePath: string, href: string, base: strin
 export function findBrokenLinks(distRoot: string, base = "/"): BrokenLink[] {
   const broken: BrokenLink[] = [];
   for (const page of htmlFiles(distRoot)) {
-    const html = readFileSync(path.join(distRoot, page), "utf8");
+    // Inline script bodies hold template strings, not links; a script's own src stays checked.
+    const html = readFileSync(path.join(distRoot, page), "utf8").replace(/(<script\b[^>]*>)[\s\S]*?<\/script>/gi, "$1</script>");
     const hrefs = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map((match) => match[1]!);
     for (const href of new Set(hrefs)) {
       if (/^(?:[a-z+.-]+:|\/\/|#|mailto:|data:)/i.test(href)) continue;

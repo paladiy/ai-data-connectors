@@ -40,4 +40,11 @@ describe("link checker", () => {
     });
     expect(findBrokenLinks(root, "/repo/")).toEqual([{ page: "index.html", href: "/sources/a/" }]);
   });
+
+  it("ignores markup inside inline scripts but checks a script's src", () => {
+    const root = site({
+      "index.html": '<script>const a = `<a href="${url}">`;</script><script type="module" src="/missing.js"></script>',
+    });
+    expect(findBrokenLinks(root)).toEqual([{ page: "index.html", href: "/missing.js" }]);
+  });
 });
