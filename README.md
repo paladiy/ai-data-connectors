@@ -16,6 +16,7 @@ It is an editorial directory, not a connector service. It does not authenticate 
 | --- | --- | --- |
 | Google Ads | 4 | — |
 | Google Analytics 4 | 4 | — |
+| Google Search Console | 5 | — |
 | Pipedrive | 3 | — |
 | QuickBooks Online | 4 | — |
 

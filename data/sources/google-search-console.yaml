@@ -1,0 +1,1017 @@
+# Every known claim below cites evidence that was read on the recorded date. Anything that the
+# cited documentation does not state is left as status: unknown with a null value.
+schema_version: 1
+id: google-search-console
+slug: google-search-console
+name: Google Search Console
+aliases:
+  - GSC
+  - Search Console
+  - Webmaster Tools
+summary: >-
+  Search Console is the one source here with no MCP server from Google, so the routes into Claude
+  are a scheduled import, a hosted third-party service, or a server you run yourself. Its manual
+  export is also the harshest of any source, truncating at 1,000 rows. This guide compares what
+  each route reaches and what it asks of you.
+
+meta_description: Compare ways to connect Google Search Console to Claude, with evidence for every capability claim.
+
+research:
+  searched_on: "2026-10-04"
+  checked_urls:
+    - https://docs.coupler.io/sources/category/marketing/google-search-console
+    - https://docs.coupler.io/sources/category/marketing/google-search-console/data-overview
+    - https://docs.coupler.io/sources/category/marketing/google-search-console/faq
+    - https://docs.coupler.io/sources/category/marketing/google-search-console/common-issues
+    - https://docs.coupler.io/sources/category/marketing/google-search-console/best-practices
+    - https://docs.coupler.io/destinations/categories/ai/claude
+    - https://docs.coupler.io/destinations/categories/ai/claude/faq
+    - https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    - https://docs.coupler.io/ai/mcp
+    - https://claude.com/connectors/coupler-io
+    - https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
+    - https://support.claude.com/en/articles/8241126-upload-files-to-claude
+    - https://notfair.co/google-search-console-claude-connector-setup-guide
+    - https://gscpap.com/integrations/claude-desktop
+    - https://github.com/russjeffery/google-search-console-mcp
+    - https://support.google.com/webmasters/answer/12919797
+    - https://support.google.com/webmasters/answer/12919192
+  coverage_note: >-
+    Five routes were researched on 4 October 2026: the Coupler.io data platform, the NotFair and
+    GSC PAP hosted connectors, a community MCP server you can self-host, and a manual export
+    uploaded into a conversation. No Search Console MCP server published by Google was found, and
+    no dedicated Search Console entry was reachable in Claude's connector directory at the obvious
+    address; neither absence can be proven, so both are recorded as not found rather than as
+    non-existent.
+
+evidence:
+  - id: cpl-claude-destination
+    url: https://docs.coupler.io/destinations/categories/ai/claude
+    title: Claude destination
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-faq
+    url: https://docs.coupler.io/destinations/categories/ai/claude/faq
+    title: Claude destination FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-issues
+    url: https://docs.coupler.io/destinations/categories/ai/claude/common-issues
+    title: Claude destination common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-claude-free-pro
+    url: https://docs.coupler.io/troubleshooting/claude-connector-tools-dont-load-on-free-and-pro-plans
+    title: Claude connector tools do not load on Free and Pro plans
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-mcp
+    url: https://docs.coupler.io/ai/mcp
+    title: What the Coupler.io MCP server can and cannot do
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-refresh
+    url: https://docs.coupler.io/functionality/flow-settings/how-to-set-up-automatic-data-refresh
+    title: How to set up automatic data refresh
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-gsc-overview
+    url: https://docs.coupler.io/sources/category/marketing/google-search-console
+    title: Google Search Console source overview
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-gsc-data
+    url: https://docs.coupler.io/sources/category/marketing/google-search-console/data-overview
+    title: Google Search Console data overview
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-gsc-faq
+    url: https://docs.coupler.io/sources/category/marketing/google-search-console/faq
+    title: Google Search Console source FAQ
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-gsc-issues
+    url: https://docs.coupler.io/sources/category/marketing/google-search-console/common-issues
+    title: Google Search Console source common issues
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-gsc-best
+    url: https://docs.coupler.io/sources/category/marketing/google-search-console/best-practices
+    title: Google Search Console best practices
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: cpl-gsc-claude-page
+    url: https://www.coupler.io/claude-integrations/google-search-console-to-claude
+    title: Connect Google Search Console to Claude
+    publisher: Coupler.io
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: dir-coupler-io
+    url: https://claude.com/connectors/coupler-io
+    title: Coupler.io in the Claude connectors directory
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: directory
+    public: true
+  - id: claude-connectors-help
+    url: https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
+    title: Use connectors to extend Claude's capabilities
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: claude-upload-files
+    url: https://support.claude.com/en/articles/8241126-upload-files-to-claude
+    title: Upload files to Claude
+    publisher: Anthropic
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: notfair-gsc-guide
+    url: https://notfair.co/google-search-console-claude-connector-setup-guide
+    title: Google Search Console Claude connector setup guide
+    publisher: NotFair
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: gscpap-claude
+    url: https://gscpap.com/integrations/claude-desktop
+    title: GSC PAP for Claude Desktop
+    publisher: GSC PAP
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: gsc-mcp-community
+    url: https://github.com/russjeffery/google-search-console-mcp
+    title: Google Search Console MCP server
+    publisher: Russ Jeffery
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: gsc-export-help
+    url: https://support.google.com/webmasters/answer/12919797
+    title: Export data directly from a Search Console report
+    publisher: Google
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+  - id: gsc-api-export
+    url: https://support.google.com/webmasters/answer/12919192
+    title: Export Search Console data using the Search Console API
+    publisher: Google
+    checked_on: "2026-10-04"
+    kind: vendor_docs
+    public: true
+
+options:
+  - id: coupler-io
+    name: Coupler.io
+    provider: Coupler.io
+    method: data_platform
+    description: >-
+      Coupler.io imports a Search Console report on a schedule and exposes the result to Claude
+      through its own MCP server. Because GSC drops data after 16 months, a scheduled import is
+      also the documented way to keep history Google will not.
+
+    maintainer:
+      status: known
+      value: third_party
+      evidence_ids: [cpl-mcp, cpl-claude-destination]
+      note: Coupler.io builds and runs this connector and its MCP server.
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [cpl-claude-destination, cpl-gsc-claude-page]
+
+    directory_listing:
+      status: known
+      value: https://claude.com/connectors/coupler-io
+      evidence_ids: [dir-coupler-io]
+      note: >-
+        The entry is marked Anthropic verified, credited to Coupler.io, added in November 2025, and
+        records sign-in as required. It lists four tools: get-data, get-schema, list-dataflows, and
+        get-dataflow
+
+    links:
+      overview: https://docs.coupler.io/sources/category/marketing/google-search-console
+      setup: https://docs.coupler.io/destinations/categories/ai/claude
+
+    # The Claude destination page names each of these surfaces for a single web connector.
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination, cpl-claude-faq]
+      claude_desktop:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+        note: Local use with Claude Desktop is also described through a Desktop Extension
+      claude_code:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+        note: Connected with the /mcp command rather than the web connector
+      cowork:
+        status: known
+        value: supported
+        evidence_ids: [cpl-claude-destination]
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [cpl-mcp, dir-coupler-io]
+      note: >-
+        Queries against imported data are read-only, and nothing in either source describes
+        submitting sitemaps or requesting indexing. Coupler.io's own documentation also describes
+        tools that change your Coupler.io workspace, such as creating a data flow or triggering a run
+
+    data_available:
+      status: known
+      value:
+        - "Five report types: Search results performance, Search results performance by appearance, Discover performance, Google News performance, and URLs index performance"
+        - "Shared performance metrics: clicks, impressions, ctr, and position"
+        - "Dimensions: date, country, device, page, and query, with availability varying by report"
+        - "URL inspection columns include verdict, coverage state, robots.txt state, indexing state, last crawl time, page fetch state, Google and user canonical, crawled-as, and AMP, mobile usability, and rich results verdicts"
+        - "Filters by dimension support Contains, Does not contain, Equals, Does not equal, Including Regex, and Excluding Regex"
+        - "Other options: search results type (Web, News, Image, Video), aggregation (Auto, Page, Property, News showcase panel), and data state (Final or All)"
+      evidence_ids: [cpl-gsc-overview, cpl-gsc-data]
+      note: >-
+        Query is available on Search results only, and Device is unavailable on Discover, so the
+        breakdowns you can ask for depend on the report
+
+    history:
+      status: known
+      value:
+        - "Search Console retains performance data for approximately 16 months, and nothing older can be queried"
+        - "Discover and Google News have a shorter retention period than Search results"
+      evidence_ids: [cpl-gsc-data, cpl-gsc-faq, cpl-gsc-issues]
+      note: >-
+        The documented way to keep longer history is to set up recurring exports and store the
+        results in your destination before they expire
+
+    refresh:
+      status: known
+      value:
+        - A successful manual run is required before a schedule can be set
+        - Scheduled refresh is described as hourly, daily, or a custom interval
+        - "Coupler.io's data freshness TTL for Search Console is 6 hours, so intra-day refreshes return cached data within that window"
+        - "Because GSC data lags by 2 to 3 days, the documented advice is a single daily morning refresh"
+      evidence_ids: [cpl-claude-faq, cpl-refresh, cpl-gsc-best]
+
+    multi_source:
+      status: known
+      value:
+        - One data flow can take several sources and combine them with Join or Append before the data reaches Claude
+        - "A worked example joins GSC Search results with GA4 by landing page, noting that GSC uses full URLs while GA4 uses path-only"
+        - "GSC clicks and GA4 sessions are counted differently and should be treated as complementary, not equivalent"
+      evidence_ids: [cpl-claude-faq, cpl-gsc-best]
+
+    prerequisites:
+      status: known
+      value:
+        - A Google Search Console account with verified site ownership or delegated access
+        - At least Restricted or Full user access to the property
+        - "Owner-level access is not required for performance reports but may be needed for URL inspection data"
+        - A Coupler.io account and a Claude account
+        - On a Claude Team or Enterprise plan, admin access is needed to add the connector
+      evidence_ids: [cpl-gsc-overview, cpl-claude-destination]
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no pricing page was checked for this record
+
+    data_path:
+      status: known
+      value: >-
+        Coupler.io reads the Search Console API, stores the result as a dataset, and serves it to
+        Claude over its MCP server. Queries run on Coupler.io's side, so a large dataset does not
+        have to fit into the model's context. Claude sees only datasets from data flows that have
+        Claude as their destination.
+      evidence_ids: [cpl-mcp]
+
+    limits:
+      status: known
+      value:
+        - "Search Console data is typically delayed by 2 to 3 days; with the Final data state the cutoff is typically 3 to 5 days"
+        - "When there are too many unique queries, Google groups low-volume ones under (other) to protect privacy, and there is no workaround"
+        - "The URL Inspection API has a daily quota per property; Coupler.io fetches up to 20 URLs concurrently"
+        - "CTR and position are averages and are not directly summable across dimensions without recalculation"
+        - The Claude destination replaces data on each run; append mode is not supported
+        - Row counts in Claude can differ from the Coupler.io preview when an identifier repeats, so the count should be checked in Claude
+        - "On individual Claude Free and Pro plans the official connector may connect but fail to load its tools; a custom connector URL is documented as a workaround"
+      evidence_ids: [cpl-gsc-data, cpl-gsc-issues, cpl-gsc-faq, cpl-claude-destination, cpl-claude-issues, cpl-claude-free-pro]
+
+    setup_steps:
+      - text: In Coupler.io, create a data flow and select Google Search Console as the source, then choose the site.
+        evidence_ids: [cpl-gsc-overview]
+      - text: Pick one of the five report types, set the report period, and add any dimension filters you need.
+        evidence_ids: [cpl-gsc-data]
+      - text: Choose Claude as the destination in the data flow's destination step.
+        evidence_ids: [cpl-claude-destination]
+      - text: Give the data flow a clear name, because Claude refers to the dataset by that name.
+        evidence_ids: [cpl-claude-destination]
+      - text: Run the data flow manually once and wait for it to finish successfully.
+        evidence_ids: [cpl-claude-destination]
+      - text: Schedule a single daily morning refresh, since the data lags by 2 to 3 days and the freshness TTL is 6 hours.
+        evidence_ids: [cpl-gsc-best, cpl-claude-faq]
+
+    claude_configuration:
+      - text: Install the Coupler.io connector in Claude and click Connect, then connect again from the Connectors menu to authenticate.
+        evidence_ids: [cpl-claude-destination]
+      - text: For Claude Code, start a session, paste the connection command shown in the destination step, restart the session, then run /mcp and authorise in the browser.
+        evidence_ids: [cpl-claude-destination]
+      - text: Approve the tool request the first time Claude fetches data in a session.
+        evidence_ids: [cpl-claude-faq]
+      - text: On a Claude Team or Enterprise plan, ask a workspace admin to add the connector if the option is unavailable.
+        evidence_ids: [cpl-claude-issues]
+
+    sample_query: Which pages lost the most clicks year over year, and did their average position or their CTR move first?
+
+    success_check:
+      text: >-
+        Open a new Claude chat and ask it to list the datasets it can see; the Search Console data
+        flow should appear under the name you gave it. Then compare the row count Claude reports
+        with the run in Coupler.io, because the preview alone does not confirm what Claude received.
+      evidence_ids: [cpl-claude-destination, cpl-claude-issues]
+
+  - id: notfair
+    name: NotFair connector
+    provider: NotFair
+    method: remote_mcp
+    description: >-
+      A hosted third-party connector that reads live Search Console data. Almost entirely
+      read-only: the only writes are sitemap submission and removal, and both need your
+      confirmation in the chat first.
+
+    maintainer:
+      status: known
+      value: third_party
+      evidence_ids: [notfair-gsc-guide]
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [notfair-gsc-guide]
+
+    directory_listing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        NotFair describes itself as a published community connector in Claude's directory, but no
+        Anthropic listing page for it could be read at the expected address, so the listing is
+        recorded as the vendor's own claim rather than confirmed
+
+    links:
+      overview: https://notfair.co/google-search-console-claude-connector-setup-guide
+
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [notfair-gsc-guide]
+        note: Named as working anywhere Claude supports remote connectors, including Claude on the web and mobile
+      claude_desktop:
+        status: known
+        value: supported
+        evidence_ids: [notfair-gsc-guide]
+      claude_code:
+        status: known
+        value: limited
+        evidence_ids: [notfair-gsc-guide]
+        note: Claude Code is served by the same MCP server wired up with a command, rather than the remote connector
+      cowork:
+        status: known
+        value: supported
+        evidence_ids: [notfair-gsc-guide]
+
+    access:
+      status: known
+      value: read_write
+      evidence_ids: [notfair-gsc-guide]
+      note: >-
+        Described as almost entirely read-only. The only writes are submitting or removing a
+        sitemap, both proposed in chat and requiring explicit confirmation first
+
+    data_available:
+      status: known
+      value:
+        - "Verified properties and your permission levels"
+        - "Search Analytics: clicks, impressions, CTR, and average position by query, page, country, device, or date"
+        - "Single-URL index inspection"
+        - "Submitted sitemaps"
+      evidence_ids: [notfair-gsc-guide]
+      note: Scoped to the properties you connect in your NotFair workspace
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        the setup guide states no retention window; Search Console's own 16-month limit still
+        governs what the API can return
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [notfair-gsc-guide]
+      note: There is no import to schedule; the connector reads live Search Console data on demand
+
+    multi_source:
+      status: known
+      value:
+        - "One NotFair workspace covers nine connected sources, including Search Console, Google Analytics, Google Ads, Meta Ads, LinkedIn Ads, Reddit Ads, TikTok Ads, X Ads, and GoHighLevel"
+      evidence_ids: [notfair-gsc-guide]
+
+    prerequisites:
+      status: known
+      value:
+        - A NotFair account with at least one supported advertising, analytics, Search Console, or GoHighLevel connection
+        - A Claude account with connector access; Team or Enterprise members may need an organization owner to enable it
+      evidence_ids: [notfair-gsc-guide]
+
+    pricing:
+      status: known
+      value:
+        - Adding the Search Console connector is free with no credit card
+        - Paid plans unlock higher usage limits and team features
+      evidence_ids: [notfair-gsc-guide]
+
+    data_path:
+      status: known
+      value: >-
+        Claude calls NotFair's hosted MCP endpoint, authorised with OAuth 2.0 dynamic client
+        registration and PKCE with no shared client secret, and NotFair calls the Search Console
+        API. Results come back into the conversation.
+      evidence_ids: [notfair-gsc-guide]
+
+    limits:
+      status: known
+      value:
+        - "A third party sits between Claude and Search Console, holding the Google connection in its own workspace"
+        - "Results arrive in the conversation rather than in a queryable store, so a wide query competes with the rest of the context"
+      evidence_ids: [notfair-gsc-guide]
+
+    setup_steps:
+      - text: Create a NotFair account and connect your Search Console property inside the workspace.
+        evidence_ids: [notfair-gsc-guide]
+
+    claude_configuration:
+      - text: Add the NotFair connector in Claude and complete the OAuth authorisation.
+        evidence_ids: [notfair-gsc-guide]
+      - text: On a Claude Team or Enterprise plan, ask your organization owner to enable the connector first.
+        evidence_ids: [notfair-gsc-guide]
+
+    sample_query: Which queries gained impressions but lost average position in the last 28 days?
+
+    success_check:
+      text: >-
+        Ask Claude to list your verified properties. Seeing your own sites, with permission levels,
+        confirms the workspace connection reached Search Console.
+      evidence_ids: [notfair-gsc-guide]
+
+  - id: gsc-pap
+    name: GSC PAP
+    provider: GSC PAP
+    method: remote_mcp
+    description: >-
+      A hosted service built only for Search Console, and strictly read-only. Its main selling
+      point is skipping the Google Cloud setup that a self-hosted server demands.
+
+    maintainer:
+      status: known
+      value: third_party
+      evidence_ids: [gscpap-claude]
+      note: Published by the GSC PAP team
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [gscpap-claude]
+      note: Described as being in free public preview
+
+    directory_listing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        the guide describes adding the service as a custom connector or through a config file, and
+        names no Claude directory entry
+
+    links:
+      overview: https://gscpap.com/integrations/claude-desktop
+
+    surfaces:
+      claude_web:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the guide covers Claude Desktop and does not describe a setup for Claude on the web
+      claude_desktop:
+        status: known
+        value: supported
+        evidence_ids: [gscpap-claude]
+        note: >-
+          Two paths are documented: a config-file setup bridged through mcp-remote, and adding the
+          hosted endpoint as a custom connector with OAuth
+      claude_code:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the guide does not name Claude Code
+      cowork:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the guide does not name Cowork
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [gscpap-claude]
+      note: >-
+        It requests the read-only webmasters.readonly scope and states it cannot add or remove
+        sites, submit sitemaps, or request indexing
+
+    data_available:
+      status: known
+      value:
+        - "Verified sites, through a list_sites tool"
+        - "Search analytics: clicks, impressions, CTR, and average position"
+        - "Sitemap status"
+        - "URL inspection results"
+      evidence_ids: [gscpap-claude]
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        the guide states no retention window; Search Console's own 16-month limit still governs
+        what the API can return
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [gscpap-claude]
+      note: There is no import to schedule; the service queries the Search Console API on demand
+
+    multi_source:
+      status: not_applicable
+      value: null
+      evidence_ids: [gscpap-claude]
+      note: This service reaches Search Console only
+
+    prerequisites:
+      status: known
+      value:
+        - "A GSC PAP account; you never open the Google Cloud Console, enable an API, or create OAuth credentials, because the service uses its own registered client"
+        - Node.js on the machine, for the Claude Desktop config-file route that runs mcp-remote
+        - "A Claude account; the guide notes the Free plan works with the config-file setup, and that Anthropic limits Free plans to one custom connector"
+      evidence_ids: [gscpap-claude]
+      note: >-
+        The guide contrasts this with a self-hosted server, which it says needs all of those Google
+        Cloud steps and typically takes 30 to 45 minutes the first time
+
+    pricing:
+      status: known
+      value:
+        - Free during the public preview, with no credit card, no trial expiration, and no feature gate
+        - "Rate limits are 60 tool calls per minute and 1,000 per hour per user"
+      evidence_ids: [gscpap-claude]
+
+    data_path:
+      status: known
+      value: >-
+        Claude calls the hosted endpoint at https://mcp.gscpap.com/mcp, either directly as a custom
+        connector with OAuth or locally through the mcp-remote bridge, and the service calls the
+        Search Console API with the read-only scope.
+      evidence_ids: [gscpap-claude]
+
+    limits:
+      status: known
+      value:
+        - "Read-only: it cannot add or remove sites, submit sitemaps, or request indexing"
+        - "60 tool calls per minute and 1,000 per hour per user"
+        - "A third party holds the Search Console authorisation"
+        - "The Claude Desktop config-file route needs Node.js, because Claude Desktop only starts MCP servers it can run as a local command"
+      evidence_ids: [gscpap-claude]
+
+    setup_steps:
+      - text: Create a GSC PAP account and authorise it against the Search Console property you want to read.
+        evidence_ids: [gscpap-claude]
+
+    claude_configuration:
+      - text: "Add https://mcp.gscpap.com/mcp in Claude Desktop as a custom connector and approve the consent screen."
+        evidence_ids: [gscpap-claude]
+      - text: Or use the Claude Desktop config file, which starts the mcp-remote bridge through npx and needs Node.js installed.
+        evidence_ids: [gscpap-claude]
+
+    sample_query: Show me clicks and average position for my top 20 queries this month against last month.
+
+    success_check:
+      text: >-
+        Ask Claude to list your sites. The list_sites tool returning your verified properties
+        confirms the connection and the read-only scope are working.
+      evidence_ids: [gscpap-claude]
+
+  - id: search-console-mcp
+    name: Search Console MCP server (community)
+    provider: Russ Jeffery
+    method: local_mcp
+    description: >-
+      An open community server that runs locally, self-hosted, or on Cloudflare Workers. The only
+      route here that lets you hold your own Google credentials, at the cost of a Google Cloud
+      setup and some sharp edges its author documents candidly.
+
+    maintainer:
+      status: known
+      value: community
+      evidence_ids: [gsc-mcp-community]
+      note: >-
+        Maintained by an individual. The author states the public deployment is a personal one with
+        no uptime commitment, and advises deploying your own copy for anything you depend on
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [gsc-mcp-community]
+
+    directory_listing:
+      status: not_applicable
+      value: null
+      evidence_ids: [gsc-mcp-community]
+      note: Configured by hand as a local server or a custom connector, not added from Claude's directory
+
+    links:
+      overview: https://github.com/russjeffery/google-search-console-mcp
+
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [gsc-mcp-community]
+        note: Added in the Claude web or desktop UI under Settings, Connectors, Add custom connector
+      claude_desktop:
+        status: known
+        value: supported
+        evidence_ids: [gsc-mcp-community]
+        note: The setup flow produces ready-to-paste Claude Desktop configuration
+      claude_code:
+        status: known
+        value: supported
+        evidence_ids: [gsc-mcp-community]
+        note: The setup flow also produces ready-to-paste Claude Code configuration
+      cowork:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the documentation does not name Cowork
+
+    access:
+      status: known
+      value: read_write
+      evidence_ids: [gsc-mcp-community]
+      note: >-
+        The scope is yours to choose: webmasters for full access or webmasters.readonly for
+        read-only. Writes are limited to submitting and unsubmitting sitemaps; site verification
+        and the sites.add and sites.delete methods are deliberately not exposed
+
+    data_available:
+      status: known
+      value:
+        - "list_sites and get_site: properties you can access, with permission levels"
+        - "query_search_analytics: clicks, impressions, CTR, and position, grouped, filtered, and paged"
+        - "compare_search_analytics: two periods with per-row and total deltas"
+        - "list_sitemaps and get_sitemap: submitted sitemaps and their submitted and indexed counts"
+        - "submit_sitemap and delete_sitemap: submit, resubmit, or unsubmit a sitemap"
+        - "inspect_url and inspect_urls: index status for one URL, or up to 25 concurrently with a coverage-state summary"
+        - "check_setup: whether credentials are present, still valid, and which properties they reach"
+      evidence_ids: [gsc-mcp-community]
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        the documentation states no retention window; Search Console's own 16-month limit still
+        governs what the API can return
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [gsc-mcp-community]
+      note: There is no import to schedule; the server queries the Search Console API on demand
+
+    multi_source:
+      status: not_applicable
+      value: null
+      evidence_ids: [gsc-mcp-community]
+      note: This server reaches Search Console only
+
+    prerequisites:
+      status: known
+      value:
+        - A Google Cloud project with the Search Console API enabled
+        - An OAuth client configured on the Google Auth Platform, and the scope you want
+        - "One of three deployment shapes: stdio locally through npx, Streamable HTTP self-hosted, or Cloudflare Workers"
+      evidence_ids: [gsc-mcp-community]
+
+    pricing:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: no price is stated for the server itself
+
+    data_path:
+      status: known
+      value: >-
+        One codebase runs three ways: locally over stdio, self-hosted over Streamable HTTP, or on
+        Cloudflare Workers. Self-hosted or local, your Google credentials never leave your own
+        infrastructure; using the author's public deployment sends them to someone else's host.
+      evidence_ids: [gsc-mcp-community]
+
+    limits:
+      status: known
+      value:
+        - "While the OAuth consent screen is in Testing, Google expires refresh tokens after seven days, so setup has to be repeated weekly until the app is published"
+        - "Both webmasters scopes are classed as sensitive, so a published but unverified app shows a warning before the consent screen and is capped at 100 users"
+        - "The public deployment is a personal one with no uptime commitment, and using it means sending your credentials to someone else's host"
+        - "Site verification and the sites.add and sites.delete methods are deliberately not exposed"
+      evidence_ids: [gsc-mcp-community]
+
+    setup_steps:
+      - text: Create or select a Google Cloud project and enable the Search Console API for it.
+        evidence_ids: [gsc-mcp-community]
+      - text: Configure an OAuth client on the Google Auth Platform, choosing the webmasters.readonly scope for read-only access or webmasters for full access.
+        evidence_ids: [gsc-mcp-community]
+      - text: Publish the app under Audience so refresh tokens stop expiring every seven days.
+        evidence_ids: [gsc-mcp-community]
+      - text: Choose a deployment shape, running it locally through npx, self-hosting it over Streamable HTTP, or deploying to Cloudflare Workers.
+        evidence_ids: [gsc-mcp-community]
+
+    claude_configuration:
+      - text: "In Claude web or desktop, add the server URL and header under Settings, Connectors, Add custom connector."
+        evidence_ids: [gsc-mcp-community]
+      - text: For Claude Desktop or Claude Code, paste the configuration the setup flow generates for each.
+        evidence_ids: [gsc-mcp-community]
+
+    sample_query: Compare search analytics for the last 28 days against the previous 28 and list the pages with the biggest click deltas.
+
+    success_check:
+      text: >-
+        Run the check_setup tool. It reports whether credentials are present, still valid, and
+        which properties they reach, which separates an auth problem from a permissions one.
+      evidence_ids: [gsc-mcp-community]
+
+  - id: manual-export
+    name: Manual export and upload
+    provider: Google
+    method: file_upload
+    description: >-
+      Download a Search Console report and attach it to a conversation. The fastest route by far,
+      and the most limited: Google truncates the file to 1,000 rows.
+
+    maintainer:
+      status: known
+      value: manual
+      evidence_ids: [gsc-export-help, claude-upload-files]
+      note: There is no connector in this route; you move the file yourself
+
+    route_status:
+      status: known
+      value: available
+      evidence_ids: [gsc-export-help, claude-upload-files]
+
+    directory_listing:
+      status: not_applicable
+      value: null
+      evidence_ids: [claude-upload-files]
+      note: A file upload is a built-in part of the Claude interface, not a connector you add
+
+    links:
+      overview: https://support.google.com/webmasters/answer/12919797
+      setup: https://support.claude.com/en/articles/8241126-upload-files-to-claude
+
+    surfaces:
+      claude_web:
+        status: known
+        value: supported
+        evidence_ids: [claude-upload-files]
+        note: >-
+          Anthropic documents uploading through the + button in the chat box and through a project's
+          Files section; the article does not name individual Claude apps
+      claude_desktop:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Claude Desktop
+      claude_code:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Claude Code
+      cowork:
+        status: unknown
+        value: null
+        evidence_ids: []
+        note: the upload article does not name Cowork
+
+    access:
+      status: known
+      value: read
+      evidence_ids: [gsc-export-help]
+      note: An export is a one-way copy; nothing in this route writes back to Search Console
+
+    data_available:
+      status: known
+      value:
+        - "The data currently shown in most reports, with any filters or grouping applied"
+        - "Both chart and table data are exported, and the number and structure of tables varies by report"
+        - "Formats: Google Sheets, Microsoft Excel, and CSV"
+      evidence_ids: [gsc-export-help]
+      note: >-
+        Google says most reports can be exported rather than naming them, and values shown as a
+        tilde or dash in the report become zeros in the download
+
+    history:
+      status: unknown
+      value: null
+      evidence_ids: []
+      note: >-
+        the article states no date-range cap; Search Console's own 16-month retention still governs
+        what a report can show
+
+    refresh:
+      status: not_applicable
+      value: null
+      evidence_ids: [gsc-export-help]
+      note: >-
+        An export is a point-in-time file. Nothing in this article describes scheduling an export
+        into Claude, so keeping Claude current means exporting and uploading again
+
+    multi_source:
+      status: known
+      value:
+        - Up to 20 files can be attached to a single chat, so several reports can be compared in one conversation
+      evidence_ids: [claude-upload-files]
+
+    prerequisites:
+      status: known
+      value:
+        - Access to the Search Console property whose report you are exporting
+        - A Claude account, and code execution and file creation enabled if you upload XLSX rather than CSV
+      evidence_ids: [gsc-export-help, claude-upload-files]
+
+    pricing:
+      status: known
+      value:
+        - The export itself is free, as is the Search Console API alternative, which has its own usage quota
+      evidence_ids: [gsc-api-export]
+
+    data_path:
+      status: known
+      value: >-
+        You download the report from Search Console and attach it to a conversation. The contents
+        sit in the model's context rather than in a queryable store.
+      evidence_ids: [gsc-export-help, claude-upload-files]
+
+    limits:
+      status: known
+      value:
+        - "Data is truncated to 1,000 rows of representative examples, which for larger sites is a small fraction of the data"
+        - "Totals shown are actual totals, not totals with the row limit applied, so the rows and the totals disagree by design"
+        - "The Search Console API is the documented alternative, limited to 50,000 rows per day per type per property"
+        - "Chat uploads are capped at 500MB per file and 20 files per chat; project files are capped at 30MB each"
+      evidence_ids: [gsc-export-help, gsc-api-export, claude-upload-files]
+
+    setup_steps:
+      - text: Open the Search Console report you want and apply any filters or grouping first, because the export reflects what is on screen.
+        evidence_ids: [gsc-export-help]
+      - text: Use the report's export control and choose Google Sheets, Microsoft Excel, or CSV.
+        evidence_ids: [gsc-export-help]
+
+    claude_configuration:
+      - text: In Claude, click the + button in the lower left of the chat box, choose Add files or photos, and select the export, or drag it into the chat window.
+        evidence_ids: [claude-upload-files]
+      - text: For a file you want to reuse across conversations, add it to a project's Files section instead of a single chat.
+        evidence_ids: [claude-upload-files]
+
+    sample_query: Here is our query export. Group these by intent and tell me which clusters have high impressions but poor CTR.
+
+    success_check:
+      text: >-
+        Ask Claude how many rows the file has. If it reports 1,000, assume the export was truncated
+        and that any ranking you draw from it covers only part of your traffic.
+      evidence_ids: [gsc-export-help, claude-upload-files]
+
+recommendations:
+  - job: Tracking search performance beyond Google's 16-month window
+    option_id: coupler-io
+    reason: >-
+      Search Console deletes performance data after about 16 months, and recurring exports into a
+      stored dataset are the documented way to keep it. Queries then run against that store rather
+      than the API, and the data can be joined with GA4 by landing page.
+    evidence_ids: [cpl-gsc-faq, cpl-gsc-best, cpl-mcp]
+  - job: Asking live questions with the least setup
+    option_id: gsc-pap
+    reason: >-
+      It is strictly read-only, free during preview, and its own documentation contrasts it with
+      self-hosting: no Google Cloud Console, no API to enable, no OAuth credentials to create.
+    evidence_ids: [gscpap-claude]
+  - job: Keeping your own Google credentials and controlling the host
+    option_id: search-console-mcp
+    reason: >-
+      It is the only researched route you can run locally or self-host, with the OAuth scope your
+      choice, so no third party holds your Search Console authorisation.
+    evidence_ids: [gsc-mcp-community]
+  - job: Checking indexing and sitemaps alongside your ad platforms
+    option_id: notfair
+    reason: >-
+      One workspace covers Search Console, GA4, and seven ad platforms, and it adds URL index
+      inspection plus sitemap submission, with writes confirmed in the chat first.
+    evidence_ids: [notfair-gsc-guide]
+  - job: A quick look at a report you already have open
+    option_id: manual-export
+    reason: >-
+      Nothing to install or authorise. Just know that Google truncates the file to 1,000 rows, so
+      it suits a small site or a filtered view rather than a full query inventory.
+    evidence_ids: [gsc-export-help, claude-upload-files]
+
+faq:
+  - question: Does Google publish a Search Console MCP server?
+    answer: >-
+      None was found. Google publishes official MCP servers for Analytics and for Google Ads, but
+      no equivalent for Search Console surfaced during this research, which is why the third-party
+      layer here is thicker than for any other source. Google does document the Search Console API
+      as the sanctioned programmatic route.
+    evidence_ids: [gsc-api-export]
+  - question: Why does my export only have 1,000 rows?
+    answer: >-
+      Google truncates a Search Console report download to 1,000 rows of representative examples.
+      For a small site that may be everything; for a larger one it is a fraction. The totals shown
+      are actual totals rather than totals of the truncated rows, so the rows and the summary will
+      not reconcile. The Search Console API is the documented alternative, at 50,000 rows per day
+      per type per property.
+    evidence_ids: [gsc-export-help, gsc-api-export]
+  - question: How far back can Claude see my search data?
+    answer: >-
+      About 16 months, which is Search Console's own retention period, and Discover and Google News
+      keep even less. No connector can read past it. If you need longer history, the documented
+      approach is recurring exports stored somewhere before the data expires.
+    evidence_ids: [cpl-gsc-data, cpl-gsc-faq, cpl-gsc-issues]
+  - question: Why is today's data missing?
+    answer: >-
+      Search Console data is typically delayed by 2 to 3 days, and with the Final data state the
+      cutoff is typically 3 to 5 days. Refreshing more often does not help: Coupler.io's freshness
+      TTL for this source is 6 hours, so intra-day refreshes return cached data, and a single daily
+      morning refresh is the documented advice.
+    evidence_ids: [cpl-gsc-data, cpl-gsc-faq, cpl-gsc-best]
+  - question: What is the "(other)" row in my query data?
+    answer: >-
+      When a property has too many unique queries, Google groups the low-volume ones under (other)
+      to protect privacy and manage data volume. The documentation states there is no workaround,
+      because the underlying data is anonymised by Google before any tool can reach it.
+    evidence_ids: [cpl-gsc-issues]
+  - question: Can Claude submit a sitemap or request indexing?
+    answer: >-
+      Sometimes submit, never request indexing. NotFair and the community server can submit and
+      remove sitemaps, NotFair with confirmation in the chat first. GSC PAP is strictly read-only
+      and states it cannot submit sitemaps or request indexing, and Coupler.io is read-only against
+      Search Console.
+    evidence_ids: [notfair-gsc-guide, gsc-mcp-community, gscpap-claude, cpl-mcp]
+  - question: Why can I not just average the CTR and position columns?
+    answer: >-
+      Because they are already averages. CTR and position are not directly summable across
+      dimensions without recalculating from clicks and impressions, so asking Claude for an average
+      of the position column will give you a number that does not mean what it looks like.
+    evidence_ids: [cpl-gsc-data]
+
+related_source_ids: []
