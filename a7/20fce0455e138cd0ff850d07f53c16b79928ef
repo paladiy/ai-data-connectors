@@ -1,0 +1,24 @@
+tests/readme-and-pages.test.ts
+  s_12e2ab7e3188f2::t_1cc8181a717886 116-117
+scripts/lib/render-source-page.ts
+  s_12e2ab7e3188f2::t_f5edbbe4c22e60 222
+  s_12e2ab7e3188f2::t_19bb4bdc0a6a04 159-165
+  s_12e2ab7e3188f2::t_444490d8dae9d1 132
+  s_12e2ab7e3188f2::t_18b228e60b4b4e 251
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a720fce0455e138cd0ff850d07f53c16b79928ef",
+  "prompts": {},
+  "sessions": {
+    "s_12e2ab7e3188f2": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "e9630ace-dc44-4f6c-97fc-4ec9307ad324",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
