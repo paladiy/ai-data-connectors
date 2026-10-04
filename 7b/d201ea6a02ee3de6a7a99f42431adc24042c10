@@ -1,0 +1,32 @@
+scripts/lib/validate.ts
+  s_809c09ea550806::t_882683cb82563c 151-152
+  s_809c09ea550806::t_9f0f32eb7c28df 121-123
+  s_809c09ea550806::t_d572899e8be9c0 153-154
+schemas/source.ts
+  s_809c09ea550806::t_6e4dab1d224172 64-65
+  s_809c09ea550806::t_3ee848001ef7b3 118
+  s_809c09ea550806::t_f5450f1d3b9d87 74-87
+schemas/json/source.schema.json
+  s_809c09ea550806::t_ad1efad549b2e0 1004-1028,1199-1235
+  s_809c09ea550806::t_9880c3b3c2ceb7 1236-1240
+scripts/lib/model.ts
+  s_809c09ea550806::t_bb96e5cb8c2904 2,59,135,191-194
+scripts/lib/public-export.ts
+  s_809c09ea550806::t_bb96e5cb8c2904 54,78-86,139,172
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7bd201ea6a02ee3de6a7a99f42431adc24042c10",
+  "prompts": {},
+  "sessions": {
+    "s_809c09ea550806": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "54b49573-3afc-42bc-9a3a-82cd4e18f656",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
