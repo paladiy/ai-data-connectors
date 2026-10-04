@@ -4,6 +4,7 @@ import { escapeText, joinSections, link } from "./markdown.ts";
 import { orderFaq, type Model, type ModelAiTools, type ModelSource } from "./model.ts";
 import { pageTitle, correctionUrl } from "./render-github.ts";
 import { serializePublicDataset } from "./public-export.ts";
+import { sitePath, siteUrl } from "./site-url.ts";
 import {
   connectorsSection,
   descriptionSection,
@@ -18,9 +19,7 @@ interface HeadTag {
   content?: string;
 }
 
-function absolute(site: SiteConfig, path: string): string {
-  return new URL(path, site.url).toString();
-}
+const absolute = siteUrl;
 
 function frontmatter(data: Record<string, unknown>): string {
   return `---\n${stringify(data, { lineWidth: 0 }).trimEnd()}\n---`;
@@ -103,7 +102,7 @@ function sourcesSection(source: ModelSource, site: SiteConfig): string {
     "",
     correction
       ? `Something here wrong or out of date? ${link("Open a correction issue", correction)} and it will be re-checked against the source.`
-      : `Something here wrong or out of date? ${link("See how corrections are handled", "/about/#corrections")}.`,
+      : `Something here wrong or out of date? ${link("See how corrections are handled", sitePath(site, "/about/#corrections"))}.`,
   );
   return lines.join("\n");
 }
@@ -132,10 +131,10 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig, aiTools:
     ...descriptionSection(source),
     ...routesSection(source, aiTools),
     ...skillsSection(source),
-    ...connectorsSection(source),
+    ...connectorsSection(source, site),
     faqSection(source),
     sourcesSection(source, site),
-    `[All sources](/) · [About](/about/)`,
+    `[All sources](${sitePath(site, "/")}) · [About](${sitePath(site, "/about/")})`,
   ]);
 }
 

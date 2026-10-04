@@ -81,6 +81,25 @@ describe("site outputs", () => {
     expect(outputs.files.get("site/public/llms.txt")).toContain("## Connectors");
   });
 
+  it("serve every link and URL under a GitHub project pages path", () => {
+    const site = SiteConfig.parse({ ...fixtureSite, repo: null, url: "https://owner.github.io/repo" });
+    const outputs = generateOutputs(fixtureContent([fixtureRecord()], { site }));
+    const page = outputs.files.get("site/src/content/docs/sources/fixture-source.md")!;
+    expect(frontmatterOf(page).head).toContainEqual({
+      tag: "link",
+      attrs: { rel: "canonical", href: "https://owner.github.io/repo/sources/fixture-source/" },
+    });
+    expect(page).toContain("[All sources](/repo/) · [About](/repo/about/)");
+    expect(page).toContain('<a href="/repo/">Browse all connectors</a>');
+    expect(page).toContain("(/repo/about/#corrections)");
+    expect(outputs.files.get("site/public/robots.txt")).toContain("Sitemap: https://owner.github.io/repo/sitemap-index.xml");
+    expect(outputs.files.get("site/public/llms.txt")).toContain("(https://owner.github.io/repo/connectors.json)");
+    const dataset = JSON.parse(outputs.files.get("site/public/connectors.json")!);
+    expect(dataset.url).toBe("https://owner.github.io/repo/");
+    expect(dataset.sources[0].url).toBe("https://owner.github.io/repo/sources/fixture-source/");
+    expect(outputs.files.get("README.md")).toContain("(https://owner.github.io/repo/sources/fixture-source/)");
+  });
+
   it("generate no categories or header files", () => {
     const keys = [...generateOutputs(content).files.keys()];
     expect(keys.filter((key) => /categories|_headers/.test(key))).toEqual([]);

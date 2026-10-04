@@ -21,8 +21,11 @@ const sources = JSON.parse(readFileSync(directoryPath, "utf8")).sources
   .map((entry) => ({ label: entry.name, link: `/sources/${entry.slug}/` }))
   .sort((a, b) => a.label.localeCompare(b.label, "en", { sensitivity: "base", numeric: true }));
 
+const siteUrl = new URL(site.url);
+
 export default defineConfig({
-  site: site.url,
+  site: siteUrl.origin,
+  base: siteUrl.pathname.replace(/\/?$/, "/"),
   trailingSlash: "always",
   build: { format: "directory" },
   integrations: [

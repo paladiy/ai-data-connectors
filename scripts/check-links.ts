@@ -1,5 +1,7 @@
 import path from "node:path";
 import { countPages, findBrokenLinks } from "./lib/links.ts";
+import { loadContent } from "./lib/load.ts";
+import { siteBase } from "./lib/site-url.ts";
 
 const target = process.argv[2] ?? "site/dist";
 const distRoot = path.resolve(process.cwd(), target);
@@ -10,7 +12,7 @@ if (pages === 0) {
   process.exit(1);
 }
 
-const broken = findBrokenLinks(distRoot);
+const broken = findBrokenLinks(distRoot, siteBase(loadContent(process.cwd()).site));
 if (broken.length > 0) {
   console.error(`${broken.length} broken internal link(s) in ${target}:`);
   for (const link of broken) console.error(`  ${link.page} -> ${link.href}`);

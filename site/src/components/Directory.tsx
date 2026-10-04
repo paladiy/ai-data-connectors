@@ -27,6 +27,8 @@ const METHOD_LABELS: Record<string, string> = {
 };
 const methodLabel = (id: string) => METHOD_LABELS[id] ?? id;
 
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+
 const sources: Source[] = [...directory.sources].sort((a, b) =>
   a.name.localeCompare(b.name, "en", { sensitivity: "base", numeric: true }),
 );
@@ -66,7 +68,7 @@ function ThemeBridge() {
 }
 
 function SourceItem({ source }: { source: Source }) {
-  const href = `/sources/${source.slug}/`;
+  const href = `${BASE}sources/${source.slug}/`;
   const name = (
     <Anchor className="dx-name" href={href} fw={600} underline="hover">
       {source.name}
@@ -276,7 +278,7 @@ function DirectoryApp() {
       )}
 
       <Text size="sm" mt="xl">
-        <Anchor href="/about/">About this directory</Anchor>
+        <Anchor href={`${BASE}about/`}>About this directory</Anchor>
       </Text>
     </section>
   );

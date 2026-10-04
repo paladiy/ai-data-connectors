@@ -32,4 +32,12 @@ describe("link checker", () => {
     const root = site({ "index.html": '<img src="/favicon.svg">' });
     expect(findBrokenLinks(root)).toEqual([{ page: "index.html", href: "/favicon.svg" }]);
   });
+
+  it("resolves links under a base path and reports root links that miss it", () => {
+    const root = site({
+      "index.html": '<a href="/repo/">Home</a><a href="/repo">Bare</a><a href="/repo/sources/a/">A</a><a href="/sources/a/">Root</a>',
+      "sources/a/index.html": "<p>A</p>",
+    });
+    expect(findBrokenLinks(root, "/repo/")).toEqual([{ page: "index.html", href: "/sources/a/" }]);
+  });
 });

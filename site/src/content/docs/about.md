@@ -21,7 +21,7 @@ page.
 
 ## The public dataset
 
-The connector data is also available as a JSON dataset at [`/connectors.json`](/connectors.json).
+The connector data is also available as a JSON dataset at [`connectors.json`](../connectors.json).
 
 ## Corrections
 

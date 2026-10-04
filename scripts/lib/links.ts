@@ -14,13 +14,14 @@ function htmlFiles(root: string): string[] {
     .sort();
 }
 
-function resolveTarget(root: string, pagePath: string, href: string): string | null {
+function resolveTarget(root: string, pagePath: string, href: string, base: string): string | null {
   const withoutHash = href.split("#")[0]!;
   if (withoutHash === "") return null;
 
+  if (withoutHash.startsWith("/") && !`${withoutHash}/`.startsWith(base)) return null;
   const fromDirectory = path.dirname(path.join(root, pagePath));
   const target = withoutHash.startsWith("/")
-    ? path.join(root, withoutHash)
+    ? path.join(root, withoutHash.slice(base.length - 1))
     : path.resolve(fromDirectory, withoutHash);
 
   if (existsSync(target)) {
@@ -30,14 +31,15 @@ function resolveTarget(root: string, pagePath: string, href: string): string | n
   return null;
 }
 
-export function findBrokenLinks(distRoot: string): BrokenLink[] {
+/** `base` is the path the site is served under, such as `/` or `/repo/`; root-relative links outside it are broken. */
+export function findBrokenLinks(distRoot: string, base = "/"): BrokenLink[] {
   const broken: BrokenLink[] = [];
   for (const page of htmlFiles(distRoot)) {
     const html = readFileSync(path.join(distRoot, page), "utf8");
     const hrefs = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map((match) => match[1]!);
     for (const href of new Set(hrefs)) {
       if (/^(?:[a-z+.-]+:|\/\/|#|mailto:|data:)/i.test(href)) continue;
-      if (resolveTarget(distRoot, page, href) === null) broken.push({ page, href });
+      if (resolveTarget(distRoot, page, href, base) === null) broken.push({ page, href });
     }
   }
   return broken;

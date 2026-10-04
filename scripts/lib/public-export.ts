@@ -1,6 +1,8 @@
 import { z } from "zod";
 import type { Claim, Evidence } from "../../schemas/common.ts";
+import type { SiteConfig } from "../../schemas/site.ts";
 import type { Model, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
+import { siteUrl } from "./site-url.ts";
 
 export const PUBLIC_SCHEMA_VERSION = 1;
 
@@ -204,13 +206,13 @@ function publicAiTools(aiTools: ModelAiTools) {
   };
 }
 
-function publicSource(source: ModelSource, siteUrl: string) {
+function publicSource(source: ModelSource, site: SiteConfig) {
   return {
     id: source.id,
     slug: source.slug,
     name: source.name,
     aliases: source.aliases,
-    url: new URL(`/sources/${source.slug}/`, siteUrl).toString(),
+    url: siteUrl(site, `/sources/${source.slug}/`),
     summary: source.summary,
     research: { searched_on: source.research.searched_on, coverage_note: source.research.coverage_note },
     evidence: source.evidence.map(publicEvidence),
@@ -231,11 +233,11 @@ export function buildPublicDataset(model: Model): PublicDataset {
   return PublicDataset.parse({
     schema_version: PUBLIC_SCHEMA_VERSION,
     name: model.site.name,
-    url: new URL("/", model.site.url).toString(),
+    url: siteUrl(model.site, "/"),
     publisher: { name: model.site.publisher.name, type: model.site.publisher.type },
-    documentation: new URL("/about/", model.site.url).toString(),
+    documentation: siteUrl(model.site, "/about/"),
     ai_tools: publicAiTools(model.ai_tools),
-    sources: model.sources.map((source) => publicSource(source, model.site.url)),
+    sources: model.sources.map((source) => publicSource(source, model.site)),
   });
 }
 

@@ -2,6 +2,8 @@ import { buildInstall, type InstallLink, type OptionInstall, type ToolInstall } 
 import { formatValue } from "./markdown.ts";
 import type { ModelAiTool, ModelAiTools, ModelOption, ModelSource } from "./model.ts";
 import { SKILLS_INDEX_URL, SKILLS_REPO_URL } from "../../site/src/lib/skills.ts";
+import type { SiteConfig } from "../../schemas/site.ts";
+import { sitePath } from "./site-url.ts";
 
 export function escapeHtml(value: string): string {
   return value
@@ -207,15 +209,18 @@ export function skillsSection(source: ModelSource): string[] {
   ];
 }
 
-export function connectorsSection(source: ModelSource): string[] {
+export function connectorsSection(source: ModelSource, site: SiteConfig): string[] {
   const out = ["## Related connectors"];
   if (source.related.length === 0) {
-    out.push(`<p class="sp-muted">No related connectors listed yet. <a href="/">Browse all connectors</a>.</p>`);
+    out.push(`<p class="sp-muted">No related connectors listed yet. <a href="${e(sitePath(site, "/"))}">Browse all connectors</a>.</p>`);
     return out;
   }
   out.push(
     list(
-      source.related.map((related) => `<a class="sp-route-link" href="/sources/${e(related.slug)}/">${e(related.name)}</a>`),
+      source.related.map(
+        (related) =>
+          `<a class="sp-route-link" href="${e(sitePath(site, `/sources/${related.slug}/`))}">${e(related.name)}</a>`,
+      ),
       "sp-routes not-content",
     ),
   );
