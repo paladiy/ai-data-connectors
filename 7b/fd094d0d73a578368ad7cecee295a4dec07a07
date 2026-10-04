@@ -1,0 +1,80 @@
+tests/render-guide.test.ts
+  s_1a94978dc8420b::t_2ac47dc2c2c4ed 1-14,19-50,53-59,67-135
+  s_1a94978dc8420b::t_528e08b28becaa 60-65
+  s_1a94978dc8420b::t_f1ff4b315c3e15 66
+  s_1a94978dc8420b::t_c5eb92c5128fe7 51-52
+  s_1a94978dc8420b::t_f700178fd118dd 15-18
+guides/pipedrive.md
+  s_c6bc4cd735dfb7::t_5fbba3e6163e8b 30,44,58
+  s_1a94978dc8420b::t_081c8f01ae2610 1-29,32-36,51,53,57,59-298,300-352
+  s_1a94978dc8420b::t_f170d203f778c4 31,37-43,45-50,52,54-56,299
+scripts/lib/render-site.ts
+  s_1a94978dc8420b::t_94f21b39409787 83
+  s_1a94978dc8420b::t_e388c4409785db 4
+scripts/lib/generate.ts
+  s_1a94978dc8420b::t_89474469858c46 5
+  s_1a94978dc8420b::t_0b077e1e70e9c1 62-65,68-69,71-72
+  s_1a94978dc8420b::t_e243fead7f9869 24-26
+  s_1a94978dc8420b::t_3f521b2f03f448 52-54
+guides/google-ads.md
+  s_1a94978dc8420b::t_081c8f01ae2610 1-34,37-39,53,55,57,60-221,223-271
+  s_1a94978dc8420b::t_f170d203f778c4 36,40-45,47-52,56,58-59,222
+  s_c6bc4cd735dfb7::t_5fbba3e6163e8b 35,46,54
+guides/quickbooks-online.md
+  s_1a94978dc8420b::t_081c8f01ae2610 1-37,40-44,55,58,60,65-294,296-348
+  s_1a94978dc8420b::t_f170d203f778c4 39,45-51,53-54,56-57,59,61-64,295
+  s_c6bc4cd735dfb7::t_5fbba3e6163e8b 38,52
+scripts/lib/render-github.ts
+  s_1a94978dc8420b::t_4fdcbd1323d266 12
+guides/google-analytics-4.md
+  s_1a94978dc8420b::t_f170d203f778c4 35,37-38,42,44-47,49-62,64,74,306
+  s_1a94978dc8420b::t_081c8f01ae2610 1-34,36,39,41,43,65-73,76-305,307-359
+  s_c6bc4cd735dfb7::t_5fbba3e6163e8b 40,48,63,75
+tests/readme-and-pages.test.ts
+  s_1a94978dc8420b::t_cbe823a3d75887 213,216,223
+  s_1a94978dc8420b::t_c67227f0514b55 215
+scripts/lib/render-guide.ts
+  s_1a94978dc8420b::t_8320f6ae2feb23 1-21,23,31-32,34,40-51,53-58,60-88,90,92-139,141-223
+  s_1a94978dc8420b::t_7e871244e988de 22,24,26,33,35-37,39
+  s_1a94978dc8420b::t_5a19a0c3c86055 25,27-30
+  s_1a94978dc8420b::t_e2f7cb255d6779 38
+  s_1a94978dc8420b::t_05e9ef14bdd840 140
+  s_1a94978dc8420b::t_2295adbeb23272 52,59
+  s_1a94978dc8420b::t_6af08b6be0d1fd 89,91
+tests/render-site.test.ts
+  s_1a94978dc8420b::t_c2d64f5728eead 84,86
+scripts/lib/markdown.ts
+  s_1a94978dc8420b::t_a98a167b74e473 3,7-23
+scripts/lib/model.ts
+  s_1a94978dc8420b::t_9c8b38a9822d76 76-90
+guides/google-search-console.md
+  s_c6bc4cd735dfb7::t_5fbba3e6163e8b 32,43
+  s_1a94978dc8420b::t_081c8f01ae2610 1-31,34-36,51,53,57,59,64-301,303-351
+  s_1a94978dc8420b::t_f170d203f778c4 33,37-42,44-50,52,54-56,58,60-63,302
+scripts/lib/private.ts
+  s_1a94978dc8420b::t_cc7f8512c7f417 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7bfd094d0d73a578368ad7cecee295a4dec07a07",
+  "prompts": {},
+  "sessions": {
+    "s_1a94978dc8420b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c0c836c0-016a-4114-a1cb-601d046187bd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    },
+    "s_c6bc4cd735dfb7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "2e94215f-451e-47d0-9390-097bf47e0d81",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
