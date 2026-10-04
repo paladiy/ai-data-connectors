@@ -318,18 +318,12 @@
 }
 .sp-routes > li {
   display: grid;
-  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
-  gap: 0.25rem 1.5rem;
+  gap: 0.25rem;
   padding-block: 0.875rem;
   border-block-end: 1px solid var(--sl-color-hairline);
 }
 .sp-routes > li > * {
-  grid-column: 2;
   margin: 0;
-}
-.sp-routes > li > :first-child {
-  grid-column: 1;
-  grid-row: 1 / span 4;
 }
 .sp-route-link {
   font-weight: 600;
@@ -347,9 +341,6 @@
 }
 
 .sp-route {
-  display: grid;
-  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
-  gap: 0 2rem;
   padding-block: 1.5rem;
   border-block-start: 1px solid var(--sl-color-hairline);
   margin-block-start: 0;
@@ -358,9 +349,7 @@
   margin-block-start: 1rem;
 }
 .sp-route-head {
-  align-self: start;
-  position: sticky;
-  top: calc(var(--sl-nav-height) + 1rem);
+  margin-block-end: 0.75rem;
 }
 .sp-route-head h3 {
   margin: 0;
@@ -412,6 +401,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
   gap: 0.625rem;
+  margin-block-start: 0.5rem !important;
 }
 .sp-tool-tile {
   position: relative;
@@ -452,15 +442,10 @@
 .sp-tool-tile:has(.sp-tool-radio:checked) .sp-tool-meta {
   color: var(--sl-color-text-accent);
 }
-.sp-tool-shared {
-  margin: 0.75rem 0 0;
-  padding-inline-start: 1.25rem;
-  list-style: disc;
+.sp-route-body ul.sp-tool-shared {
+  margin-block-start: 1rem !important;
   font-size: var(--sl-text-sm);
   color: var(--sl-color-gray-3);
-}
-.sp-tool-shared li + li {
-  margin-block-start: 0.35rem;
 }
 .sp-tool-panel {
   display: none;
@@ -494,8 +479,7 @@
 }
 .sp-fact {
   display: grid;
-  grid-template-columns: 10rem minmax(0, 1fr);
-  gap: 1rem;
+  gap: 0.25rem;
   padding-block: 0.75rem;
   border-block-end: 1px solid var(--sl-color-hairline);
 }
@@ -513,27 +497,6 @@
   margin: 0;
   padding-inline-start: 1.25rem;
   list-style: disc;
-}
-
-@media (max-width: 50rem) {
-  .sp-routes > li,
-  .sp-route,
-  .sp-fact {
-    grid-template-columns: 1fr;
-  }
-  .sp-routes > li > :first-child {
-    grid-row: auto;
-  }
-  .sp-routes > li > * {
-    grid-column: 1;
-  }
-  .sp-route-head {
-    position: static;
-    margin-block-end: 0.75rem;
-  }
-  .sp-fact {
-    gap: 0.25rem;
-  }
 }
 
 .sp-switch {
