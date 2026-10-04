@@ -1,0 +1,38 @@
+scripts/lib/sync-skills.ts
+  s_1a94978dc8420b::t_7ccec3d560da02 1-187
+scripts/lib/render-github.ts
+  s_1a94978dc8420b::t_b746c5e0c76fbf 228
+AGENTS.md
+  s_1a94978dc8420b::t_bba82d0c7355d0 29-30
+  s_1a94978dc8420b::t_139eecf76e33ff 44
+schemas/skills.ts
+  s_1a94978dc8420b::t_ccec5eb8e7328c 11-18
+scripts/sync-skills.ts
+  s_1a94978dc8420b::t_f8673ac25143e7 1-38
+README.md
+  s_1a94978dc8420b::t_edfbe36c0fb08a 108
+tests/sync-skills.test.ts
+  s_1a94978dc8420b::t_f53267e4240bfa 1-92,94-135,137-166
+  s_1a94978dc8420b::t_7d6a6fcd57ff95 136
+  s_1a94978dc8420b::t_e5dfbf89a31aa0 93
+site/src/lib/skills.ts
+  s_1a94978dc8420b::t_2e50f510e1b05f 16-19
+package.json
+  s_1a94978dc8420b::t_1867aa3e1afd0b 17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e0dbd4419a4da7cd2d4c85fafc0812051bcda3ca",
+  "prompts": {},
+  "sessions": {
+    "s_1a94978dc8420b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c0c836c0-016a-4114-a1cb-601d046187bd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
