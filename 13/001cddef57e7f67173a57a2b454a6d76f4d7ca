@@ -1,0 +1,51 @@
+scripts/lib/render-site.ts
+  s_516dc6ce68b8a5::t_d1a02be74f1c1f 1-440
+site/src/components/Head.astro
+  s_516dc6ce68b8a5::t_9d6e138f5cab4d 1-14
+site/src/content/docs/methodology.md
+  s_516dc6ce68b8a5::t_c712f0e737a28c 1-105
+site/src/styles/custom.css
+  s_516dc6ce68b8a5::t_b9407541fd05fc 1-122
+site/tsconfig.json
+  s_b909ef1ccfa9a7::t_69d4b4ab36954a 1-5
+tests/build.test.ts
+  s_516dc6ce68b8a5::t_32e8df47a78972 1-155
+tests/render-site.test.ts
+  s_516dc6ce68b8a5::t_1c6894e7a15e47 1-192
+site/astro.config.mjs
+  s_516dc6ce68b8a5::t_74b47e03c42656 1-43
+site/public/favicon.svg
+  s_516dc6ce68b8a5::t_84c42fd2a9ced1 1-8
+site/src/components/Directory.astro
+  s_516dc6ce68b8a5::t_41b30d2bbf7ecc 1-112
+site/src/content.config.ts
+  s_516dc6ce68b8a5::t_228d41da68eb9f 1-8
+site/src/content/docs/404.md
+  s_516dc6ce68b8a5::t_0e24c738752db3 1-22
+site/src/lib/review.ts
+  s_516dc6ce68b8a5::t_f3c32c75cb8a2f 1-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "13001cddef57e7f67173a57a2b454a6d76f4d7ca",
+  "prompts": {},
+  "sessions": {
+    "s_516dc6ce68b8a5": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "1dbc9967-8bf3-4699-a118-c52e2feaa754",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    },
+    "s_b909ef1ccfa9a7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "8c0c0417-2d62-499b-b9de-ef3413a26c3e",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
