@@ -51,6 +51,7 @@ import Default from "@astrojs/starlight/components/Head.astro";
   interface IndexedSkill {
     name: string;
     path: string;
+    category?: string;
     sources?: string[];
     short_description?: string;
     description?: string;
@@ -72,6 +73,29 @@ import Default from "@astrojs/starlight/components/Head.astro";
     const text = (skill.description ?? "").replace(/\s+/g, " ").trim();
     const end = text.search(/[.!?](\s|$)/);
     return end > 0 ? text.slice(0, end + 1) : text;
+  }
+
+  // Skill descriptions are written for Claude to route on. People scan the quoted example
+  // questions inside them, so surface up to three of those.
+  function questions(skill: IndexedSkill): string[] {
+    const text = (skill.description ?? "").replace(/[\u201c\u201d]/g, '"');
+    // Double quotes, or single quotes that are not apostrophes ("isn't").
+    const found = [...text.matchAll(/"([^"]{8,90})"|(?<![A-Za-z])'(.{8,90}?)'(?![A-Za-z])/g)].map((m) => (m[1] ?? m[2]).trim());
+    return [...new Set(found)].slice(0, 3).map((q) => q.charAt(0).toUpperCase() + q.slice(1));
+  }
+
+  const ACRONYMS: Record<string, string> = { ppc: "PPC", pmax: "PMax", gaql: "GAQL", ga4: "GA4", seo: "SEO", roas: "ROAS", ads: "Ads" };
+
+  // "google-ads-budget-pacing" -> "Budget pacing" on the Google Ads page.
+  function title(slug: string, names: string[]): string {
+    let rest = slug;
+    for (const n of names) {
+      const prefix = norm(n).replace(/ /g, "-") + "-";
+      if (rest.startsWith(prefix) && rest.length > prefix.length) rest = rest.slice(prefix.length);
+    }
+    const words = rest.split("-").map((w) => ACRONYMS[w] ?? w);
+    const text = words.join(" ");
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
   async function loadSkills() {
@@ -99,22 +123,82 @@ import Default from "@astrojs/starlight/components/Head.astro";
         if (status) status.textContent = "No source-specific skill listed yet.";
         return;
       }
-      const list = document.createElement("ul");
-      list.className = "sp-routes";
-      for (const skill of matches) {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-        a.className = "sp-route-link";
+      const current = box.dataset.skillsSource ?? "";
+      const ownVariants = new Set(names.flatMap((n) => [...variants(n)]));
+      // Skills for this source alone come first; cross-source skills follow.
+      const ordered = [...matches].sort(
+        (a, b) => Number((a.sources ?? []).length > 1) - Number((b.sources ?? []).length > 1) || a.name.localeCompare(b.name),
+      );
+      const PAGE = 4;
+      const CATEGORIES: Record<string, string> = {
+        "marketing-and-ads": "Marketing & Ads",
+        ecommerce: "E-commerce",
+        finance: "Finance",
+        sales: "Sales",
+        capability: "Capability",
+        utilities: "Utilities",
+      };
+      const make = (tag: string, className: string, text?: string) => {
+        const el = document.createElement(tag);
+        el.className = className;
+        if (text !== undefined) el.textContent = text;
+        return el;
+      };
+
+      const list = make("ul", "sk-grid");
+      ordered.forEach((skill, i) => {
+        const li = make("li", "sk-card");
+        if (i >= PAGE) li.hidden = true;
+
+        const h = make("h3", "sk-name");
+        const a = make("a", "sk-title", title(skill.name, names)) as HTMLAnchorElement;
         a.href = `${repo}/tree/main/${skill.path.split("/").map(encodeURIComponent).join("/")}`;
-        a.textContent = skill.name;
-        const desc = document.createElement("span");
-        desc.textContent = summary(skill);
-        li.append(a, desc);
+        a.title = skill.name;
+        h.append(a);
+        li.append(h);
+
+        const asks = questions(skill).slice(0, 2);
+        if (asks.length > 0) {
+          const ul = make("ul", "sk-asks");
+          ul.setAttribute("aria-label", "Example questions");
+          for (const ask of asks) ul.append(make("li", "", ask));
+          li.append(ul);
+        } else {
+          li.append(make("p", "sk-desc", summary(skill)));
+        }
+
+        const foot = make("div", "sk-foot");
+        const tags = make("span", "sk-tags");
+        tags.append(make("span", "sp-badge", CATEGORIES[(skill as { category?: string }).category ?? ""] ?? "Skill"));
+        const others = (skill.sources ?? []).filter((s) => ![...variants(s)].some((v) => ownVariants.has(v)));
+        if (others.length > 0) tags.append(make("span", "sp-badge sp-badge--muted", `+ ${others.length} more ${others.length === 1 ? "source" : "sources"}`));
+        foot.append(tags, make("span", "sk-view", "View skill"));
+        li.append(foot);
         list.append(li);
-      }
+      });
+
       const intro = document.createElement("p");
-      intro.textContent = `A skill gives Claude instructions for a task. It does not connect any data, so connect ${box.dataset.skillsSource} first.`;
+      intro.textContent = `A skill gives Claude instructions for a task. It does not connect any data, so connect ${current} first.`;
       box.replaceChildren(intro, list);
+
+      const hiddenCards = () => [...list.querySelectorAll<HTMLElement>(".sk-card[hidden]")];
+      if (ordered.length > PAGE) {
+        const more = make("button", "sk-more") as HTMLButtonElement;
+        more.type = "button";
+        const label = () => {
+          const left = hiddenCards().length;
+          more.textContent = `Load more (${left})`;
+        };
+        label();
+        more.addEventListener("click", () => {
+          const next = hiddenCards().slice(0, PAGE);
+          next.forEach((el) => (el.hidden = false));
+          (next[0]?.querySelector("a") as HTMLElement | null)?.focus();
+          if (hiddenCards().length === 0) more.remove();
+          else label();
+        });
+        box.append(more);
+      }
     } catch {
       fail();
     }
