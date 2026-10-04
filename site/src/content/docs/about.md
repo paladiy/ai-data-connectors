@@ -1,6 +1,7 @@
 ---
 title: About
 description: What this directory covers, how options are ordered, what claims mean, and how to report a correction.
+tableOfContents: false
 ---
 
 ## What it covers
