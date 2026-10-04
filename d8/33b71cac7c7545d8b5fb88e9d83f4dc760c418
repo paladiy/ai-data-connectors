@@ -1,0 +1,166 @@
+data/sources/quickbooks-online.yaml
+  s_12f20bbd241aea::t_c1de9f83b76bf4 244
+  s_12f20bbd241aea::t_a96646a9a20b15 257-259
+  s_12f20bbd241aea::t_b1ec0099cf7e16 203
+  s_12f20bbd241aea::t_82058a3f7759b7 149
+  s_12f20bbd241aea::t_f6fac13b2ab11f 230
+  s_12f20bbd241aea::t_9694807a942f4b 246
+schemas/ai-tool.ts
+  s_12f20bbd241aea::t_ee4550cfc18d64 27
+  s_12f20bbd241aea::t_ca2cd9f26bc3be 9
+  s_12f20bbd241aea::t_b59c68a32e54fb 1-8,10-26,28-40
+data/sources/google-analytics-4.yaml
+  s_12f20bbd241aea::t_29812184e1fb1d 253-255
+  s_12f20bbd241aea::t_3734e3eb022528 242
+  s_12f20bbd241aea::t_8030def2250c37 149
+  s_12f20bbd241aea::t_bbfd75fc17cacd 232
+  s_12f20bbd241aea::t_25f7520448c5e0 240
+  s_12f20bbd241aea::t_b7a857bab3c2bd 203
+tests/readme-and-pages.test.ts
+  s_12f20bbd241aea::t_88bd0f10da6387 130,137-138
+  s_12f20bbd241aea::t_965e9591728cac 118,120-129,131-136,139-149,151-160
+  s_12f20bbd241aea::t_f8b635ba09d535 14
+  s_12f20bbd241aea::t_b33f1922ca60f0 150
+  s_12f20bbd241aea::t_b01ce487d8ab26 115-117
+  s_12f20bbd241aea::t_f8470f59ea74d7 119
+site/src/styles/custom.css
+  s_12f20bbd241aea::t_d0031885e60abf 411,413,415,417-418,425-438,440-442,444,449,453,456-462,464-465,467-470,472-478
+  s_12f20bbd241aea::t_923b840eb1e0f4 751-752
+scripts/lib/render-site.ts
+  s_12f20bbd241aea::t_6e5f13307d5a93 222-225
+  s_12f20bbd241aea::t_384c9d14734a76 121
+  s_12f20bbd241aea::t_c4146a2f9b3890 143
+  s_12f20bbd241aea::t_e6ebc2d48dc401 4
+  s_12f20bbd241aea::t_abd26a97e5e458 226-228
+schemas/json/ai-tools.schema.json
+  s_12f20bbd241aea::t_c51fc007bf80f8 1-270
+scripts/lib/load.ts
+  s_12f20bbd241aea::t_c63b0d617f105b 42
+  s_12f20bbd241aea::t_ef4b072ca4ffda 62
+  s_12f20bbd241aea::t_10627a747ecf63 5
+  s_12f20bbd241aea::t_e6d68371529a6c 86
+tests/validate.test.ts
+  s_12f20bbd241aea::t_25163bb76c8e1d 208-210
+  s_12f20bbd241aea::t_e90009e6648219 2,6
+  s_12f20bbd241aea::t_56d86dafeeffdb 144,151-154
+  s_12f20bbd241aea::t_b875417c7a7950 123,135-139,141-143,145-150
+  s_12f20bbd241aea::t_5e2f582b9b686f 140
+  s_12f20bbd241aea::t_cf2fea4ac40d65 155,199-207,211-230
+  s_12f20bbd241aea::t_f6d1745a003a79 156
+  s_12f20bbd241aea::t_e7aeaf408accf9 231-232
+data/sources/google-ads.yaml
+  s_12f20bbd241aea::t_2e8fb31ae67e50 234
+  s_12f20bbd241aea::t_9a6bf89dcbdb13 242-243
+  s_12f20bbd241aea::t_d03c7298bae854 205
+  s_12f20bbd241aea::t_ca3861a8634837 150
+scripts/lib/validate.ts
+  s_12f20bbd241aea::t_d22bc47c2ed3e3 251-282,289-293
+  s_12f20bbd241aea::t_910bab33fef2f6 62-64
+  s_12f20bbd241aea::t_f672fb191431aa 22,25
+  s_12f20bbd241aea::t_2ff2f4da1a0b1f 283-288
+  s_12f20bbd241aea::t_9d215abdfa5f96 123-133,135-136
+  s_12f20bbd241aea::t_01449b52f13b65 4
+  s_12f20bbd241aea::t_1e370d6fcb3e01 134
+  s_12f20bbd241aea::t_c9184b9bc23723 1
+  s_12f20bbd241aea::t_54c8d11812b921 21,23-24
+  s_12f20bbd241aea::t_4954ae737d0079 137
+  s_12f20bbd241aea::t_9db16eb5e6b8dd 294-296
+scripts/lib/render-source-page.ts
+  s_12f20bbd241aea::t_324fe557fa85f9 80-84,86-95,97-101,104-111,114-116,118,121,123-127,129,132,134-136,139-140,143,146,150-153,155-167,175
+  s_12f20bbd241aea::t_38289f1ce06825 145
+  s_12f20bbd241aea::t_8ac9cef27872e5 3
+  s_12f20bbd241aea::t_c3a8488d654357 241-242,245
+  s_12f20bbd241aea::t_46b56b9baf6179 215,218,222-223,228
+  s_12f20bbd241aea::t_e46f8dd59f742d 85
+  s_12f20bbd241aea::t_27a95df7f747a1 177-179
+  s_12f20bbd241aea::t_33908793ee025a 117
+  s_12f20bbd241aea::t_4604265ab8d234 168-170,172-174
+  s_12f20bbd241aea::t_2f950c05631487 176
+  s_12f20bbd241aea::t_e55c1c4f630366 171
+scripts/lib/public-export.ts
+  s_12f20bbd241aea::t_f00a2ddb8725a1 99-103
+  s_12f20bbd241aea::t_2cc5728f7bb50b 147
+  s_12f20bbd241aea::t_079d67e92d772d 201
+  s_12f20bbd241aea::t_2f8c6889aedde6 2-3
+  s_12f20bbd241aea::t_fd68374d82cd74 38
+  s_12f20bbd241aea::t_dd16e245d70724 166-185,187-200,202-206,216
+  s_12f20bbd241aea::t_8baa1bf6a9e602 237
+  s_12f20bbd241aea::t_f23ea2db9ef1c0 186
+  s_12f20bbd241aea::t_b227b9505acdc6 85-89,91-98,104-105,112-116
+  s_12f20bbd241aea::t_5c8e0b7d3bd73b 90
+data/sources/google-search-console.yaml
+  s_12f20bbd241aea::t_aa1f4e55696e34 209
+  s_12f20bbd241aea::t_12898a517bf180 255-257
+  s_12f20bbd241aea::t_a237e9267ea5a9 235
+  s_12f20bbd241aea::t_d811360ef4d08e 242
+  s_12f20bbd241aea::t_9a389d97023d80 151
+  s_12f20bbd241aea::t_4bcf5fc69678d9 244
+scripts/lib/generate.ts
+  s_12f20bbd241aea::t_2d75e8d528a04c 38
+  s_12f20bbd241aea::t_5cc9d5dcaebd7c 14
+  s_12f20bbd241aea::t_f2ecc7bf04f435 31
+tests/render-site.test.ts
+  s_12f20bbd241aea::t_c8e7a20ab93537 12
+scripts/lib/model.ts
+  s_12f20bbd241aea::t_48055d6497169b 215
+  s_12f20bbd241aea::t_daf56a8214d7de 28-39
+  s_12f20bbd241aea::t_4f7bdb9d930a91 132,135
+  s_12f20bbd241aea::t_7f318fb012a9a1 1,8-11
+  s_12f20bbd241aea::t_03aa227f8a64c8 173
+  s_12f20bbd241aea::t_b856693adc732b 72,76-88
+  s_12f20bbd241aea::t_03ed15c46d7972 89
+schemas/source.ts
+  s_12f20bbd241aea::t_b632e9b9649864 24
+  s_12f20bbd241aea::t_e26e5a311b75bb 40
+site/astro.config.mjs
+  s_12f20bbd241aea::t_3217d69086b3c5 37
+scripts/lib/json-schemas.ts
+  s_12f20bbd241aea::t_2b4b1e202c0245 2,7
+schemas/json/source.schema.json
+  s_12f20bbd241aea::t_c51fc007bf80f8 287-291,293-299,301,917
+data/sources/pipedrive.yaml
+  s_12f20bbd241aea::t_73263f0dadbed7 241
+  s_12f20bbd241aea::t_69a9db83ea2e79 201
+  s_12f20bbd241aea::t_dc58a697de0426 232
+  s_12f20bbd241aea::t_19bedf17537a4f 252-254
+  s_12f20bbd241aea::t_8be414878e13da 239
+  s_12f20bbd241aea::t_df00c2f579e918 147
+tests/fixtures/factory.ts
+  s_12f20bbd241aea::t_2324157ca3f5ec 130
+  s_12f20bbd241aea::t_56a687ad1f6547 35-36,38,40
+  s_12f20bbd241aea::t_24ff0fd0200f5f 37
+  s_12f20bbd241aea::t_39e9becc09a623 94-121,126-129,131-137
+  s_12f20bbd241aea::t_b8218ede61fb6b 122-125
+  s_12f20bbd241aea::t_b9e5dfd1ff1e14 25
+  s_12f20bbd241aea::t_1d39d5fe13efb3 138-140
+  s_12f20bbd241aea::t_9be16a2d5d362b 141
+site/src/components/Head.astro
+  s_12f20bbd241aea::t_de9f3d06a09c4f 45-74
+tests/fixtures/content.ts
+  s_12f20bbd241aea::t_8cc74d7c2b4f0a 1,5,16-17,30
+data/ai-tools.yaml
+  s_12f20bbd241aea::t_ba3b7310754397 345-347
+  s_12f20bbd241aea::t_4b815c48d8b7c5 351
+  s_12f20bbd241aea::t_a34b7644692df5 255
+  s_12f20bbd241aea::t_710de6fae7dfa9 350,353
+  s_12f20bbd241aea::t_9b8bfc8e3ac0db 326-328
+  s_12f20bbd241aea::t_95753229bcc534 360-361
+  s_12f20bbd241aea::t_98d2a03b746e4a 176-178
+  s_12f20bbd241aea::t_23e4d7c358c9a3 1-175,179-254,256-325,329-344,348-349,352,354-359,362-374
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d833b71cac7c7545d8b5fb88e9d83f4dc760c418",
+  "prompts": {},
+  "sessions": {
+    "s_12f20bbd241aea": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c9b539df-3ec9-4b54-8548-527d91d057a8",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
