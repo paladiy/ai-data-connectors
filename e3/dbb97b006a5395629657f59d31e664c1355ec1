@@ -1,0 +1,23 @@
+scripts/lib/markdown.ts
+  s_1a94978dc8420b::t_37aba6ace049a1 31-39,41
+scripts/lib/render-source-page.ts
+  s_1a94978dc8420b::t_c2573e7fb01108 18
+tests/readme-and-pages.test.ts
+  s_1a94978dc8420b::t_61cf2de3ccfb63 141-144
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e3dbb97b006a5395629657f59d31e664c1355ec1",
+  "prompts": {},
+  "sessions": {
+    "s_1a94978dc8420b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c0c836c0-016a-4114-a1cb-601d046187bd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
