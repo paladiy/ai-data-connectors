@@ -4,8 +4,6 @@ Google Search Console is Google's free tool for monitoring how a website perform
 
 Also known as GSC, Search Console, Webmaster Tools.
 
-Where a capability is not documented, this guide says so instead of guessing.
-
 ## Coupler.io
 
 Coupler.io imports a Search Console report on a schedule and exposes the result to Claude through its own MCP server. Because GSC drops data after 16 months, a scheduled import is also the documented way to keep history Google will not.
@@ -29,8 +27,6 @@ Coupler.io imports a Search Console report on a schedule and exposes the result 
 - Filters by dimension support Contains, Does not contain, Equals, Does not equal, Including Regex, and Excluding Regex
 - Other options: search results type (Web, News, Image, Video), aggregation (Auto, Page, Property, News showcase panel), and data state (Final or All)
 
-Note: Query is available on Search results only, and Device is unavailable on Discover, so the breakdowns you can ask for depend on the report
-
 ### How the data reaches the AI tool
 
 Coupler.io reads the Search Console API, stores the result as a dataset, and serves it to Claude over its MCP server. Queries run on Coupler.io's side, so a large dataset does not have to fit into the model's context. Claude sees only datasets from data flows that have Claude as their destination.
@@ -39,8 +35,6 @@ Coupler.io reads the Search Console API, stores the result as a dataset, and ser
 
 - Search Console retains performance data for approximately 16 months, and nothing older can be queried
 - Discover and Google News have a shorter retention period than Search results
-
-Note: The documented way to keep longer history is to set up recurring exports and store the results in your destination before they expire
 
 **Refresh**
 
@@ -341,7 +335,7 @@ Because they are already averages. CTR and position are not directly summable ac
 
 Researched on 2026-10-04. One route is covered, researched on 4 October 2026: the Coupler.io data platform. No dedicated Search Console entry was reachable in Claude's connector directory at the obvious address; the directory cannot be searched exhaustively, so no claim is made that none exists.
 
-Every claim above was read from one of these pages on the date shown. Where a page documents nothing on a point, this guide says the point is not documented rather than guessing.
+Every claim above was read from one of these pages on the date shown.
 
 - [Claude destination](https://docs.coupler.io/destinations/categories/ai/claude) — Coupler.io, read 2026-10-04
 - [Claude destination FAQ](https://docs.coupler.io/destinations/categories/ai/claude/faq) — Coupler.io, read 2026-10-04

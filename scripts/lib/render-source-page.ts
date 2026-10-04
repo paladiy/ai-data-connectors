@@ -60,7 +60,6 @@ export function descriptionSection(source: ModelSource): string[] {
   if (source.aliases.length > 0) {
     out.push(`<p class="sp-muted">Also searched as ${source.aliases.map(e).join(", ")}.</p>`);
   }
-  out.push(`<p class="sp-muted">Where a capability is not documented, this page says so instead of guessing.</p>`);
   return out;
 }
 
@@ -147,9 +146,7 @@ function claimHtml(claim: Claim<unknown>): string {
     return `<p class="sp-muted">${label}${claim.note ? ` (${e(claim.note)})` : ""}</p>`;
   }
   const values = Array.isArray(claim.value) ? claim.value : [claim.value];
-  const body =
-    values.length > 1 ? list(values.map((value) => e(formatValue(value)))) : `<p>${e(formatValue(values[0]))}</p>`;
-  return claim.note ? `${body}<p class="sp-muted">Note: ${e(claim.note)}</p>` : body;
+  return values.length > 1 ? list(values.map((value) => e(formatValue(value)))) : `<p>${e(formatValue(values[0]))}</p>`;
 }
 
 function fact(label: string, claim: Claim<unknown>): string {

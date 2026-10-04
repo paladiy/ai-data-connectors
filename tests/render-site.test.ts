@@ -173,6 +173,15 @@ describe("source page structure", () => {
     expect(page).toContain('<dt>Historical data</dt><dd><p class="sp-muted">Not documented (no window &lt;stated&gt;)</p></dd>');
   });
 
+  it("leaves claim notes and the not-documented disclaimer out of the page", () => {
+    const page = pageFor({
+      options: [fixtureOption({ limits: known(["First limit", "Second limit"], ["fx-docs"], "Fixture limits note.") }), fixtureOurOption()],
+    });
+    expect(page).not.toContain("Fixture limits note.");
+    expect(page).not.toContain("Note: ");
+    expect(page).not.toContain("instead of guessing");
+  });
+
   it("lists several known values and each capability", () => {
     const page = pageFor({
       options: [

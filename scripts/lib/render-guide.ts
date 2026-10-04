@@ -28,22 +28,14 @@ function claimText(claim: Claim<unknown>): string {
 function claimList(claim: Claim<unknown>): string[] {
   if (claim.status !== "known") return [escapeText(claimText(claim))];
   const values = Array.isArray(claim.value) ? claim.value : [claim.value];
-  const lines = values.map((value) => `- ${escapeText(formatValue(value))}`);
-  if (claim.note) lines.push("", note(claim.note));
-  return lines;
-}
-
-function note(text: string): string {
-  return `Note: ${escapeText(text)}`;
+  return values.map((value) => `- ${escapeText(formatValue(value))}`);
 }
 
 /** One short value stays on the label line; several become a list, so they stay readable. */
 function fact(label: string, claim: Claim<unknown>): string {
   const values = claim.status === "known" && Array.isArray(claim.value) ? claim.value : [];
   if (values.length < 2) return `**${label}.** ${escapeText(claimText(claim))}`;
-  const lines = [`**${label}**`, "", ...values.map((value) => `- ${escapeText(formatValue(value))}`)];
-  if (claim.note) lines.push("", note(claim.note));
-  return lines.join("\n");
+  return [`**${label}**`, "", ...values.map((value) => `- ${escapeText(formatValue(value))}`)].join("\n");
 }
 
 function links(items: InstallLink[]): string {
@@ -209,7 +201,7 @@ function sourcesSection(source: ModelSource, site: SiteConfig): string {
     "",
     `Researched on ${source.research.searched_on}. ${escapeText(source.research.coverage_note)}`,
     "",
-    "Every claim above was read from one of these pages on the date shown. Where a page documents nothing on a point, this guide says the point is not documented rather than guessing.",
+    "Every claim above was read from one of these pages on the date shown.",
     "",
   ];
   for (const item of source.evidence) {
@@ -311,7 +303,6 @@ export function renderGuide(
     `# ${escapeText(pageTitle(source))}`,
     escapeText(source.summary),
     aliases,
-    "Where a capability is not documented, this guide says so instead of guessing.",
     ...source.options.flatMap((option) => optionSections(source, option, aiTools)),
     skillsSection(source, snapshot),
     faqSection(source),

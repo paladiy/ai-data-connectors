@@ -4,8 +4,6 @@ Facebook Ads (Meta Ads) is Meta's advertising platform for campaigns across Face
 
 Also known as Meta Ads, Facebook Ads Manager.
 
-Where a capability is not documented, this guide says so instead of guessing.
-
 ## Coupler.io
 
 Coupler.io imports a Facebook Ads report on a schedule and exposes the result to Claude through its own MCP server, so Claude queries a stored dataset instead of calling the Meta Marketing API during the conversation.
@@ -30,8 +28,6 @@ Coupler.io imports a Facebook Ads report on a schedule and exposes the result to
 - Structural lists cover campaign, ad set, and ad statuses, budgets, objectives, and targeting; creatives carry image URLs, ad text, and UTM url\_tags
 - List of Activities is the account audit log, including billing and funding activity; List of Business invoices gives monthly invoices with billed amounts per campaign
 
-Note: The structural and creative lists carry no performance metrics, so creative performance needs a Reports and Insights import at the Ad level joined to the creative list on Ad Id
-
 ### How the data reaches the AI tool
 
 Coupler.io reads the Facebook Ads API, stores the result as a dataset, and serves it to Claude over its MCP server. Queries run on Coupler.io's side, so a large dataset does not have to fit into the model's context. Claude sees only datasets from data flows that have Claude as their destination.
@@ -41,15 +37,11 @@ Coupler.io reads the Facebook Ads API, stores the result as a dataset, and serve
 - You set a start and end date; no hard limit on the range is stated, but very large ranges with many breakdowns can be slow or hit API limits
 - For initial backfills the documentation recommends pulling data in monthly chunks
 
-Note: no fixed Facebook Ads retention window is stated
-
 **Refresh**
 
 - A successful manual run is required before a schedule can be set
 - Scheduled refresh is described as hourly, daily, or a custom interval
 - The platform supports intervals from every 15 minutes to monthly, depending on plan
-
-Note: Which intervals each plan allows is not documented
 
 **Combining several sources**
 
@@ -365,7 +357,7 @@ Since 6 August 2026, Meta requires these breakdowns to be enabled per ad account
 
 Researched on 2026-10-04. One route is covered, researched on 4 October 2026: the Coupler.io data platform. No dedicated Facebook Ads or Meta Ads entry was reachable in Claude's connector directory at the obvious addresses; the directory cannot be searched exhaustively, so no claim is made that none exists.
 
-Every claim above was read from one of these pages on the date shown. Where a page documents nothing on a point, this guide says the point is not documented rather than guessing.
+Every claim above was read from one of these pages on the date shown.
 
 - [Claude destination](https://docs.coupler.io/destinations/categories/ai/claude) — Coupler.io, read 2026-10-04
 - [Claude destination FAQ](https://docs.coupler.io/destinations/categories/ai/claude/faq) — Coupler.io, read 2026-10-04

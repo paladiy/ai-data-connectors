@@ -4,8 +4,6 @@ Pipedrive is a sales CRM that stores deals, contacts, organizations, and activit
 
 Also known as Pipedrive CRM.
 
-Where a capability is not documented, this guide says so instead of guessing.
-
 ## Coupler.io
 
 Coupler.io imports one Pipedrive entity per data flow on a schedule and exposes the result to Claude through its own MCP server, so Claude queries a stored dataset rather than calling Pipedrive during the conversation.
@@ -27,8 +25,6 @@ Coupler.io imports one Pipedrive entity per data flow on a schedule and exposes 
 - Per-entity options: a Pipedrive filter ID, a last-modified date range, and column selection
 - No Pipedrive reports: in-app analytics and forecast reports are not available through the API, so this is raw CRM data only
 
-Note: The overview says nine entities while both entity tables list eight; the count and the tables are not reconciled in the documentation
-
 ### How the data reaches the AI tool
 
 Coupler.io reads the Pipedrive API, stores the result as a dataset, and serves it to Claude over its MCP server. Queries run on Coupler.io's side, so a large dataset does not have to fit into the model's context. Claude sees only datasets from data flows that have Claude as their destination.
@@ -41,8 +37,6 @@ Coupler.io reads the Pipedrive API, stores the result as a dataset, and serves i
 - Scheduled refresh is described as hourly, daily, or a custom interval
 - The platform supports intervals from every 15 minutes to monthly, depending on plan
 
-Note: Which intervals each plan allows is not documented
-
 **Combining several sources**
 
 - One data flow can take several sources and combine them with Join or Append before the data reaches Claude
@@ -54,8 +48,6 @@ Note: Which intervals each plan allows is not documented
 - A Pipedrive account with access to the data you want to export
 - The All deals (BETA) entity requires Pipedrive global admin access
 - A Coupler.io account
-
-Note: The prerequisites list names no Pipedrive role or plan tier beyond account access; the documentation notes only that some plan levels restrict visibility of other users' activities
 
 ### Limits to expect
 
@@ -337,7 +329,7 @@ On individual Claude Free and Pro plans there is a documented defect where the o
 
 Researched on 2026-10-04. One route is covered, researched on 4 October 2026: the Coupler.io data platform. Its documentation was read in full, covering the data available, prerequisites, access, and limits.
 
-Every claim above was read from one of these pages on the date shown. Where a page documents nothing on a point, this guide says the point is not documented rather than guessing.
+Every claim above was read from one of these pages on the date shown.
 
 - [Claude destination](https://docs.coupler.io/destinations/categories/ai/claude) — Coupler.io, read 2026-10-04
 - [Claude destination FAQ](https://docs.coupler.io/destinations/categories/ai/claude/faq) — Coupler.io, read 2026-10-04

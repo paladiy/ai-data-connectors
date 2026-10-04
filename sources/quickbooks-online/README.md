@@ -4,8 +4,6 @@ QuickBooks Online is Intuit's cloud accounting software. It stores invoices, cus
 
 Also known as QBO, QuickBooks, Intuit QuickBooks.
 
-Where a capability is not documented, this guide says so instead of guessing.
-
 ## Coupler.io
 
 Coupler.io imports QuickBooks Online entities or reports on a schedule and exposes the result to Claude through its own MCP server, so Claude queries a stored dataset rather than calling Intuit directly.
@@ -35,8 +33,6 @@ Coupler.io imports QuickBooks Online entities or reports on a schedule and expos
 - Detail reports: Profit and Loss Detail, General Ledger Detail, Transaction List, Transaction List by Customer, Transaction List by Vendor, Transaction List with Splits, Journal Report
 - Aging and balance reports: AP Aging Detail and Summary, AR Aging Detail and Summary, Customer Balance and Detail, Vendor Balance and Detail, Customer Income, Account List Detail
 
-Note: Raw entities and pre-built reports are two separate sources; one entity or report per data flow
-
 ### How the data reaches the AI tool
 
 Coupler.io reads the QuickBooks Online API, stores the result as a dataset, and serves it to Claude over its MCP server. Queries run on Coupler.io's side, so a large dataset does not have to fit into the model's context. Claude sees only datasets from data flows that have Claude as their destination.
@@ -48,8 +44,6 @@ Coupler.io reads the QuickBooks Online API, stores the result as a dataset, and 
 - A successful manual run is required before a schedule can be set
 - Scheduled refresh is described as hourly, daily, or a custom interval
 - The platform supports intervals from every 15 minutes to monthly, depending on plan
-
-Note: Which intervals each plan allows is not documented
 
 **Combining several sources**
 
@@ -332,7 +326,7 @@ On individual Claude Free and Pro plans there is a documented defect where the o
 
 Researched on 2026-10-04. One route is covered, researched on 4 October 2026: the Coupler.io data platform. Its documentation was read in full, covering the data available, prerequisites, access, and limits.
 
-Every claim above was read from one of these pages on the date shown. Where a page documents nothing on a point, this guide says the point is not documented rather than guessing.
+Every claim above was read from one of these pages on the date shown.
 
 - [Claude destination](https://docs.coupler.io/destinations/categories/ai/claude) — Coupler.io, read 2026-10-04
 - [Claude destination FAQ](https://docs.coupler.io/destinations/categories/ai/claude/faq) — Coupler.io, read 2026-10-04

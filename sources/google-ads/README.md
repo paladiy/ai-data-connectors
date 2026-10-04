@@ -4,8 +4,6 @@ Google Ads is Google's advertising platform for search, display, and video campa
 
 Also known as AdWords, Google Adwords.
 
-Where a capability is not documented, this guide says so instead of guessing.
-
 ## Coupler.io
 
 Coupler.io imports a Google Ads report on a schedule and exposes the result to Claude through its own MCP server, so Claude queries a stored dataset instead of calling the Ads API during the conversation.
@@ -32,8 +30,6 @@ Coupler.io imports a Google Ads report on a schedule and exposes the result to C
 - Metric categories: Budget, Clicks, Conversions, Cost, Performance, Cross sell and Sales, Video, Phone
 - Time splits: Date, Day of week, Week, Month, Quarter, Year
 
-Note: Structural reports and Custom GAQL do not support time period splits, so one row per day is not available for them
-
 ### How the data reaches the AI tool
 
 Coupler.io reads the Google Ads API, stores the result as a dataset, and serves it to Claude over its MCP server. Queries run on Coupler.io's side, so a large dataset does not have to fit into the model's context. Claude sees only datasets from data flows that have Claude as their destination.
@@ -43,15 +39,11 @@ Coupler.io reads the Google Ads API, stores the result as a dataset, and serves 
 - You set a start and end date; no hard limit on the range is stated, but long ranges with daily splits are slow
 - For initial backfills the documentation recommends pulling in monthly or quarterly chunks to avoid API limits
 
-Note: no fixed Google Ads retention window is stated
-
 **Refresh**
 
 - A successful manual run is required before a schedule can be set
 - Scheduled refresh is described as hourly, daily, or a custom interval
 - The platform supports intervals from every 15 minutes to monthly, depending on plan
-
-Note: Which intervals each plan allows is not documented
 
 **Combining several sources**
 
@@ -265,7 +257,7 @@ Google Ads data is typically available within a few hours, but conversions may t
 
 Researched on 2026-10-04. One route is covered, researched on 4 October 2026: the Coupler.io data platform. No dedicated Google Ads entry was reachable in Claude's connector directory at the obvious address; the directory cannot be searched exhaustively, so no claim is made that none exists.
 
-Every claim above was read from one of these pages on the date shown. Where a page documents nothing on a point, this guide says the point is not documented rather than guessing.
+Every claim above was read from one of these pages on the date shown.
 
 - [Google Ads best practices](https://docs.coupler.io/sources/category/ppc/google-ads/best-practices) — Coupler.io, read 2026-10-04
 - [Connect Google Ads to Claude](https://www.coupler.io/claude-integrations/google-ads-to-claude) — Coupler.io, read 2026-10-04

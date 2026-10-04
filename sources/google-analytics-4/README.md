@@ -4,8 +4,6 @@ Google Analytics 4 (GA4) is Google's web and app analytics product. Its data cov
 
 Also known as GA4, Google Analytics.
 
-Where a capability is not documented, this guide says so instead of guessing.
-
 ## Coupler.io
 
 Coupler.io runs a GA4 report you define, on a schedule, and exposes the result to Claude through its own MCP server. Claude queries the stored dataset, so a long date range does not have to fit into the conversation.
@@ -37,15 +35,11 @@ Coupler.io reads the GA4 Data API, stores the result as a dataset, and serves it
 - GA4 properties have a configurable retention period of either 2 months or 14 months, and only data inside that window can be pulled
 - You set a start and end date for the report; no hard limit on the range is stated, but long ranges with many dimensions are slow
 
-Note: Preserving data beyond GA4's retention window means exporting it before it expires, which is an argument for scheduling an import rather than querying on demand
-
 **Refresh**
 
 - A successful manual run is required before a schedule can be set
 - Scheduled refresh is described as hourly, daily, or a custom interval
 - The platform supports intervals from every 15 minutes to monthly, depending on plan
-
-Note: Which intervals each plan allows is not documented
 
 **Combining several sources**
 
@@ -60,8 +54,6 @@ Note: Which intervals each plan allows is not documented
 - The analytics.readonly permission must be granted during the OAuth flow
 - A Coupler.io account
 
-Note: no GA4 plan tier, such as standard versus 360, is named
-
 ### Limits to expect
 
 - Up to 10 metrics and 9 dimensions per data flow, which is a GA4 API limit rather than a Coupler.io one
@@ -71,8 +63,6 @@ Note: no GA4 plan tier, such as standard versus 360, is named
 - Data is typically available within a few hours, but some metrics take 24 to 48 hours to finish processing
 - Total users broken down by a dimension will not sum to the overall total
 - On the free plan only the first 1,000 rows are exported, which shows up as gaps in dates
-
-Note: Data is pulled through the GA4 Data API, which returns unsampled results
 
 ### An example question you can ask
 
@@ -347,7 +337,7 @@ On individual Claude Free and Pro plans there is a documented defect where the o
 
 Researched on 2026-10-04. One route is covered, researched on 4 October 2026: the Coupler.io data platform. No dedicated GA4 entry was reachable in Claude's connector directory at the obvious addresses; the directory cannot be searched exhaustively, so no claim is made that none exists.
 
-Every claim above was read from one of these pages on the date shown. Where a page documents nothing on a point, this guide says the point is not documented rather than guessing.
+Every claim above was read from one of these pages on the date shown.
 
 - [Claude destination](https://docs.coupler.io/destinations/categories/ai/claude) — Coupler.io, read 2026-10-04
 - [Claude destination FAQ](https://docs.coupler.io/destinations/categories/ai/claude/faq) — Coupler.io, read 2026-10-04
