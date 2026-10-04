@@ -1,0 +1,27 @@
+data/sources/quickbooks-online.yaml
+  s_ec1b431e380350::t_3f805c07618caf 21-24,26
+data/sources/google-ads.yaml
+  s_ec1b431e380350::t_86df06d810d831 11-14,16
+data/sources/google-analytics-4.yaml
+  s_ec1b431e380350::t_7bebbc848ecef9 11-14,16
+data/sources/google-search-console.yaml
+  s_ec1b431e380350::t_cab55c0a8e521e 12-15,17
+data/sources/pipedrive.yaml
+  s_ec1b431e380350::t_993dd462d1cbf4 10-13,15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "4349ccfc299fa9949f2665ddc532af643461856a",
+  "prompts": {},
+  "sessions": {
+    "s_ec1b431e380350": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ddbf7e3a-a526-4390-9a7f-1df9c3a2e1b4",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
