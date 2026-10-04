@@ -51,6 +51,7 @@ const PublicOption = z.strictObject({
   data_path: PublicClaim,
   limits: PublicClaim,
   setup_time: PublicClaim.optional(),
+  capabilities: z.array(z.strictObject({ text: z.string(), evidence_ids: z.array(z.string()) })),
   setup_steps: z.array(z.strictObject({ text: z.string(), evidence_ids: z.array(z.string()) })),
   success_check: z.strictObject({ text: z.string(), evidence_ids: z.array(z.string()) }).nullable(),
 });
@@ -74,6 +75,15 @@ const PublicSource = z.strictObject({
     }),
   ),
   faq: z.array(z.strictObject({ question: z.string(), answer: z.string(), evidence_ids: z.array(z.string()) })),
+  related_skills: z.array(
+    z.strictObject({
+      name: z.string(),
+      description: z.string(),
+      url: z.string(),
+      also_needs: z.array(z.string()),
+      evidence_ids: z.array(z.string()),
+    }),
+  ),
   related_source_ids: z.array(z.string()),
 });
 
@@ -126,6 +136,7 @@ function publicOption(option: ModelOption) {
     data_path: publicClaim(option.data_path),
     limits: publicClaim(option.limits),
     ...(option.setup_time ? { setup_time: publicClaim(option.setup_time) } : {}),
+    capabilities: option.capabilities.map((item) => ({ text: item.text, evidence_ids: item.evidence_ids })),
     setup_steps: option.setup_steps.map((step) => ({ text: step.text, evidence_ids: step.evidence_ids })),
     success_check: option.success_check
       ? { text: option.success_check.text, evidence_ids: option.success_check.evidence_ids }
@@ -158,6 +169,7 @@ function publicSource(source: ModelSource, siteUrl: string) {
       evidence_ids: recommendation.evidence_ids,
     })),
     faq: source.faq,
+    related_skills: source.related_skills,
     related_source_ids: source.related.map((related) => related.id),
   };
 }

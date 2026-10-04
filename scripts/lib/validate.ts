@@ -118,6 +118,9 @@ export function validateContent(content: Content, options: ValidateOptions = {})
       for (const [stepIndex, step] of option.claude_configuration.entries()) {
         checkEvidenceRefs(step.evidence_ids, `${where}.claude_configuration.${stepIndex}`);
       }
+      for (const [itemIndex, item] of option.capabilities.entries()) {
+        checkEvidenceRefs(item.evidence_ids, `${where}.capabilities.${itemIndex}`);
+      }
       if (option.success_check) checkEvidenceRefs(option.success_check.evidence_ids, `${where}.success_check`);
 
       if (option.setup_time && option.setup_time.status === "known") {
@@ -143,6 +146,10 @@ export function validateContent(content: Content, options: ValidateOptions = {})
 
     for (const [index, entry] of record.faq.entries()) {
       checkEvidenceRefs(entry.evidence_ids, `faq.${index}`);
+    }
+
+    for (const [index, skill] of record.related_skills.entries()) {
+      checkEvidenceRefs(skill.evidence_ids, `related_skills.${index}`);
     }
 
     for (const id of record.related_source_ids) {

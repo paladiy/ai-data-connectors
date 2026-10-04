@@ -1,5 +1,5 @@
 import type { Claim, Evidence } from "../../schemas/common.ts";
-import type { Option, Source } from "../../schemas/source.ts";
+import type { Option, RelatedSkill, Source } from "../../schemas/source.ts";
 import { SURFACES } from "../../schemas/source.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import type { Content } from "./load.ts";
@@ -56,6 +56,7 @@ export interface ModelSource {
   options: ModelOption[];
   recommendations: ModelRecommendation[];
   faq: Array<{ question: string; answer: string; evidence_ids: string[] }>;
+  related_skills: RelatedSkill[];
   related: Array<{ id: string; slug: string; name: string }>;
 }
 
@@ -131,6 +132,7 @@ function toModelOption(option: Option, allowed: Set<string>): ModelOption {
     limits: stripClaim(option.limits, allowed),
     ...(option.setup_time ? { setup_time: stripClaim(option.setup_time, allowed) } : {}),
     surfaces,
+    capabilities: option.capabilities.map((item) => ({ ...item, evidence_ids: keepPublic(item.evidence_ids, allowed) })),
     setup_steps: option.setup_steps.map((step) => ({ ...step, evidence_ids: keepPublic(step.evidence_ids, allowed) })),
     claude_configuration: option.claude_configuration.map((step) => ({
       ...step,
@@ -186,6 +188,10 @@ export function buildModel(content: Content): Model {
         evidence_ids: keepPublic(recommendation.evidence_ids, allowed),
       })),
       faq: record.faq.map((entry) => ({ ...entry, evidence_ids: keepPublic(entry.evidence_ids, allowed) })),
+      related_skills: record.related_skills.map((skill) => ({
+        ...skill,
+        evidence_ids: keepPublic(skill.evidence_ids, allowed),
+      })),
       related: record.related_source_ids
         .map((id) => visibleIds.get(id))
         .filter((related): related is Source => related !== undefined)
