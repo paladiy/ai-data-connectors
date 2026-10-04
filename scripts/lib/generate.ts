@@ -2,11 +2,9 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync
 import path from "node:path";
 import type { Content } from "./load.ts";
 import { buildModel, type Model } from "./model.ts";
-import { renderGuide, renderReadme } from "./render-github.ts";
+import { renderReadme } from "./render-github.ts";
 import {
   buildDirectoryData,
-  renderCategoryPage,
-  renderHeaders,
   renderIndexPage,
   renderLlmsTxt,
   renderPublicDataset,
@@ -24,9 +22,6 @@ export interface Outputs {
 /** Committed, public-facing GitHub output. */
 function githubOutputs(model: Model): Map<string, string> {
   const files = new Map<string, string>([["README.md", renderReadme(model)]]);
-  for (const source of model.sources) {
-    files.set(`guides/${source.slug}.md`, renderGuide(source, model.site));
-  }
   return files;
 }
 
@@ -39,15 +34,10 @@ function siteOutputs(model: Model): Map<string, string> {
     ["site/public/connectors.json", renderPublicDataset(model)],
     ["site/public/llms.txt", renderLlmsTxt(model)],
     ["site/public/robots.txt", renderRobotsTxt(model)],
-    ["site/public/_headers", renderHeaders(model)],
   ]);
 
   for (const source of model.sources) {
     files.set(`site/src/content/docs/sources/${source.slug}.md`, renderSourcePage(source, model.site));
-    files.set(`site/public/guides/${source.slug}.md`, renderGuide(source, model.site));
-  }
-  for (const category of model.categories) {
-    files.set(`site/src/content/docs/categories/${category.id}.md`, renderCategoryPage(category, model.site));
   }
   return files;
 }
@@ -55,8 +45,6 @@ function siteOutputs(model: Model): Map<string, string> {
 export const SITE_OUTPUT_DIRECTORIES = [
   "site/src/generated",
   "site/src/content/docs/sources",
-  "site/src/content/docs/categories",
-  "site/public/guides",
 ];
 
 export function generateOutputs(content: Content): Outputs {
@@ -66,15 +54,15 @@ export function generateOutputs(content: Content): Outputs {
     ...githubOutputs(model),
     ...siteOutputs(model),
   ]);
-  return { files: sortFiles(files), ownedDirectories: ["guides", ...SITE_OUTPUT_DIRECTORIES] };
+  return { files: sortFiles(files), ownedDirectories: [...SITE_OUTPUT_DIRECTORIES] };
 }
 
 /** Only these outputs are committed; everything else is rebuilt from the records. */
 export function committedOutputs(outputs: Outputs): Outputs {
   const files = new Map(
-    [...outputs.files].filter(([file]) => file === "README.md" || file.startsWith("guides/")),
+    [...outputs.files].filter(([file]) => file === "README.md"),
   );
-  return { files, ownedDirectories: ["guides"] };
+  return { files, ownedDirectories: [] };
 }
 
 function sortFiles(files: Map<string, string>): Map<string, string> {

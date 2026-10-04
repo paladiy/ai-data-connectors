@@ -77,13 +77,6 @@ describe("cross-reference validation", () => {
     expect(problems).toContain('related_source_ids: source id "absent-source" does not resolve');
   });
 
-  it("rejects an undefined category", () => {
-    const record = Source.parse(fixtureSource({ category: "crm" }));
-    expect(messages(fixtureContent([record]))).toContain(
-      'category: "crm" is not defined in data/categories.yaml',
-    );
-  });
-
   it("rejects recommending a route whose availability is not known", () => {
     const record = Source.parse(fixtureSource({ options: [fixtureOption({ route_status: unknown() })] }));
     expect(messages(fixtureContent([record]))).toContain(

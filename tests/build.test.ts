@@ -27,7 +27,6 @@ function analyticsFixture(): Source {
       slug: "fixture-analytics",
       name: "Fixture Analytics 4",
       aliases: ["GA4", "FixtureAnalytics"],
-      category: "analytics",
       summary: "Two routes for getting Fixture Analytics 4 data into Claude.",
       meta_description: "Compare Fixture Analytics 4 connection options for Claude.",
       options: [fixtureOption(), fixtureOurOption()],
@@ -78,15 +77,15 @@ function pagefindChunks(kind: "fragment" | "index"): string {
 }
 
 describe("production build", () => {
-  it("renders the published guide, the category hub, and the directory", () => {
-    for (const page of ["index.html", "sources/fixture-analytics/index.html", "categories/analytics/index.html", "methodology/index.html", "404.html"]) {
+  it("renders the connector page, the directory, and About", () => {
+    for (const page of ["index.html", "sources/fixture-analytics/index.html", "about/index.html", "404.html"]) {
       expect(existsSync(path.join(dist, page)), page).toBe(true);
     }
   });
 
   it("indexes every published page for search", () => {
     const urls = [...pagefindChunks("fragment").matchAll(/"url":"([^"]+)"/g)].map((match) => match[1]).sort();
-    expect(urls).toEqual(["/", "/categories/analytics/", "/methodology/", "/sources/fixture-analytics/"]);
+    expect(urls).toEqual(["/", "/about/", "/sources/fixture-analytics/"]);
   });
 
   it("makes an alias searchable, so a search for GA4 can reach the guide", () => {
@@ -128,11 +127,10 @@ describe("production build", () => {
     expect(html).not.toContain("utm_");
   });
 
-  it("ships the search UI and the Markdown copy", () => {
+  it("ships the search UI", () => {
     const html = readFileSync(path.join(dist, "index.html"), "utf8");
     expect(html).toContain('id="directory-search"');
-    expect(html).toContain('id="directory-category"');
-    expect(existsSync(path.join(dist, "guides", "fixture-analytics.md"))).toBe(true);
+    expect(existsSync(path.join(dist, "guides"))).toBe(false);
   });
 
   it("allows indexing and advertises the sitemap in robots.txt", () => {

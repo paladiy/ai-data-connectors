@@ -1,10 +1,7 @@
 ---
 import directory from "../generated/directory.json";
 
-const { sources, categories } = directory;
-const usedCategories = categories.filter((category) =>
-  sources.some((source) => source.category === category.id),
-);
+const { sources } = directory;
 ---
 
 <section class="directory" aria-labelledby="directory-heading">
@@ -20,13 +17,6 @@ const usedCategories = categories.filter((category) =>
         placeholder="For example, GA4"
         aria-describedby="directory-count"
       />
-    </div>
-    <div class="field">
-      <label for="directory-category">Category</label>
-      <select id="directory-category">
-        <option value="">All categories</option>
-        {usedCategories.map((category) => <option value={category.id}>{category.name}</option>)}
-      </select>
     </div>
   </div>
 
@@ -44,7 +34,6 @@ const usedCategories = categories.filter((category) =>
         {sources.map((source) => (
           <li
             class="directory-item"
-            data-category={source.category}
             data-name={source.name.toLowerCase()}
             data-aliases={source.aliases.join(" ").toLowerCase()}
             data-providers={source.providers.join(" ").toLowerCase()}
@@ -52,7 +41,6 @@ const usedCategories = categories.filter((category) =>
             <h3><a href={`/sources/${source.slug}/`}>{source.name}</a></h3>
             <p class="directory-summary">{source.summary}</p>
             <p class="directory-meta">
-              <span class="directory-category">{source.category_name}</span>
               <span>
                 {source.routes} {source.routes === 1 ? "route" : "routes"}
               </span>
@@ -76,7 +64,6 @@ const usedCategories = categories.filter((category) =>
   const section = document.querySelector<HTMLElement>(".directory");
   if (section) {
     const search = section.querySelector<HTMLInputElement>("#directory-search")!;
-    const category = section.querySelector<HTMLSelectElement>("#directory-category")!;
     const items = [...section.querySelectorAll<HTMLElement>(".directory-item")];
     const count = section.querySelector<HTMLElement>("#directory-count")!;
     const noResults = section.querySelector<HTMLElement>(".directory-noresults")!;
@@ -84,12 +71,11 @@ const usedCategories = categories.filter((category) =>
 
     function apply() {
       const term = search.value.trim().toLowerCase();
-      const wanted = category.value;
       let visible = 0;
 
       for (const item of items) {
         const haystack = [item.dataset.name, item.dataset.aliases, item.dataset.providers].join(" ");
-        const matches = (term === "" || haystack.includes(term)) && (wanted === "" || item.dataset.category === wanted);
+        const matches = (term === "" || haystack.includes(term));
         item.hidden = !matches;
         if (matches) visible += 1;
       }
@@ -99,10 +85,8 @@ const usedCategories = categories.filter((category) =>
     }
 
     search.addEventListener("input", apply);
-    category.addEventListener("change", apply);
     reset.addEventListener("click", () => {
       search.value = "";
-      category.value = "";
       apply();
       search.focus();
     });

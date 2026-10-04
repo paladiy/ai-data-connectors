@@ -1,16 +1,5 @@
 import { z } from "zod";
 
-export const CATEGORIES = [
-  "accounting",
-  "analytics",
-  "ads",
-  "crm",
-  "productivity",
-  "email-marketing",
-  "customer-support",
-  "social",
-] as const;
-
 export const Slug = z
   .string()
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "must be lowercase kebab-case");
@@ -52,8 +41,6 @@ export const SiteUrl = z
     (value) => HttpsUrl.safeParse(value).success || isLocalDevelopmentUrl(value),
     "must be https or an explicit local-development URL",
   );
-
-export const Category = z.enum(CATEGORIES);
 
 export const NonEmptyText = z.string().trim().min(1);
 

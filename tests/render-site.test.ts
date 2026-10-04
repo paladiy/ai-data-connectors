@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { SiteConfig } from "../schemas/site.ts";
 import { generateOutputs } from "../scripts/lib/generate.ts";
 import { buildModel } from "../scripts/lib/model.ts";
-import { renderCategoryPage, renderSourcePage } from "../scripts/lib/render-site.ts";
+import { renderSourcePage } from "../scripts/lib/render-site.ts";
 import { fixtureContent, fixtureSite, fixtureRecord } from "./fixtures/content.ts";
 import { fixtureOption, fixtureOurOption, known } from "./fixtures/factory.ts";
 
@@ -60,24 +60,6 @@ describe("source page", () => {
   });
 });
 
-describe("category page", () => {
-  it("includes an ItemList of its sources and an introduction", () => {
-    const model = buildModel(fixtureContent([fixtureRecord()]));
-    const page = renderCategoryPage(model.categories[0]!, model.site);
-    const head = frontmatterOf(page).head as Array<{ tag: string; content?: string }>;
-    const types = head.filter((tag) => tag.tag === "script").map((tag) => JSON.parse(tag.content!)["@type"]);
-    expect(types).toContain("ItemList");
-    expect(page).toContain("Fixture analytics intro.");
-    expect(page).toContain("(/sources/fixture-source/)");
-  });
-
-  it("describes every entry by its routes", () => {
-    const model = buildModel(fixtureContent([fixtureRecord()]));
-    const page = renderCategoryPage(model.categories[0]!, model.site);
-    expect(page).toContain("(2 routes)");
-  });
-});
-
 describe("site outputs", () => {
   const content = fixtureContent([fixtureRecord()]);
 
@@ -91,18 +73,15 @@ describe("site outputs", () => {
     expect(robots).toContain("Sitemap: http://localhost:4321/sitemap-index.xml");
   });
 
-  it("publish every record's Markdown copy and dataset entry", () => {
+  it("publish every record in the dataset and llms.txt", () => {
     const outputs = generateOutputs(content);
-    expect([...outputs.files.keys()]).toContain("site/public/guides/fixture-source.md");
     expect(JSON.parse(outputs.files.get("site/public/connectors.json")!).sources).toHaveLength(1);
-    expect(outputs.files.get("site/public/llms.txt")).toContain("## Source guides");
+    expect(outputs.files.get("site/public/llms.txt")).toContain("## Connectors");
   });
 
-  it("point the Markdown copies at their canonical HTML version", () => {
-    const headers = generateOutputs(content).files.get("site/public/_headers")!;
-    expect(headers).toContain("/guides/fixture-source.md");
-    expect(headers).toContain("X-Robots-Tag: noindex");
-    expect(headers).toContain('Link: <http://localhost:4321/sources/fixture-source/>; rel="canonical"');
+  it("generate no categories, guides, or header files", () => {
+    const keys = [...generateOutputs(content).files.keys()];
+    expect(keys.filter((key) => /categories|guides|_headers/.test(key))).toEqual([]);
   });
 
   it("state the affiliation near the beginning of llms.txt", () => {

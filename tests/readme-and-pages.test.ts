@@ -4,13 +4,14 @@ import { Source } from "../schemas/source.ts";
 import { committedOutputs, generateOutputs } from "../scripts/lib/generate.ts";
 import { buildModel } from "../scripts/lib/model.ts";
 import { escapeText } from "../scripts/lib/markdown.ts";
-import { renderGuide, renderReadme } from "../scripts/lib/render-github.ts";
+import { renderReadme } from "../scripts/lib/render-github.ts";
+import { renderSourcePage } from "../scripts/lib/render-site.ts";
 import { fixtureContent, fixtureSite, fixtureRecord } from "./fixtures/content.ts";
 import { FIXTURE_MARKER, fixtureOption, fixtureOurOption, fixtureSource, unknown, known } from "./fixtures/factory.ts";
 
 const guideFor = (overrides: Record<string, unknown> = {}, site = fixtureSite) => {
   const model = buildModel(fixtureContent([fixtureRecord(overrides)], { site }));
-  return renderGuide(model.sources[0]!, model.site);
+  return renderSourcePage(model.sources[0]!, model.site);
 };
 
 /** Matches syntax that is still active, i.e. not preceded by a backslash. */
@@ -30,7 +31,7 @@ describe("markdown escaping", () => {
     expect(escapeText("line one\nline two")).toBe("line one line two");
   });
 
-  it("renders hostile record text inert in a generated guide", () => {
+  it("renders hostile record text inert in a generated connector page", () => {
     const guide = guideFor({
       summary: "Summary with {evil} and <img onerror=alert(1)> and | pipes",
       options: [fixtureOption({ name: "Route <b>bold</b>" }), fixtureOurOption()],
@@ -41,10 +42,9 @@ describe("markdown escaping", () => {
   });
 });
 
-describe("guide rendering", () => {
+describe("connector page rendering", () => {
   it("uses the documented title pattern and states the affiliation", () => {
     const guide = guideFor();
-    expect(guide).toContain("# Fixture Source SYNTHETIC-FIXTURE to Claude: connection options and setup");
     expect(guide).toContain("Fixture affiliation statement.");
   });
 
@@ -98,7 +98,7 @@ describe("guide rendering", () => {
 
   it("records the research date and evidence links", () => {
     const guide = guideFor();
-    expect(guide).toContain("Researched on 2026-09-01.");
+    expect(guide).toContain("researched on 2026-09-01.");
     expect(guide).toContain("[Fixture docs](https://vendor.example.test/docs)");
   });
 
@@ -120,20 +120,19 @@ describe("guide rendering", () => {
     const guide = guideFor({}, site);
     expect(guide).toContain("https://github.com/owner/name/issues/new?template=correction.yml");
     expect(guide).toContain("source=fixture-source");
-    expect(guide).toContain("Canonical version:");
   });
 });
 
 describe("README rendering", () => {
-  it("says no guides exist yet when there are no records", () => {
+  it("says no sources exist yet when there are no records", () => {
     const readme = renderReadme(buildModel(fixtureContent([])));
-    expect(readme).toContain("No source guides have been added yet.");
+    expect(readme).toContain("No sources have been added yet.");
   });
 
   it("lists every record with its route count", () => {
     const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
     expect(readme).toContain(
-      "| Fixture Source SYNTHETIC-FIXTURE | Analytics | 2 | [Guide](guides/fixture-source.md) |",
+      "| Fixture Source SYNTHETIC-FIXTURE | 2 | — |",
     );
   });
 
@@ -151,20 +150,16 @@ describe("generation", () => {
     expect([...second.files.entries()]).toEqual([...first.files.entries()]);
   });
 
-  it("commits a README and a guide for every record", () => {
-    const content = fixtureContent([fixtureRecord(), fixtureRecord({ id: "d", slug: "second-one" })]);
-    const committed = committedOutputs(generateOutputs(content));
-    expect([...committed.files.keys()].sort()).toEqual(["README.md", "guides/fixture-source.md", "guides/second-one.md"]);
-    expect(committed.ownedDirectories).toEqual(["guides"]);
+  it("commits only the README", () => {
+    const committed = committedOutputs(generateOutputs(fixtureContent([fixtureRecord()])));
+    expect([...committed.files.keys()]).toEqual(["README.md"]);
+    expect(committed.ownedDirectories).toEqual([]);
   });
 
   it("owns only the directories it regenerates", () => {
     expect(generateOutputs(fixtureContent([])).ownedDirectories).toEqual([
-      "guides",
       "site/src/generated",
       "site/src/content/docs/sources",
-      "site/src/content/docs/categories",
-      "site/public/guides",
     ]);
   });
 

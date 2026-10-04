@@ -1,11 +1,10 @@
 import { z } from "zod";
 import { SiteConfig } from "../../schemas/site.ts";
-import { CategoriesFile, PrivateEvidenceFile, Source } from "../../schemas/source.ts";
+import { PrivateEvidenceFile, Source } from "../../schemas/source.ts";
 
 const SCHEMAS: Record<string, z.ZodType> = {
   "source.schema.json": Source,
   "site.schema.json": SiteConfig,
-  "categories.schema.json": CategoriesFile,
   "private-evidence.schema.json": PrivateEvidenceFile,
 };
 

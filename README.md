@@ -8,15 +8,15 @@ The public website URL is not configured yet.
 
 ## What this is
 
-This repository holds one maintained dataset describing ways to get data from a business source into Claude, and generates the website, these Markdown guides, and a public JSON dataset from it.
+This repository holds one maintained dataset describing ways to get data from a business source into Claude, and generates the website and a public JSON dataset from it.
 
 It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a route appears once it is documented with cited evidence.
 
 ## Sources
 
-| Source | Category | Routes | Guide |
-| --- | --- | --- | --- |
-| QuickBooks Online | Accounting and finance | 4 | [Guide](guides/quickbooks-online.md) |
+| Source | Routes |
+| --- | --- |
+| QuickBooks Online | 4 | — |
 
 ## How claims are recorded
 
@@ -28,16 +28,16 @@ Each capability is stored as a claim with a status. A known claim cites the evid
 | --- | --- |
 | `npm ci` | Install the locked dependency tree. |
 | `npm run validate` | Validate records and references. |
-| `npm run generate` | Regenerate this README, the guides, site content, and public exports. |
+| `npm run generate` | Regenerate this README, site content, and public exports. |
 | `npm run check:generated` | Fail if committed generated files are stale. |
-| `npm test` | Run the schema, generation, export, and export tests. |
+| `npm test` | Run the schema, generation, and export tests. |
 | `npm run build` | Validate, generate, and build the static site and its search index. |
 | `npm run preview` | Serve the production build locally, including search. |
 | `npm run dev` | Run a development server with hot reload. |
 
 ## Corrections
 
-Corrections are reported as repository issues using the correction template, and each guide links to a prefilled issue for its source.
+Corrections are reported as repository issues using the correction template, and each source page links to a prefilled issue for its source.
 
 ---
 

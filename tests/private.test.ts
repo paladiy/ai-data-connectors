@@ -19,14 +19,14 @@ describe("private document guard", () => {
   });
 
   it("allows public repository files", () => {
-    for (const file of ["AGENTS.md", "CLAUDE.md", "README.md", "guides/pipedrive.md", "data/sources/pipedrive.yaml"]) {
+    for (const file of ["AGENTS.md", "CLAUDE.md", "README.md", "data/sources/pipedrive.yaml"]) {
       expect(isPrivatePath(file), file).toBe(false);
     }
   });
 
   it("anchors the rules at the repository root so application paths are not shadowed", () => {
     for (const file of [
-      "site/src/content/docs/methodology.md",
+      "site/src/content/docs/about.md",
       "site/src/content/docs/sources/pipedrive.md",
       "scripts/lib/research.ts",
     ]) {
@@ -38,13 +38,13 @@ describe("private document guard", () => {
     const files = {
       "data/sources/a.yaml": "evidence:\n  - id: x\n    internal_ref: abc\n",
       "data/sources/b.yaml": "id: b\n",
-      "guides/a.md": "internal_ref: abc\n",
+      "site/src/content/docs/a.md": "internal_ref: abc\n",
       "site/public/connectors.json": '{"internal_ref": "abc"}\n',
     };
     const violations = findPrivateViolations(Object.keys(files), (f) => files[f as keyof typeof files]);
     expect(violations).toEqual([
       expect.stringContaining("data/sources/a.yaml"),
-      expect.stringContaining("guides/a.md"),
+      expect.stringContaining("site/src/content/docs/a.md"),
       expect.stringContaining("site/public/connectors.json"),
     ]);
   });

@@ -14,7 +14,7 @@ describe("source schema", () => {
   });
 
   it("rejects invalid enums", () => {
-    expect(issues(fixtureSource({ category: "finance" }))).not.toEqual([]);
+    expect(issues(fixtureSource({ category: "analytics" }))).not.toEqual([]);
     expect(issues(fixtureSource({ options: [fixtureOption({ method: "magic" })] }))).not.toEqual([]);
     expect(issues(fixtureSource({ options: [fixtureOption({ maintainer: known("official") })] }))).not.toEqual([]);
   });

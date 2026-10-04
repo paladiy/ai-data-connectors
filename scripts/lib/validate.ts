@@ -61,11 +61,6 @@ export function validateContent(content: Content, options: ValidateOptions = {})
   const problems: Problem[] = [];
   const add = (file: string, path: string, message: string) => problems.push({ file, path, message });
 
-  const categoryIds = new Set(content.categories.map((c) => c.id));
-  if (content.categories.length !== categoryIds.size) {
-    add("data/categories.yaml", "categories", "category ids must be unique");
-  }
-
   const seenIds = new Map<string, string>();
   const seenSlugs = new Map<string, string>();
   const sourceIds = new Set(content.sources.map((s) => s.record.id));
@@ -80,10 +75,6 @@ export function validateContent(content: Content, options: ValidateOptions = {})
     const previousSlug = seenSlugs.get(record.slug);
     if (previousSlug) add(file, "slug", `duplicate slug "${record.slug}" (also in ${previousSlug})`);
     seenSlugs.set(record.slug, file);
-
-    if (!categoryIds.has(record.category)) {
-      add(file, "category", `"${record.category}" is not defined in data/categories.yaml`);
-    }
 
     // Evidence identity and references.
     const evidence = allEvidence(bundle);

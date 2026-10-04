@@ -70,7 +70,6 @@ export function fixtureSource(overrides: Json = {}): Json {
     slug: "fixture-source",
     name: `Fixture Source ${FIXTURE_MARKER}`,
     aliases: ["FXS"],
-    category: "analytics",
     summary: "Fixture summary covering two routes.",
     meta_description: "Fixture meta description.",
     research: {

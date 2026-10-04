@@ -1,5 +1,5 @@
 import type { Claim, Evidence } from "../../schemas/common.ts";
-import type { CategoryRecord, Option, Source } from "../../schemas/source.ts";
+import type { Option, Source } from "../../schemas/source.ts";
 import { SURFACES } from "../../schemas/source.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import type { Content } from "./load.ts";
@@ -49,8 +49,6 @@ export interface ModelSource {
   slug: string;
   name: string;
   aliases: string[];
-  category: string;
-  category_name: string;
   summary: string;
   meta_description: string;
   research: { searched_on: string; coverage_note: string; checked_urls: string[] };
@@ -61,14 +59,9 @@ export interface ModelSource {
   related: Array<{ id: string; slug: string; name: string }>;
 }
 
-export interface ModelCategory extends CategoryRecord {
-  sources: ModelSource[];
-}
-
 export interface Model {
   site: SiteConfig;
   sources: ModelSource[];
-  categories: ModelCategory[];
 }
 
 /**
@@ -155,8 +148,6 @@ function toModelOption(option: Option, allowed: Set<string>): ModelOption {
 }
 
 export function buildModel(content: Content): Model {
-  const categoryNames = new Map(content.categories.map((c) => [c.id, c.name]));
-
   const selected = content.sources
     .map((bundle) => bundle.record)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -182,8 +173,6 @@ export function buildModel(content: Content): Model {
       slug: record.slug,
       name: record.name,
       aliases: record.aliases,
-      category: record.category,
-      category_name: categoryNames.get(record.category) ?? record.category,
       summary: record.summary,
       meta_description: record.meta_description,
       research: record.research,
@@ -204,13 +193,8 @@ export function buildModel(content: Content): Model {
     };
   });
 
-  const categories: ModelCategory[] = content.categories
-    .map((category) => ({ ...category, sources: sources.filter((source) => source.category === category.id) }))
-    .filter((category) => category.sources.length > 0);
-
   return {
     site: content.site,
     sources,
-    categories,
   };
 }

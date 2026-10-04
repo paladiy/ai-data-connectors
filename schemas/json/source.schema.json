@@ -25,19 +25,6 @@
         "minLength": 1
       }
     },
-    "category": {
-      "type": "string",
-      "enum": [
-        "accounting",
-        "analytics",
-        "ads",
-        "crm",
-        "productivity",
-        "email-marketing",
-        "customer-support",
-        "social"
-      ]
-    },
     "summary": {
       "type": "string",
       "minLength": 1
@@ -1198,7 +1185,6 @@
     "slug",
     "name",
     "aliases",
-    "category",
     "summary",
     "meta_description",
     "research",

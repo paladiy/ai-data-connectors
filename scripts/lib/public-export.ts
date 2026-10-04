@@ -60,7 +60,6 @@ const PublicSource = z.strictObject({
   slug: z.string(),
   name: z.string(),
   aliases: z.array(z.string()),
-  category: z.string(),
   url: z.string(),
   summary: z.string(),
   research: z.strictObject({ searched_on: z.string(), coverage_note: z.string() }),
@@ -141,7 +140,6 @@ function publicSource(source: ModelSource, siteUrl: string) {
     slug: source.slug,
     name: source.name,
     aliases: source.aliases,
-    category: source.category,
     url: new URL(`/sources/${source.slug}/`, siteUrl).toString(),
     summary: source.summary,
     research: { searched_on: source.research.searched_on, coverage_note: source.research.coverage_note },
@@ -172,7 +170,7 @@ export function buildPublicDataset(model: Model): PublicDataset {
     url: new URL("/", model.site.url).toString(),
     publisher: { name: model.site.publisher.name, type: model.site.publisher.type },
     affiliation: model.site.affiliation_statement,
-    documentation: new URL("/methodology/", model.site.url).toString(),
+    documentation: new URL("/about/", model.site.url).toString(),
     sources: model.sources.map((source) => publicSource(source, model.site.url)),
   });
 }

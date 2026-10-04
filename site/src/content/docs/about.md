@@ -1,5 +1,5 @@
 ---
-title: How this directory works
+title: About
 description: What this directory covers, how options are ordered, what claims mean, and how to report a correction.
 ---
 
@@ -11,7 +11,7 @@ not affiliated with Anthropic.
 
 ## What it covers
 
-Each guide answers one question: how can the data in a given business source be analysed in Claude?
+Each connector page answers one question: how can the data in a given business source be analysed in Claude?
 A route is included when it moves or exposes that source's data to Claude, whether through a native
 connector, an MCP server, a data platform, an automation tool, or a manual file export.
 
@@ -33,9 +33,9 @@ ranking.
 
 ## The public dataset
 
-The guides are also available as a JSON dataset at [`/connectors.json`](/connectors.json).
+The connector data is also available as a JSON dataset at [`/connectors.json`](/connectors.json).
 
 ## Corrections
 
-If something is wrong, out of date, or missing a caveat, please report it. Each guide links to a
+If something is wrong, out of date, or missing a caveat, please report it. Each connector page links to a
 prefilled correction issue for that source.

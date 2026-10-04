@@ -3,8 +3,7 @@ import path from "node:path";
 import { parse } from "yaml";
 import type { z } from "zod";
 import { SiteConfig } from "../../schemas/site.ts";
-import { CategoriesFile, PrivateEvidenceFile, Source } from "../../schemas/source.ts";
-import type { CategoryRecord } from "../../schemas/source.ts";
+import { PrivateEvidenceFile, Source } from "../../schemas/source.ts";
 import type { Evidence } from "../../schemas/common.ts";
 
 export class ContentError extends Error {
@@ -41,7 +40,6 @@ export interface SourceBundle {
 export interface Content {
   root: string;
   site: SiteConfig;
-  categories: CategoryRecord[];
   sources: SourceBundle[];
 }
 
@@ -61,11 +59,6 @@ function loadPrivateEvidence(root: string, sourceId: string): Evidence[] {
 
 export function loadContent(root: string = process.cwd()): Content {
   const site = parseFile(SiteConfig, path.join(root, "data", "site.yaml"), "data/site.yaml");
-  const { categories } = parseFile(
-    CategoriesFile,
-    path.join(root, "data", "categories.yaml"),
-    "data/categories.yaml",
-  );
 
   const sourcesDir = path.join(root, "data", "sources");
   const files = existsSync(sourcesDir)
@@ -89,7 +82,7 @@ export function loadContent(root: string = process.cwd()): Content {
   }
   if (problems.length > 0) throw new ContentError(problems);
 
-  return { root, site, categories, sources };
+  return { root, site, sources };
 }
 
 /** All evidence available for validating a record, public and private. */

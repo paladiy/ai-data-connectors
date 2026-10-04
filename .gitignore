@@ -29,9 +29,6 @@ site/.astro/
 site/src/generated/
 site/src/content/docs/index.mdx
 site/src/content/docs/sources/
-site/src/content/docs/categories/
 site/public/connectors.json
 site/public/llms.txt
 site/public/robots.txt
-site/public/_headers
-site/public/guides/

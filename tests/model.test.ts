@@ -99,10 +99,6 @@ describe("model", () => {
     expect(source.related.map((r) => r.id)).toEqual(["other-source"]);
   });
 
-  it("builds categories only for categories that have sources", () => {
-    const model = buildModel(fixtureContent([fixtureRecord()]));
-    expect(model.categories.map((c) => c.id)).toEqual(["analytics"]);
-  });
 });
 
 describe("public dataset", () => {

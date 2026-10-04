@@ -25,7 +25,7 @@ const PRIVATE_CONTENT_MARKERS: RegExp[] = [
  * declares field names such as `internal_ref`, while a record or a rendered page must never
  * carry an actual value.
  */
-const CONTENT_PATHS: RegExp[] = [/^data\//, /^guides\//, /^site\/(src|public)\//, /^README\.md$/];
+const CONTENT_PATHS: RegExp[] = [/^data\//, /^site\/(src|public)\//, /^README\.md$/];
 
 export function isPrivatePath(file: string): boolean {
   return PRIVATE_PATH_PATTERNS.some((pattern) => pattern.test(file));

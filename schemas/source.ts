@@ -1,6 +1,5 @@
 import { z } from "zod";
 import {
-  Category,
   claim,
   Evidence,
   EvidencedText,
@@ -76,7 +75,6 @@ export const Source = z.strictObject({
   slug: Slug,
   name: NonEmptyText,
   aliases: z.array(NonEmptyText),
-  category: Category,
   summary: NonEmptyText,
   meta_description: NonEmptyText.max(170),
   research: z.strictObject({
@@ -111,14 +109,3 @@ export const PrivateEvidenceFile = z.strictObject({
   evidence: z.array(Evidence),
 });
 
-export const CategoryRecord = z.strictObject({
-  id: Category,
-  name: NonEmptyText,
-  intro: NonEmptyText,
-});
-
-export const CategoriesFile = z.strictObject({
-  categories: z.array(CategoryRecord),
-});
-
-export type CategoryRecord = z.infer<typeof CategoryRecord>;

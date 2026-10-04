@@ -3,8 +3,8 @@ import type { SiteConfig } from "../../schemas/site.ts";
 import { SURFACES } from "../../schemas/source.ts";
 import type { Claim } from "../../schemas/common.ts";
 import { bulletList, escapeText, joinSections, link, renderClaim, renderClaimCell } from "./markdown.ts";
-import { SURFACE_LABELS, type Model, type ModelCategory, type ModelOption, type ModelSource } from "./model.ts";
-import { guideTitle, correctionUrl } from "./render-github.ts";
+import { SURFACE_LABELS, type Model, type ModelOption, type ModelSource } from "./model.ts";
+import { pageTitle, correctionUrl } from "./render-github.ts";
 import { serializePublicDataset } from "./public-export.ts";
 
 interface HeadTag {
@@ -206,7 +206,7 @@ function sourcesSection(source: ModelSource, site: SiteConfig): string {
     "",
     correction
       ? `Something here wrong or out of date? ${link("Open a correction issue", correction)} and it will be re-checked against the source.`
-      : `Something here wrong or out of date? ${link("See how corrections are handled", "/methodology/#corrections")}.`,
+      : `Something here wrong or out of date? ${link("See how corrections are handled", "/about/#corrections")}.`,
   );
   return lines.join("\n");
 }
@@ -221,10 +221,9 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
     site,
     path,
     [
-      webPage(site, absolute(site, path), guideTitle(source), source.meta_description),
+      webPage(site, absolute(site, path), pageTitle(source), source.meta_description),
       breadcrumbs(site, [
         { name: "Sources", path: "/" },
-        { name: source.category_name, path: `/categories/${source.category}/` },
         { name: source.name, path },
       ]),
     ],
@@ -232,7 +231,7 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
 
   return joinSections([
     frontmatter({
-      title: guideTitle(source),
+      title: pageTitle(source),
       description: source.meta_description,
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
       head,
@@ -257,40 +256,7 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
           .map((related) => `- ${link(`${related.name} to Claude`, `/sources/${related.slug}/`)}`)
           .join("\n")}`
       : null,
-    `[All sources](/) · [How this directory works](/methodology/)`,
-  ]);
-}
-
-export function renderCategoryPage(category: ModelCategory, site: SiteConfig): string {
-  const path = `/categories/${category.id}/`;
-  const head = headFor(
-    site,
-    path,
-    [
-      webPage(site, absolute(site, path), `${category.name} data in Claude`, category.intro),
-      breadcrumbs(site, [
-        { name: "Sources", path: "/" },
-        { name: category.name, path },
-      ]),
-      itemList(site, category.sources),
-    ],
-  );
-
-  return joinSections([
-    frontmatter({
-      title: `${category.name} data in Claude`,
-      description: category.intro.slice(0, 160),
-      head,
-    }),
-    escapeText(category.intro),
-    "## Sources",
-    category.sources
-      .map((source) => {
-        const routes = source.options.filter((option) => option.is_usable_route).length;
-        return `- ${link(source.name, `/sources/${source.slug}/`)} — ${escapeText(source.summary)} (${routes} route${routes === 1 ? "" : "s"})`;
-      })
-      .join("\n"),
-    `[All sources](/) · [How this directory works](/methodology/)`,
+    `[All sources](/) · [About](/about/)`,
   ]);
 }
 
@@ -316,17 +282,14 @@ export function renderIndexPage(model: Model): string {
     `_${escapeText(site.affiliation_statement)}_`,
     escapeText(site.tagline),
     "<Directory />",
-    `[How this directory works](/methodology/)`,
+    `[About](/about/)`,
   ]);
 }
 
 export interface DirectoryData {
-  categories: Array<{ id: string; name: string }>;
   sources: Array<{
     slug: string;
     name: string;
-    category: string;
-    category_name: string;
     summary: string;
     aliases: string[];
     routes: number;
@@ -336,12 +299,9 @@ export interface DirectoryData {
 
 export function buildDirectoryData(model: Model): DirectoryData {
   return {
-    categories: model.categories.map((category) => ({ id: category.id, name: category.name })),
     sources: model.sources.map((source) => ({
       slug: source.slug,
       name: source.name,
-      category: source.category,
-      category_name: source.category_name,
       summary: source.summary,
       aliases: source.aliases,
       routes: source.options.filter((option) => option.is_usable_route).length,
@@ -364,14 +324,14 @@ export function renderLlmsTxt(model: Model): string {
     "",
   ];
   if (model.sources.length > 0) {
-    lines.push("## Source guides", "");
+    lines.push("## Connectors", "");
     for (const source of model.sources) {
       lines.push(`- [${source.name} to Claude](${absolute(site, `/sources/${source.slug}/`)}): ${source.summary}`);
     }
     lines.push("");
   }
   lines.push("## Data", "", `- [Public dataset, schema version 1](${absolute(site, "/connectors.json")})`);
-  lines.push(`- [Methodology and disclosure](${absolute(site, "/methodology/")})`);
+  lines.push(`- [About and disclosure](${absolute(site, "/about/")})`);
   return `${lines.join("\n")}\n`;
 }
 
@@ -383,24 +343,6 @@ export function renderRobotsTxt(model: Model): string {
     `Sitemap: ${absolute(model.site, "/sitemap-index.xml")}`,
     "",
   ].join("\n");
-}
-
-/**
- * Host header rules for the plain Markdown copies: point search engines at the HTML version and
- * keep the Markdown out of the index. Whether the selected host honours this file must be confirmed
- * on that host.
- */
-export function renderHeaders(model: Model): string {
-  const lines = ["# Confirm that the selected host applies these rules.", ""];
-  for (const source of model.sources) {
-    lines.push(
-      `/guides/${source.slug}.md`,
-      "  X-Robots-Tag: noindex",
-      `  Link: <${absolute(model.site, `/sources/${source.slug}/`)}>; rel="canonical"`,
-      "",
-    );
-  }
-  return lines.join("\n");
 }
 
 export function renderPublicDataset(model: Model): string {

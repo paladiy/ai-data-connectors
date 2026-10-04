@@ -31,9 +31,7 @@ export default defineConfig({
       components: { Head: "./src/components/Head.astro" },
       sidebar: [
         { label: "All sources", link: "/" },
-        { label: "Categories", items: [{ autogenerate: { directory: "categories" } }] },
-        { label: "Source guides", items: [{ autogenerate: { directory: "sources" } }] },
-        { label: "How this directory works", link: "/methodology/" },
+        { label: "About", link: "/about/" },
       ],
     }),
   ],

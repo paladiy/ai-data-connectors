@@ -13,7 +13,7 @@ try {
     process.exit(1);
   }
 
-  console.log(`Content valid: ${content.sources.length} sources, ${content.categories.length} categories.`);
+  console.log(`Content valid: ${content.sources.length} sources.`);
 } catch (error) {
   if (error instanceof ContentError) {
     console.error(`Content could not be loaded:\n${error.problems.map((p) => `  ${p}`).join("\n")}`);
