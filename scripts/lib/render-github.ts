@@ -111,7 +111,8 @@ function sourceTable(model: Model, home: string | null): string {
     ...model.sources.map((source) => {
       const landing = couplerLandingPage(source);
       const guides = [
-        home ? link("Setup guide", new URL(`/sources/${source.slug}/`, home).toString()) : null,
+        link("Setup guide", `guides/${source.slug}.md`),
+        home ? link("Website", new URL(`/sources/${source.slug}/`, home).toString()) : null,
         landing ? link(`${source.name} on Coupler.io`, landing) : null,
       ].filter((item): item is string => item !== null);
       const query = sampleQuery(source);
@@ -169,7 +170,7 @@ export function renderReadme(model: Model): string {
     ].join("\n"),
     "## Data sources you can connect",
     [
-      `Each source below has a researched guide that explains what data Coupler.io imports, how often it refreshes, and which limits to expect. Coupler.io supports far more apps than are listed here; see ${link("all 400+ apps", LINKS.aiIntegrations)}.`,
+      `Each source below has a researched guide, readable here in Markdown, that explains what data Coupler.io imports, how often it refreshes, which limits to expect, and how to install it in each AI tool. Coupler.io supports far more apps than are listed here; see ${link("all 400+ apps", LINKS.aiIntegrations)}.`,
       "",
       sourceTable(model, home),
     ].join("\n"),
@@ -204,7 +205,9 @@ export function renderReadme(model: Model): string {
     "## For developers and contributors",
     "### About this repository",
     [
-      "This repository holds one maintained dataset describing how to get data from a business source into LLMs and AI tools with Coupler.io, and generates the README, the website, and a public JSON dataset from it.",
+      "This repository holds one maintained dataset describing how to get data from a business source into LLMs and AI tools with Coupler.io, and generates this README, a Markdown guide per source in `guides/`, the website, and a public JSON dataset from it.",
+      "",
+      "The guides in `guides/` are plain Markdown with no HTML and no scripts, so they can be read, cloned, and indexed straight from the repository without the website.",
       "",
       "It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a source appears once it is documented with cited evidence.",
       "",

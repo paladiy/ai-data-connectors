@@ -147,9 +147,17 @@ describe("README rendering", () => {
     expect(readme).toContain("No sources have been added yet.");
   });
 
-  it("lists every record with its Coupler.io sample question", () => {
+  it("lists every record with its Coupler.io sample question and its Markdown guide", () => {
     const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
-    expect(readme).toContain("| Fixture Source SYNTHETIC-FIXTURE | “Show last month's fixture totals.” | — |");
+    expect(readme).toContain(
+      "| Fixture Source SYNTHETIC-FIXTURE | “Show last month's fixture totals.” | [Setup guide](guides/fixture-source.md) |",
+    );
+  });
+
+  it("links guides relatively, so they work without a configured website", () => {
+    const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
+    expect(readme).not.toContain("localhost:4321/sources/");
+    expect(readme).toContain("(guides/fixture-source.md)");
   });
 
   it("links the Coupler.io landing page cited in a record's evidence", () => {
