@@ -258,14 +258,9 @@ options:
     prerequisites:
       status: known
       value:
-        - Standard or Admin access to each Google Ads account you want to pull from
-        - "Manager (MCC) access does not automatically grant data access to sub-accounts; each account needs explicit access"
-        - "The adwords permission must be granted during the OAuth flow"
-        - "Google Ads is a tenant-based source: each ad account selected counts as one account toward your Coupler.io plan limit"
         - A Coupler.io account and a Claude account
         - On a Claude Team or Enterprise plan, admin access is needed to add the connector
-      evidence_ids: [cpl-ads-overview, cpl-ads-issues, cpl-ads-faq, cpl-claude-destination]
-      note: read-only access to the ad account may not be sufficient for all report types
+      evidence_ids: [cpl-claude-destination]
 
     pricing:
       status: unknown
@@ -297,27 +292,15 @@ options:
         - "On individual Claude Free and Pro plans the official connector may connect but fail to load its tools; a custom connector URL is documented as a workaround"
       evidence_ids: [cpl-ads-data, cpl-ads-issues, cpl-ads-faq, cpl-claude-destination, cpl-claude-issues, cpl-claude-free-pro]
 
-    setup_steps:
-      - text: In Coupler.io, create a data flow and select Google Ads as the source, then choose the ad accounts.
-        evidence_ids: [cpl-ads-overview, cpl-ads-faq]
-      - text: Pick a report type, the metrics you need, and a time split such as Date or Month.
-        evidence_ids: [cpl-ads-data]
-      - text: For a large backfill, pull monthly or quarterly chunks rather than years at once.
-        evidence_ids: [cpl-ads-best]
-      - text: Choose Claude as the destination in the data flow's destination step.
-        evidence_ids: [cpl-claude-destination]
-      - text: Give the data flow a clear name, because Claude refers to the dataset by that name.
-        evidence_ids: [cpl-claude-destination]
-      - text: Run the data flow manually once, then set a refresh schedule after it succeeds.
-        evidence_ids: [cpl-claude-destination, cpl-claude-faq]
+    # Installing is only connecting the Coupler.io MCP server to Claude. Building the data flow that
+    # feeds it is covered in Coupler.io's own docs (linked as the provider setup instructions).
+    setup_steps: []
 
     claude_configuration:
-      - text: Install the Coupler.io connector in Claude and click Connect, then connect again from the Connectors menu to authenticate.
+      - text: In Claude web, Claude desktop, or Cowork, install the Coupler.io connector and click Connect, then connect again from the Connectors menu to authenticate.
         evidence_ids: [cpl-claude-destination]
-      - text: For Claude Code, start a session, paste the connection command shown in the destination step, restart the session, then run /mcp and authorise in the browser.
+      - text: In Claude Code, run the Coupler.io connection command in a new session, restart the session, then run /mcp, select Coupler.io, and click Authorize in the browser.
         evidence_ids: [cpl-claude-destination]
-      - text: Approve the tool request the first time Claude fetches data in a session.
-        evidence_ids: [cpl-claude-faq]
       - text: On a Claude Team or Enterprise plan, ask a workspace admin to add the connector if the option is unavailable.
         evidence_ids: [cpl-claude-issues]
 
@@ -325,10 +308,9 @@ options:
 
     success_check:
       text: >-
-        Open a new Claude chat and ask it to list the datasets it can see; the Google Ads data flow
-        should appear under the name you gave it. Then compare the row count Claude reports with the
-        run in Coupler.io, because the preview alone does not confirm what Claude received.
-      evidence_ids: [cpl-claude-destination, cpl-claude-issues]
+        Open a new Claude chat and ask it to list the datasets it can see. Claude asks permission to
+        use the Coupler.io tools the first time; allow them, and your Coupler.io datasets are listed.
+      evidence_ids: [cpl-claude-faq, cpl-claude-issues]
 
   - id: google-ads-mcp
     name: Google Ads MCP server
