@@ -15,16 +15,13 @@ try {
   );
 }
 
-/** Draft previews are built to a separate directory and must never be indexed. */
-const drafts = process.env.DRAFTS === "1";
-
 export default defineConfig({
   site: site.url,
   trailingSlash: "always",
   build: { format: "directory" },
   integrations: [
     starlight({
-      title: drafts ? `${site.name} (draft preview)` : site.name,
+      title: site.name,
       description: site.tagline,
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
       editLink: site.repo ? { baseUrl: `https://github.com/${site.repo}/edit/main/` } : undefined,

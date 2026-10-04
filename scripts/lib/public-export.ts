@@ -10,7 +10,7 @@ export const PUBLIC_SCHEMA_VERSION = 1;
  * only because it is named here, so new internal fields cannot leak by default.
  */
 const PublicClaim = z.strictObject({
-  status: z.enum(["verified", "unknown", "not_applicable"]),
+  status: z.enum(["known", "unknown", "not_applicable"]),
   value: z.unknown().nullable(),
   evidence_ids: z.array(z.string()),
   note: z.string().optional(),
@@ -63,11 +63,6 @@ const PublicSource = z.strictObject({
   category: z.string(),
   url: z.string(),
   summary: z.string(),
-  review: z.strictObject({
-    reviewer: z.string(),
-    reviewed_on: z.string(),
-    method: z.enum(["docs", "tested", "both"]),
-  }),
   research: z.strictObject({ searched_on: z.string(), coverage_note: z.string() }),
   evidence: z.array(PublicEvidence),
   options: z.array(PublicOption),
@@ -149,7 +144,6 @@ function publicSource(source: ModelSource, siteUrl: string) {
     category: source.category,
     url: new URL(`/sources/${source.slug}/`, siteUrl).toString(),
     summary: source.summary,
-    review: source.review!,
     research: { searched_on: source.research.searched_on, coverage_note: source.research.coverage_note },
     evidence: source.evidence.map((item) => ({
       id: item.id,
@@ -171,9 +165,7 @@ function publicSource(source: ModelSource, siteUrl: string) {
   };
 }
 
-/** Published records only. Drafts never enter the public dataset. */
 export function buildPublicDataset(model: Model): PublicDataset {
-  const published = model.sources.filter((source) => source.published && source.review !== null);
   return PublicDataset.parse({
     schema_version: PUBLIC_SCHEMA_VERSION,
     name: model.site.name,
@@ -181,7 +173,7 @@ export function buildPublicDataset(model: Model): PublicDataset {
     publisher: { name: model.site.publisher.name, type: model.site.publisher.type },
     affiliation: model.site.affiliation_statement,
     documentation: new URL("/methodology/", model.site.url).toString(),
-    sources: published.map((source) => publicSource(source, model.site.url)),
+    sources: model.sources.map((source) => publicSource(source, model.site.url)),
   });
 }
 

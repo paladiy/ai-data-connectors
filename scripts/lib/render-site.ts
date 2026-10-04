@@ -7,14 +7,6 @@ import { SURFACE_LABELS, type Model, type ModelCategory, type ModelOption, type 
 import { guideTitle, correctionUrl } from "./render-github.ts";
 import { serializePublicDataset } from "./public-export.ts";
 
-/**
- * Marker for the local editorial preview. It exists so a maintainer cannot mistake an unpublished
- * page for a live one; it never reaches the published site, because unpublished records are not
- * rendered there at all. Deliberately terse: visitor-facing pages carry no commentary about the
- * repository's own workflow.
- */
-const EDITORIAL_PREVIEW_BANNER = "Editorial preview, visible only in this local build.";
-
 interface HeadTag {
   tag: string;
   attrs?: Record<string, string>;
@@ -77,9 +69,8 @@ function itemList(site: SiteConfig, sources: ModelSource[]): unknown {
   };
 }
 
-function headFor(site: SiteConfig, path: string, structuredData: unknown[], noindex: boolean): HeadTag[] {
+function headFor(site: SiteConfig, path: string, structuredData: unknown[]): HeadTag[] {
   const tags: HeadTag[] = [{ tag: "link", attrs: { rel: "canonical", href: absolute(site, path) } }];
-  if (noindex) tags.push({ tag: "meta", attrs: { name: "robots", content: "noindex, nofollow" } });
   tags.push(...structuredData.map(jsonLd));
   return tags;
 }
@@ -125,12 +116,12 @@ function optionSection(source: ModelSource, option: ModelOption, site: SiteConfi
   if (option.links.overview) links.push(link("Overview", option.links.overview));
   if (option.links.setup) links.push(link("Provider setup instructions", option.links.setup));
   if (option.links.pricing) links.push(link("Pricing", option.links.pricing));
-  if (option.directory_listing.status === "verified") {
+  if (option.directory_listing.status === "known") {
     links.push(link("Claude directory entry", option.directory_listing.value!));
   }
   if (links.length > 0) lines.push("", links.join(" · "));
 
-  if (option.prerequisites.status === "verified") {
+  if (option.prerequisites.status === "known") {
     lines.push("", "**Prerequisites**", "", ...bulletList(toList(option.prerequisites.value)));
   }
   if (option.setup_steps.length > 0) {
@@ -177,7 +168,7 @@ function recommendationsSection(source: ModelSource, site: SiteConfig): string |
 
 function limitsSection(source: ModelSource): string | null {
   const relevant = source.options.filter(
-    (option) => option.data_path.status === "verified" || option.limits.status === "verified" || option.access.status === "verified",
+    (option) => option.data_path.status === "known" || option.limits.status === "known" || option.access.status === "known",
   );
   if (relevant.length === 0) return null;
   const lines = ["## Limits and data handling"];
@@ -200,21 +191,8 @@ function faqSection(source: ModelSource): string | null {
   return lines.join("\n");
 }
 
-function verificationSection(source: ModelSource, site: SiteConfig): string {
-  const lines = ["## Verification and corrections"];
-  // An unpublished page simply omits the reviewer line. It never explains its own status to a
-  // reader: the editorial preview banner is the only place that distinction is surfaced.
-  if (source.review) {
-    const method = {
-      docs: "documentation review",
-      tested: "a hands-on product test",
-      both: "documentation review and a hands-on product test",
-    }[source.review.method];
-    lines.push(
-      "",
-      `<p class="review-note" data-reviewed-on="${source.review.reviewed_on}" data-overdue-days="${site.review_overdue_days}">Facts reviewed by ${escapeHtml(source.review.reviewer)} on <time datetime="${source.review.reviewed_on}">${source.review.reviewed_on}</time> through ${escapeHtml(method)}.</p>`,
-    );
-  }
+function sourcesSection(source: ModelSource, site: SiteConfig): string {
+  const lines = ["## Sources and corrections"];
   lines.push("", `Alternatives were researched on ${source.research.searched_on}. ${escapeText(source.research.coverage_note)}`);
 
   if (source.evidence.length > 0) {
@@ -235,7 +213,7 @@ function verificationSection(source: ModelSource, site: SiteConfig): string {
 
 export function renderSourcePage(source: ModelSource, site: SiteConfig): string {
   const path = `/sources/${source.slug}/`;
-  const verified = source.options.filter((option) => option.is_verified_route);
+  const usable = source.options.filter((option) => option.is_usable_route);
   const aliasLine =
     source.aliases.length > 0 ? `Also searched as ${source.aliases.map(escapeText).join(", ")}.` : null;
 
@@ -250,7 +228,6 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
         { name: source.name, path },
       ]),
     ],
-    !source.published,
   );
 
   return joinSections([
@@ -258,24 +235,23 @@ export function renderSourcePage(source: ModelSource, site: SiteConfig): string 
       title: guideTitle(source),
       description: source.meta_description,
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
-      ...(source.published ? {} : { banner: { content: EDITORIAL_PREVIEW_BANNER } }),
       head,
     }),
     `_${escapeText(site.affiliation_statement)}_`,
     escapeText(source.summary),
-    verified.length > 0
-      ? `**Covered here:** ${verified.map((option) => escapeText(option.name)).join(", ")}.`
+    usable.length > 0
+      ? `**Covered here:** ${usable.map((option) => escapeText(option.name)).join(", ")}.`
       : null,
     aliasLine,
     "## Compare the options",
     comparisonTable(source),
-    "_Each claim is checked against the evidence listed at the end of this page. Where a capability has not been checked, it says so instead of guessing._",
+    "_Each claim cites the evidence listed at the end of this page. Where a capability is not documented, it says so instead of guessing._",
     "## Set up each route",
     ...source.options.map((option) => optionSection(source, option, site)),
     recommendationsSection(source, site),
     limitsSection(source),
     faqSection(source),
-    verificationSection(source, site),
+    sourcesSection(source, site),
     source.related.length > 0
       ? `## Related sources\n\n${source.related
           .map((related) => `- ${link(`${related.name} to Claude`, `/sources/${related.slug}/`)}`)
@@ -298,7 +274,6 @@ export function renderCategoryPage(category: ModelCategory, site: SiteConfig): s
       ]),
       itemList(site, category.sources),
     ],
-    category.sources.every((source) => !source.published),
   );
 
   return joinSections([
@@ -308,11 +283,11 @@ export function renderCategoryPage(category: ModelCategory, site: SiteConfig): s
       head,
     }),
     escapeText(category.intro),
-    "## Reviewed sources",
+    "## Sources",
     category.sources
       .map((source) => {
-        const routes = source.options.filter((option) => option.is_verified_route).length;
-        return `- ${link(source.name, `/sources/${source.slug}/`)} — ${escapeText(source.summary)} (${routes} verified route${routes === 1 ? "" : "s"})`;
+        const routes = source.options.filter((option) => option.is_usable_route).length;
+        return `- ${link(source.name, `/sources/${source.slug}/`)} — ${escapeText(source.summary)} (${routes} route${routes === 1 ? "" : "s"})`;
       })
       .join("\n"),
     `[All sources](/) · [How this directory works](/methodology/)`,
@@ -326,9 +301,8 @@ export function renderIndexPage(model: Model): string {
     "/",
     [
       webPage(site, absolute(site, "/"), site.name, site.tagline),
-      itemList(site, model.sources.filter((source) => source.published)),
+      itemList(site, model.sources),
     ],
-    model.sources.every((source) => !source.published),
   );
 
   return joinSections([
@@ -355,8 +329,7 @@ export interface DirectoryData {
     category_name: string;
     summary: string;
     aliases: string[];
-    published: boolean;
-    verified_routes: number;
+    routes: number;
     providers: string[];
   }>;
 }
@@ -371,8 +344,7 @@ export function buildDirectoryData(model: Model): DirectoryData {
       category_name: source.category_name,
       summary: source.summary,
       aliases: source.aliases,
-      published: source.published,
-      verified_routes: source.options.filter((option) => option.is_verified_route).length,
+      routes: source.options.filter((option) => option.is_usable_route).length,
       providers: source.options.map((option) => option.provider),
     })),
   };
@@ -380,7 +352,6 @@ export function buildDirectoryData(model: Model): DirectoryData {
 
 export function renderLlmsTxt(model: Model): string {
   const { site } = model;
-  const published = model.sources.filter((source) => source.published);
   const lines = [
     `# ${site.name}`,
     "",
@@ -388,13 +359,13 @@ export function renderLlmsTxt(model: Model): string {
     "",
     site.tagline,
     "",
-    "Capabilities are recorded as claims with evidence and a review date. Anything unverified is labelled",
-    'as "Not verified" rather than as unsupported. Coverage is not exhaustive.',
+    "Capabilities are recorded as claims with cited evidence. Anything not documented is labelled",
+    'as "Unknown" rather than as unsupported. Coverage is not exhaustive.',
     "",
   ];
-  if (published.length > 0) {
+  if (model.sources.length > 0) {
     lines.push("## Source guides", "");
-    for (const source of published) {
+    for (const source of model.sources) {
       lines.push(`- [${source.name} to Claude](${absolute(site, `/sources/${source.slug}/`)}): ${source.summary}`);
     }
     lines.push("");
@@ -404,10 +375,7 @@ export function renderLlmsTxt(model: Model): string {
   return `${lines.join("\n")}\n`;
 }
 
-export function renderRobotsTxt(model: Model, { allowIndexing }: { allowIndexing: boolean }): string {
-  if (!allowIndexing) {
-    return ["# Draft preview: never index.", "User-agent: *", "Disallow: /", ""].join("\n");
-  }
+export function renderRobotsTxt(model: Model): string {
   return [
     "User-agent: *",
     "Allow: /",
@@ -419,12 +387,12 @@ export function renderRobotsTxt(model: Model, { allowIndexing }: { allowIndexing
 
 /**
  * Host header rules for the plain Markdown copies: point search engines at the HTML version and
- * keep the Markdown out of the index. Whether the selected host honours this file must be verified
+ * keep the Markdown out of the index. Whether the selected host honours this file must be confirmed
  * on that host.
  */
 export function renderHeaders(model: Model): string {
-  const lines = ["# Verify that the selected host applies these rules.", ""];
-  for (const source of model.sources.filter((entry) => entry.published)) {
+  const lines = ["# Confirm that the selected host applies these rules.", ""];
+  for (const source of model.sources) {
     lines.push(
       `/guides/${source.slug}.md`,
       "  X-Robots-Tag: noindex",

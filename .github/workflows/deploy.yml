@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   artifact:
-    # Only the reviewed main branch may produce a release artifact.
+    # Only the main branch may produce a release artifact.
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +36,7 @@ jobs:
 
       - run: npm ci
 
-      # Fails while site metadata is a placeholder or nothing has been reviewed.
+      # Fails while site metadata is a placeholder or there are no sources.
       - name: Production readiness
         run: npm run validate -- --production
 

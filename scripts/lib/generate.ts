@@ -14,11 +14,6 @@ import {
   renderSourcePage,
 } from "./render-site.ts";
 
-export interface GenerateOptions {
-  /** Local draft preview only. Draft records never reach committed or public output. */
-  includeDrafts?: boolean;
-}
-
 export interface Outputs {
   /** Relative path to file contents. Byte-identical for identical inputs. */
   files: Map<string, string>;
@@ -26,34 +21,30 @@ export interface Outputs {
   ownedDirectories: string[];
 }
 
-/** Committed, public-facing GitHub output. Published records only. */
+/** Committed, public-facing GitHub output. */
 function githubOutputs(model: Model): Map<string, string> {
   const files = new Map<string, string>([["README.md", renderReadme(model)]]);
   for (const source of model.sources) {
-    if (!source.published) continue;
     files.set(`guides/${source.slug}.md`, renderGuide(source, model.site));
   }
   return files;
 }
 
 /** Site content and public exports. Regenerated on every build and never committed. */
-function siteOutputs(model: Model, allowIndexing: boolean): Map<string, string> {
+function siteOutputs(model: Model): Map<string, string> {
   const files = new Map<string, string>([
     ["site/src/content/docs/index.mdx", renderIndexPage(model)],
     ["site/src/generated/site.json", `${JSON.stringify(model.site, null, 2)}\n`],
     ["site/src/generated/directory.json", `${JSON.stringify(buildDirectoryData(model), null, 2)}\n`],
     ["site/public/connectors.json", renderPublicDataset(model)],
     ["site/public/llms.txt", renderLlmsTxt(model)],
-    ["site/public/robots.txt", renderRobotsTxt(model, { allowIndexing })],
+    ["site/public/robots.txt", renderRobotsTxt(model)],
     ["site/public/_headers", renderHeaders(model)],
   ]);
 
   for (const source of model.sources) {
     files.set(`site/src/content/docs/sources/${source.slug}.md`, renderSourcePage(source, model.site));
-    // Plain Markdown copies are public artefacts, so only reviewed pages get one.
-    if (source.published) {
-      files.set(`site/public/guides/${source.slug}.md`, renderGuide(source, model.site));
-    }
+    files.set(`site/public/guides/${source.slug}.md`, renderGuide(source, model.site));
   }
   for (const category of model.categories) {
     files.set(`site/src/content/docs/categories/${category.id}.md`, renderCategoryPage(category, model.site));
@@ -68,14 +59,12 @@ export const SITE_OUTPUT_DIRECTORIES = [
   "site/public/guides",
 ];
 
-export function generateOutputs(content: Content, options: GenerateOptions = {}): Outputs {
-  const includeDrafts = options.includeDrafts === true;
-  const publicModel = buildModel(content);
-  const siteModel = includeDrafts ? buildModel(content, { includeDrafts: true }) : publicModel;
+export function generateOutputs(content: Content): Outputs {
+  const model = buildModel(content);
 
   const files = new Map<string, string>([
-    ...githubOutputs(publicModel),
-    ...siteOutputs(siteModel, !includeDrafts),
+    ...githubOutputs(model),
+    ...siteOutputs(model),
   ]);
   return { files: sortFiles(files), ownedDirectories: ["guides", ...SITE_OUTPUT_DIRECTORIES] };
 }

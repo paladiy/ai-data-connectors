@@ -5,11 +5,11 @@ import { committedOutputs, generateOutputs } from "../scripts/lib/generate.ts";
 import { buildModel } from "../scripts/lib/model.ts";
 import { escapeText } from "../scripts/lib/markdown.ts";
 import { renderGuide, renderReadme } from "../scripts/lib/render-github.ts";
-import { fixtureContent, fixtureSite, publishedFixture } from "./fixtures/content.ts";
-import { FIXTURE_MARKER, fixtureOption, fixtureOurOption, fixtureSource, unknown, verified } from "./fixtures/factory.ts";
+import { fixtureContent, fixtureSite, fixtureRecord } from "./fixtures/content.ts";
+import { FIXTURE_MARKER, fixtureOption, fixtureOurOption, fixtureSource, unknown, known } from "./fixtures/factory.ts";
 
 const guideFor = (overrides: Record<string, unknown> = {}, site = fixtureSite) => {
-  const model = buildModel(fixtureContent([publishedFixture(overrides)], { site }));
+  const model = buildModel(fixtureContent([fixtureRecord(overrides)], { site }));
   return renderGuide(model.sources[0]!, model.site);
 };
 
@@ -48,13 +48,13 @@ describe("guide rendering", () => {
     expect(guide).toContain("Fixture affiliation statement.");
   });
 
-  it("shows unverified capabilities as not verified rather than as a no", () => {
+  it("shows undocumented capabilities as unknown rather than as a no", () => {
     const guide = guideFor({ options: [fixtureOption({ pricing: unknown() }), fixtureOurOption()] });
-    expect(guide).toContain("| Price note | Not verified |");
+    expect(guide).toContain("| Price note | Unknown |");
     expect(guide).not.toContain("| Price note | No |");
   });
 
-  it("keeps the note on an unverified claim so the page says what was checked", () => {
+  it("keeps the note on an unknown claim so the page says what was checked", () => {
     const guide = guideFor({
       options: [
         fixtureOption({
@@ -68,7 +68,7 @@ describe("guide rendering", () => {
         fixtureOurOption(),
       ],
     });
-    expect(guide).toContain("Not verified (the directory page could not be read)");
+    expect(guide).toContain("Unknown (the directory page could not be read)");
   });
 
   it("explains a not-applicable claim", () => {
@@ -86,9 +86,9 @@ describe("guide rendering", () => {
   it("orders vendor-maintained routes ahead of ours and manual export last", () => {
     const guide = guideFor({
       options: [
-        fixtureOption({ id: "manual", name: "Manual export", provider: "Zed", maintainer: verified("manual"), method: "file_upload" }),
+        fixtureOption({ id: "manual", name: "Manual export", provider: "Zed", maintainer: known("manual"), method: "file_upload" }),
         fixtureOurOption(),
-        fixtureOption({ id: "vendor", name: "Vendor connector", provider: "Mid", maintainer: verified("source_vendor") }),
+        fixtureOption({ id: "vendor", name: "Vendor connector", provider: "Mid", maintainer: known("source_vendor") }),
       ],
       recommendations: [{ job: "x", option_id: "vendor", reason: "r", evidence_ids: ["fx-docs"] }],
     });
@@ -96,9 +96,9 @@ describe("guide rendering", () => {
     expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
-  it("records the reviewer, method, and evidence links", () => {
+  it("records the research date and evidence links", () => {
     const guide = guideFor();
-    expect(guide).toContain("Facts reviewed by Fixture Reviewer on 2026-09-02 (documentation review)");
+    expect(guide).toContain("Researched on 2026-09-01.");
     expect(guide).toContain("[Fixture docs](https://vendor.example.test/docs)");
   });
 
@@ -125,53 +125,37 @@ describe("guide rendering", () => {
 });
 
 describe("README rendering", () => {
-  it("describes the inclusion rule rather than announcing an empty table", () => {
-    const readme = renderReadme(buildModel(fixtureContent([Source.parse(fixtureSource())])));
-    expect(readme).toContain("A source guide is listed here once a reviewer has verified it");
-    expect(readme).not.toContain(FIXTURE_MARKER);
+  it("says no guides exist yet when there are no records", () => {
+    const readme = renderReadme(buildModel(fixtureContent([])));
+    expect(readme).toContain("No source guides have been added yet.");
   });
 
-  it("lists published records with their review date and verified route count", () => {
-    const readme = renderReadme(buildModel(fixtureContent([publishedFixture()])));
+  it("lists every record with its route count", () => {
+    const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
     expect(readme).toContain(
-      "| Fixture Source SYNTHETIC-FIXTURE | Analytics | 2 | 2026-09-02 | [Guide](guides/fixture-source.md) |",
+      "| Fixture Source SYNTHETIC-FIXTURE | Analytics | 2 | [Guide](guides/fixture-source.md) |",
     );
   });
 
   it("states that the directory is not a connector service", () => {
-    const readme = renderReadme(buildModel(fixtureContent([publishedFixture()])));
+    const readme = renderReadme(buildModel(fixtureContent([fixtureRecord()])));
     expect(readme).toContain("It is an editorial directory, not a connector service.");
   });
 });
 
 describe("generation", () => {
   it("produces identical bytes from identical inputs", () => {
-    const content = fixtureContent([publishedFixture()]);
+    const content = fixtureContent([fixtureRecord()]);
     const first = generateOutputs(content);
     const second = generateOutputs(content);
     expect([...second.files.entries()]).toEqual([...first.files.entries()]);
   });
 
-  it("commits a README and a guide for published records only", () => {
-    const content = fixtureContent([publishedFixture(), Source.parse(fixtureSource({ id: "d", slug: "draft-one" }))]);
+  it("commits a README and a guide for every record", () => {
+    const content = fixtureContent([fixtureRecord(), fixtureRecord({ id: "d", slug: "second-one" })]);
     const committed = committedOutputs(generateOutputs(content));
-    expect([...committed.files.keys()].sort()).toEqual(["README.md", "guides/fixture-source.md"]);
+    expect([...committed.files.keys()].sort()).toEqual(["README.md", "guides/fixture-source.md", "guides/second-one.md"]);
     expect(committed.ownedDirectories).toEqual(["guides"]);
-  });
-
-  it("writes no Markdown copy for a draft, even in draft mode", () => {
-    const content = fixtureContent([Source.parse(fixtureSource())]);
-    const files = [...generateOutputs(content, { includeDrafts: true }).files.keys()];
-    expect(files.filter((file) => file.startsWith("guides/"))).toEqual([]);
-    expect(files.filter((file) => file.startsWith("site/public/guides/"))).toEqual([]);
-    // The draft still gets a page so it can be reviewed in the local draft preview.
-    expect(files).toContain("site/src/content/docs/sources/fixture-source.md");
-  });
-
-  it("renders no draft page at all in a production generation", () => {
-    const content = fixtureContent([Source.parse(fixtureSource())]);
-    const files = [...generateOutputs(content).files.keys()];
-    expect(files.filter((file) => file.includes("fixture-source"))).toEqual([]);
   });
 
   it("owns only the directories it regenerates", () => {
@@ -185,7 +169,7 @@ describe("generation", () => {
   });
 
   it("emits no build timestamp", () => {
-    const readme = generateOutputs(fixtureContent([publishedFixture()])).files.get("README.md")!;
+    const readme = generateOutputs(fixtureContent([fixtureRecord()])).files.get("README.md")!;
     expect(readme).not.toMatch(/20\d\d-\d\d-\d\dT/);
     expect(readme).not.toMatch(/\b(generated|updated) (on|at)\b/i);
   });

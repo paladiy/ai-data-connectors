@@ -68,11 +68,6 @@
     "affiliation_statement": {
       "type": "string",
       "minLength": 1
-    },
-    "review_overdue_days": {
-      "type": "integer",
-      "exclusiveMinimum": 0,
-      "maximum": 9007199254740991
     }
   },
   "required": [
@@ -82,8 +77,7 @@
     "repo",
     "maintainer",
     "publisher",
-    "affiliation_statement",
-    "review_overdue_days"
+    "affiliation_statement"
   ],
   "additionalProperties": false
 }

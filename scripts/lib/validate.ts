@@ -1,7 +1,6 @@
 import type { Claim } from "../../schemas/common.ts";
 import type { Option, Source } from "../../schemas/source.ts";
 import { SURFACES } from "../../schemas/source.ts";
-import { contentHash } from "./hash.ts";
 import { allEvidence, type Content, type SourceBundle } from "./load.ts";
 
 export interface Problem {
@@ -12,41 +11,22 @@ export interface Problem {
 
 const PLACEHOLDER_TEXT = /\b(TODO|TBD|FIXME|XXX|lorem ipsum|coming soon)\b/i;
 
-/**
- * Visitor-facing copy describes the sources, not this repository's editorial workflow. A reader
- * should never be told that a page is a draft, unreviewed, or incomplete: unreviewed pages are not
- * published at all, so saying so on a published page is both untrue and self-undermining.
- */
-const WORKFLOW_TALK = new RegExp(
-  [
-    "\\bdrafts?\\b",
-    "\\bunreviewed\\b",
-    "\\bplaceholder\\b",
-    "\\bawaiting review\\b",
-    "\\bnot published\\b",
-    "\\bdoes not yet\\b",
-    // "has/have not (yet) been reviewed", and the shorter "not yet reviewed".
-    "\\b(?:has|have|is|are)\\s+not\\s+(?:yet\\s+)?(?:been\\s+)?(?:reviewed|researched|published|verified)\\b",
-    "\\bnot\\s+yet\\s+(?:been\\s+)?(?:reviewed|researched|published|verified)\\b",
-  ].join("|"),
-  "i",
-);
 const PLACEHOLDER_HOST = /(^|\.)(example\.(com|org|net|test)|test\.test|localhost)$/i;
 
-/** A route whose availability is verified and not "unavailable". */
-export function isVerifiedRoute(option: Option): boolean {
-  return option.route_status.status === "verified" && option.route_status.value !== "unavailable";
+/** A route whose availability is known and not "unavailable". */
+export function isUsableRoute(option: Option): boolean {
+  return option.route_status.status === "known" && option.route_status.value !== "unavailable";
 }
 
-export function hasVerifiedSurface(option: Option): boolean {
+export function hasSupportedSurface(option: Option): boolean {
   return SURFACES.some((surface) => {
     const claim = option.surfaces[surface] as Claim<string>;
-    return claim.status === "verified" && (claim.value === "supported" || claim.value === "limited");
+    return claim.status === "known" && (claim.value === "supported" || claim.value === "limited");
   });
 }
 
 function isSourced(claim: Claim<unknown>): boolean {
-  return claim.status === "verified" && claim.evidence_ids.length > 0;
+  return claim.status === "known" && claim.evidence_ids.length > 0;
 }
 
 function placeholderUrl(url: string, allowReservedHosts: boolean): boolean {
@@ -68,19 +48,11 @@ function loadBearingOptionIds(source: Source): Set<string> {
   return ids;
 }
 
-export function isPublished(source: Source): boolean {
-  return (
-    source.publication === "published" &&
-    source.review !== null &&
-    source.review.approved_content_hash === contentHash(source)
-  );
-}
-
 export interface ValidateOptions {
   production?: boolean;
   /**
    * Accept reserved documentation/test hostnames such as example.test. Only tests set this, so
-   * synthetic fixtures can exercise the published-record rules without using a real domain.
+   * synthetic fixtures can exercise the record rules without using a real domain.
    */
   allowReservedHosts?: boolean;
 }
@@ -157,7 +129,7 @@ export function validateContent(content: Content, options: ValidateOptions = {})
       }
       if (option.success_check) checkEvidenceRefs(option.success_check.evidence_ids, `${where}.success_check`);
 
-      if (option.setup_time && option.setup_time.status === "verified") {
+      if (option.setup_time && option.setup_time.status === "known") {
         const value = option.setup_time.value!;
         if (value.min_minutes > value.max_minutes) {
           add(file, `${where}.setup_time`, "min_minutes must not exceed max_minutes");
@@ -173,8 +145,8 @@ export function validateContent(content: Content, options: ValidateOptions = {})
         add(file, where, `option id "${recommendation.option_id}" does not resolve`);
         continue;
       }
-      if (!isVerifiedRoute(option)) {
-        add(file, where, `recommends "${option.id}", whose availability is not a verified usable route`);
+      if (!isUsableRoute(option)) {
+        add(file, where, `recommends "${option.id}", whose availability is not a usable route`);
       }
     }
 
@@ -190,38 +162,24 @@ export function validateContent(content: Content, options: ValidateOptions = {})
     const aliases = new Set(record.aliases.map((a) => a.toLowerCase()));
     if (aliases.size !== record.aliases.length) add(file, "aliases", "aliases must be unique");
 
-    // Review consistency applies whenever a review is recorded.
-    if (record.review && record.review.approved_content_hash !== contentHash(record)) {
-      add(
-        file,
-        "review.approved_content_hash",
-        "does not match the record's current content; a reviewer must re-approve",
-      );
-    }
-    if (record.publication === "published" && !record.review) {
-      add(file, "review", "a published record requires a human review");
-    }
-
-    if (isPublished(record)) {
-      problems.push(...publicationProblems(bundle, options));
-    }
+    problems.push(...recordProblems(bundle, options));
   }
 
   if (options.production) problems.push(...productionProblems(content));
   return problems;
 }
 
-function publicationProblems(bundle: SourceBundle, options: ValidateOptions): Problem[] {
+function recordProblems(bundle: SourceBundle, options: ValidateOptions): Problem[] {
   const { record, file } = bundle;
   const problems: Problem[] = [];
   const add = (path: string, message: string) => problems.push({ file, path, message });
 
-  if (record.options.length === 0) add("options", "a published record needs at least one option");
+  if (record.options.length === 0) add("options", "a record needs at least one option");
   if (record.recommendations.length === 0) {
-    add("recommendations", "a published record needs at least one reviewed recommendation");
+    add("recommendations", "a record needs at least one recommendation");
   }
   if (record.research.checked_urls.length === 0) {
-    add("research.checked_urls", "a published record must document the sources checked");
+    add("research.checked_urls", "a record must document the sources checked");
   }
 
   const texts: Array<[string, string]> = [
@@ -236,9 +194,6 @@ function publicationProblems(bundle: SourceBundle, options: ValidateOptions): Pr
   ];
   for (const [path, text] of texts) {
     if (PLACEHOLDER_TEXT.test(text)) add(path, "contains placeholder text");
-    if (WORKFLOW_TALK.test(text)) {
-      add(path, "describes this repository's editorial workflow; visitor-facing copy should describe the source");
-    }
   }
 
   const publicEvidence = new Set(record.evidence.filter((e) => e.public).map((e) => e.id));
@@ -252,7 +207,7 @@ function publicationProblems(bundle: SourceBundle, options: ValidateOptions): Pr
         add(`${where}.links.${name}`, `"${url}" looks like a placeholder URL`);
       }
     }
-    if (option.directory_listing.status === "verified") {
+    if (option.directory_listing.status === "known") {
       const url = option.directory_listing.value!;
       if (new URL(url).pathname === "/") {
         add(`${where}.directory_listing`, "must point at a specific directory entry, not a homepage");
@@ -260,11 +215,11 @@ function publicationProblems(bundle: SourceBundle, options: ValidateOptions): Pr
     }
 
     if (!loadBearing.has(option.id)) continue;
-    if (!isVerifiedRoute(option)) {
-      add(`${where}.route_status`, "options used in setup or recommendations need verified availability");
+    if (!isUsableRoute(option)) {
+      add(`${where}.route_status`, "options used in setup or recommendations need known availability");
     }
-    if (!hasVerifiedSurface(option)) {
-      add(`${where}.surfaces`, "needs at least one verified supported or limited Claude surface");
+    if (!hasSupportedSurface(option)) {
+      add(`${where}.surfaces`, "needs at least one known supported or limited Claude surface");
     }
     if (!isSourced(option.access)) add(`${where}.access`, "needs a sourced access claim");
     if (!isSourced(option.prerequisites)) add(`${where}.prerequisites`, "needs a sourced prerequisites claim");
@@ -272,7 +227,7 @@ function publicationProblems(bundle: SourceBundle, options: ValidateOptions): Pr
 
     for (const [index, step] of option.setup_steps.entries()) {
       if (step.evidence_ids.length === 0) {
-        add(`${where}.setup_steps.${index}`, "published setup steps need evidence");
+        add(`${where}.setup_steps.${index}`, "setup steps need evidence");
       }
     }
   }
@@ -297,8 +252,8 @@ function productionProblems(content: Content): Problem[] {
   if (!site.maintainer.relationship_confirmed) {
     add("maintainer.relationship_confirmed", "the owner must confirm the disclosed relationship");
   }
-  if (!content.sources.some((s) => isPublished(s.record))) {
-    problems.push({ file: "data/sources", path: "(any)", message: "no reviewed published record to deploy" });
+  if (content.sources.length === 0) {
+    problems.push({ file: "data/sources", path: "(any)", message: "no source record to deploy" });
   }
   return problems;
 }

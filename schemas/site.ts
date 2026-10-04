@@ -19,7 +19,6 @@ export const SiteConfig = z.strictObject({
     url: HttpsUrl.optional(),
   }),
   affiliation_statement: NonEmptyText,
-  review_overdue_days: z.number().int().positive(),
 });
 
 export type SiteConfig = z.infer<typeof SiteConfig>;

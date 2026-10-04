@@ -2,8 +2,7 @@
  * Integration test for the production build and its search index.
  *
  * It builds a throwaway copy of the application in a temporary directory, with a single synthetic
- * published record. Doing it this way keeps a published record and a reviewer name out of the real
- * repository, where every record must stay a draft until a human approves it.
+ * record, so the test does not depend on the real records.
  */
 import { execFileSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -15,7 +14,6 @@ import { Source } from "../schemas/source.ts";
 import { generateOutputs, writeOutputs } from "../scripts/lib/generate.ts";
 import { loadContent } from "../scripts/lib/load.ts";
 import { findBrokenLinks } from "../scripts/lib/links.ts";
-import { contentHash } from "../scripts/lib/hash.ts";
 import { fixtureOption, fixtureOurOption, fixtureSource } from "./fixtures/factory.ts";
 import { validateContent } from "../scripts/lib/validate.ts";
 
@@ -23,28 +21,18 @@ const repo = process.cwd();
 
 /** A record that exercises alias search: the name and the alias differ. */
 function analyticsFixture(): Source {
-  const draft = Source.parse(
+  return Source.parse(
     fixtureSource({
       id: "fixture-analytics",
       slug: "fixture-analytics",
       name: "Fixture Analytics 4",
       aliases: ["GA4", "FixtureAnalytics"],
       category: "analytics",
-      summary: "Two verified routes for getting Fixture Analytics 4 data into Claude.",
-      meta_description: "Compare verified Fixture Analytics 4 connection options for Claude.",
+      summary: "Two routes for getting Fixture Analytics 4 data into Claude.",
+      meta_description: "Compare Fixture Analytics 4 connection options for Claude.",
       options: [fixtureOption(), fixtureOurOption()],
-      publication: "published",
     }),
   );
-  return Source.parse({
-    ...draft,
-    review: {
-      reviewer: "Fixture Reviewer",
-      reviewed_on: "2026-09-02",
-      method: "docs",
-      approved_content_hash: contentHash(draft),
-    },
-  });
 }
 
 let root: string;
@@ -64,7 +52,7 @@ beforeAll(() => {
   cpSync(path.join(repo, "site", "public"), path.join(root, "site", "public"), { recursive: true });
   cpSync(path.join(repo, "data"), path.join(root, "data"), { recursive: true });
 
-  // Replace the real drafts with one synthetic published record.
+  // Replace the real records with one synthetic record.
   const sources = path.join(root, "data", "sources");
   rmSync(sources, { recursive: true, force: true });
   mkdirSync(sources, { recursive: true });

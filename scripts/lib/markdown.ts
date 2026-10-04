@@ -22,10 +22,10 @@ export function link(label: string, url: string): string {
   return `[${escapeText(label)}](${encodeURI(url)})`;
 }
 
-export function claimText(claim: Claim<unknown>, { verified }: { verified: (value: unknown) => string }): string {
-  if (claim.status === "verified") return verified(claim.value);
+export function claimText(claim: Claim<unknown>, { known }: { known: (value: unknown) => string }): string {
+  if (claim.status === "known") return known(claim.value);
   if (claim.status === "not_applicable") return `Not applicable${claim.note ? `: ${claim.note}` : ""}`;
-  return "Not verified";
+  return "Unknown";
 }
 
 /**
@@ -56,11 +56,11 @@ export function formatValue(value: unknown): string {
 }
 
 /**
- * Renders a claim as plain text. An unverified claim keeps its note, so a page can say what was
- * checked and why the answer is still unknown rather than leaving a bare "Not verified".
+ * Renders a claim as plain text. An unknown claim keeps its note, so a page can say what was
+ * checked and why the answer is still unknown rather than leaving a bare "Unknown".
  */
 export function renderClaim(claim: Claim<unknown>): string {
-  const text = claimText(claim, { verified: (value) => formatValue(value) });
+  const text = claimText(claim, { known: (value) => formatValue(value) });
   if (claim.note && claim.status !== "not_applicable") return `${text} (${claim.note})`;
   return text;
 }

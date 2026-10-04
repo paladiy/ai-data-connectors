@@ -37,17 +37,17 @@ export function correctionUrl(site: SiteConfig, source: ModelSource): string | n
 function surfaceSummary(option: ModelOption): string {
   const supported = SURFACES.filter((surface) => {
     const claim = option.surfaces[surface] as Claim<string>;
-    return claim.status === "verified" && (claim.value === "supported" || claim.value === "limited");
+    return claim.status === "known" && (claim.value === "supported" || claim.value === "limited");
   }).map((surface) => {
     const claim = option.surfaces[surface] as Claim<string>;
     return claim.value === "limited" ? `${SURFACE_LABELS[surface]} (limited)` : SURFACE_LABELS[surface];
   });
-  return supported.length > 0 ? supported.join(", ") : "Not verified";
+  return supported.length > 0 ? supported.join(", ") : "Unknown";
 }
 
 function optionSummaryTable(source: ModelSource): string {
   const header = [
-    "| Option | Provider | Connection method | Maintainer | Verified Claude surfaces | Availability |",
+    "| Option | Provider | Connection method | Maintainer | Claude surfaces | Availability |",
     "| --- | --- | --- | --- | --- | --- |",
   ];
   const rows = source.options.map((option) => {
@@ -93,7 +93,7 @@ function optionDetail(source: ModelSource, option: ModelOption, site: SiteConfig
     rows.push([
       "Setup time",
       escapeCell(
-        option.setup_time.status === "verified"
+        option.setup_time.status === "known"
           ? `${option.setup_time.value!.min_minutes}–${option.setup_time.value!.max_minutes} minutes (${option.setup_time.value!.basis})`
           : renderClaim(option.setup_time),
       ),
@@ -107,7 +107,7 @@ function optionDetail(source: ModelSource, option: ModelOption, site: SiteConfig
   if (option.links.overview) links.push(link("Overview", option.links.overview));
   if (option.links.setup) links.push(link("Setup instructions", option.links.setup));
   if (option.links.pricing) links.push(link("Pricing", option.links.pricing));
-  if (option.directory_listing.status === "verified") {
+  if (option.directory_listing.status === "known") {
     links.push(link("Claude directory entry", option.directory_listing.value!));
   }
   if (links.length > 0) lines.push("", `Links: ${links.join(" · ")}`);
@@ -149,19 +149,9 @@ function faqSection(source: ModelSource): string | null {
   return lines.join("\n");
 }
 
-function verificationSection(source: ModelSource, site: SiteConfig): string {
-  const lines = ["## Verification and corrections"];
-  if (source.review) {
-    const method = { docs: "documentation review", tested: "hands-on product test", both: "documentation review and hands-on test" }[
-      source.review.method
-    ];
-    lines.push(
-      "",
-      `Facts reviewed by ${escapeText(source.review.reviewer)} on ${source.review.reviewed_on} (${method}). Researched on ${source.research.searched_on}. ${escapeText(source.research.coverage_note)}`,
-    );
-  } else {
-    lines.push("", `Researched on ${source.research.searched_on}. ${escapeText(source.research.coverage_note)}`);
-  }
+function sourcesSection(source: ModelSource, site: SiteConfig): string {
+  const lines = ["## Sources and corrections"];
+  lines.push("", `Researched on ${source.research.searched_on}. ${escapeText(source.research.coverage_note)}`);
 
   if (source.evidence.length > 0) {
     lines.push("", "Evidence:", "");
@@ -177,15 +167,15 @@ function verificationSection(source: ModelSource, site: SiteConfig): string {
 
 export function renderGuide(source: ModelSource, site: SiteConfig): string {
   const canonical = websiteUrl(site, `/sources/${source.slug}/`);
-  const verifiedRoutes = source.options.filter((option) => option.is_verified_route);
+  const usableRoutes = source.options.filter((option) => option.is_usable_route);
 
   return joinSections([
     `# ${escapeText(guideTitle(source))}`,
     canonical ? `Canonical version: ${link(`${site.name} — ${source.name}`, canonical)}` : null,
     `_${escapeText(site.affiliation_statement)}_`,
     escapeText(source.summary),
-    verifiedRoutes.length > 0
-      ? `**Covered in this guide:** ${verifiedRoutes.map((option) => escapeText(option.name)).join(", ")}.`
+    usableRoutes.length > 0
+      ? `**Covered in this guide:** ${usableRoutes.map((option) => escapeText(option.name)).join(", ")}.`
       : null,
     "## Compare the options",
     optionSummaryTable(source),
@@ -193,7 +183,7 @@ export function renderGuide(source: ModelSource, site: SiteConfig): string {
     ...source.options.map((option) => optionDetail(source, option, site)),
     recommendationsSection(source, site),
     faqSection(source),
-    verificationSection(source, site),
+    sourcesSection(source, site),
     source.related.length > 0
       ? `## Related sources\n\n${source.related
           .map((related) => `- ${link(related.name, `${related.slug}.md`)}`)
@@ -206,26 +196,24 @@ export function renderGuide(source: ModelSource, site: SiteConfig): string {
 export function renderReadme(model: Model): string {
   const { site } = model;
   const home = websiteUrl(site, "/");
-  const published = model.sources.filter((source) => source.published);
 
   const table =
-    published.length > 0
+    model.sources.length > 0
       ? [
-          "| Source | Category | Verified routes | Reviewed on | Guide |",
-          "| --- | --- | --- | --- | --- |",
-          ...published.map((source) =>
+          "| Source | Category | Routes | Guide |",
+          "| --- | --- | --- | --- |",
+          ...model.sources.map((source) =>
             [
               "",
               escapeCell(source.name),
               escapeCell(source.category_name),
-              String(source.options.filter((option) => option.is_verified_route).length),
-              source.review?.reviewed_on ?? "—",
+              String(source.options.filter((option) => option.is_usable_route).length),
               link("Guide", `guides/${source.slug}.md`),
               "",
             ].join(" | ").trim(),
           ),
         ].join("\n")
-      : "A source guide is listed here once a reviewer has verified it against the evidence cited on the page.";
+      : "No source guides have been added yet.";
 
   return joinSections([
     `# ${escapeText(site.name)}`,
@@ -234,32 +222,28 @@ export function renderReadme(model: Model): string {
     home ? `Website: ${link(site.name, home)}` : "The public website URL is not configured yet.",
     "## What this is",
     [
-      "This repository holds one maintained dataset describing verified ways to get data from a business source into Claude, and generates the website, these Markdown guides, and a public JSON dataset from it.",
+      "This repository holds one maintained dataset describing ways to get data from a business source into Claude, and generates the website, these Markdown guides, and a public JSON dataset from it.",
       "",
-      "It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a route appears once it has been checked against cited evidence.",
+      "It is an editorial directory, not a connector service. It does not authenticate users, access business data, or host an MCP server. Coverage is not exhaustive: a route appears once it is documented with cited evidence.",
     ].join("\n"),
-    "## Reviewed sources",
+    "## Sources",
     table,
-    "## How claims are verified",
+    "## How claims are recorded",
     [
-      "Each capability is stored as a claim with a status. A verified claim cites evidence that a human checked on a recorded date. Anything unverified is shown as “Not verified” rather than as a “no”. Documentation review and hands-on product tests are recorded separately.",
-      "",
-      "Records start as drafts and stay out of the website, the table above, search, the sitemap, and the public dataset until a named reviewer approves them.",
+      "Each capability is stored as a claim with a status. A known claim cites the evidence it comes from and the date that evidence was read. Anything not documented is shown as “Unknown” rather than as a “no”.",
     ].join("\n"),
     "## Repository commands",
     [
       "| Command | Result |",
       "| --- | --- |",
       "| `npm ci` | Install the locked dependency tree. |",
-      "| `npm run validate` | Validate records, references, review hashes, and references. |",
+      "| `npm run validate` | Validate records and references. |",
       "| `npm run generate` | Regenerate this README, the guides, site content, and public exports. |",
       "| `npm run check:generated` | Fail if committed generated files are stale. |",
       "| `npm test` | Run the schema, generation, export, and export tests. |",
       "| `npm run build` | Validate, generate, and build the static site and its search index. |",
       "| `npm run preview` | Serve the production build locally, including search. |",
       "| `npm run dev` | Run a development server with hot reload. |",
-      "| `npm run preview:drafts` | Preview unreviewed drafts locally; never indexed or deployed. |",
-      "| `npm run check:freshness` | Report overdue factual reviews. |",
     ].join("\n"),
     "## Corrections",
     site.repo

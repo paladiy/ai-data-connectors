@@ -17,17 +17,6 @@
   min-width: 11rem;
 }
 
-.review-overdue,
-.directory-draft {
-  display: inline-block;
-  padding: 0.1rem 0.45rem;
-  border: 1px solid var(--sl-color-orange);
-  border-radius: 0.25rem;
-  color: var(--sl-color-orange-high);
-  font-size: var(--sl-text-xs);
-  font-weight: 600;
-}
-
 .directory-controls {
   display: flex;
   flex-wrap: wrap;

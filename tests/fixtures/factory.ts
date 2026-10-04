@@ -8,8 +8,8 @@ export const FIXTURE_MARKER = "SYNTHETIC-FIXTURE";
 
 type Json = Record<string, unknown>;
 
-export function verified<T>(value: T, evidence_ids: string[] = ["fx-docs"], note?: string) {
-  return { status: "verified" as const, value, evidence_ids, ...(note ? { note } : {}) };
+export function known<T>(value: T, evidence_ids: string[] = ["fx-docs"], note?: string) {
+  return { status: "known" as const, value, evidence_ids, ...(note ? { note } : {}) };
 }
 
 export function unknown() {
@@ -21,25 +21,25 @@ export function fixtureOption(overrides: Json = {}): Json {
     id: "fx-route",
     name: `Fixture Route ${FIXTURE_MARKER}`,
     provider: "Fixture Vendor",
-    maintainer: verified("source_vendor"),
+    maintainer: known("source_vendor"),
     method: "remote_mcp",
-    route_status: verified("available"),
+    route_status: known("available"),
     directory_listing: unknown(),
     links: { overview: "https://vendor.example.test/overview", setup: "https://vendor.example.test/setup" },
     surfaces: {
-      claude_web: verified("supported"),
-      claude_desktop: verified("supported"),
+      claude_web: known("supported"),
+      claude_desktop: known("supported"),
       claude_code: unknown(),
       cowork: unknown(),
     },
-    access: verified("read", ["fx-docs"], "Read-only reporting scope."),
-    data_available: verified(["Fixture reports"]),
+    access: known("read", ["fx-docs"], "Read-only reporting scope."),
+    data_available: known(["Fixture reports"]),
     history: unknown(),
-    refresh: verified("Live API requests at query time."),
+    refresh: known("Live API requests at query time."),
     multi_source: unknown(),
-    prerequisites: verified(["A fixture account"]),
+    prerequisites: known(["A fixture account"]),
     pricing: unknown(),
-    data_path: verified("Claude calls the vendor API directly."),
+    data_path: known("Claude calls the vendor API directly."),
     limits: unknown(),
     setup_steps: [{ text: "Open the fixture connector settings.", evidence_ids: ["fx-docs"] }],
     claude_configuration: [{ text: "Enable the connector in Claude settings.", evidence_ids: ["fx-docs"] }],
@@ -54,7 +54,7 @@ export function fixtureOurOption(overrides: Json = {}): Json {
     id: "fx-ours",
     name: `Fixture Ours ${FIXTURE_MARKER}`,
     provider: "Coupler.io",
-    maintainer: verified("third_party"),
+    maintainer: known("third_party"),
     method: "data_platform",
     links: {
       overview: "https://ours.example.test/overview",
@@ -71,9 +71,7 @@ export function fixtureSource(overrides: Json = {}): Json {
     name: `Fixture Source ${FIXTURE_MARKER}`,
     aliases: ["FXS"],
     category: "analytics",
-    publication: "draft",
-    review: null,
-    summary: "Fixture summary covering two verified routes.",
+    summary: "Fixture summary covering two routes.",
     meta_description: "Fixture meta description.",
     research: {
       searched_on: "2026-09-01",

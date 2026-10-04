@@ -38,53 +38,6 @@
         "social"
       ]
     },
-    "publication": {
-      "type": "string",
-      "enum": [
-        "draft",
-        "published",
-        "retired"
-      ]
-    },
-    "review": {
-      "anyOf": [
-        {
-          "type": "object",
-          "properties": {
-            "reviewer": {
-              "type": "string",
-              "minLength": 1
-            },
-            "reviewed_on": {
-              "type": "string",
-              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
-            },
-            "method": {
-              "type": "string",
-              "enum": [
-                "docs",
-                "tested",
-                "both"
-              ]
-            },
-            "approved_content_hash": {
-              "type": "string",
-              "pattern": "^sha256:[a-f0-9]{64}$"
-            }
-          },
-          "required": [
-            "reviewer",
-            "reviewed_on",
-            "method",
-            "approved_content_hash"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
     "summary": {
       "type": "string",
       "minLength": 1
@@ -198,7 +151,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -256,7 +209,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -301,7 +254,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -355,7 +308,7 @@
                   "status": {
                     "type": "string",
                     "enum": [
-                      "verified",
+                      "known",
                       "unknown",
                       "not_applicable"
                     ]
@@ -400,7 +353,7 @@
                   "status": {
                     "type": "string",
                     "enum": [
-                      "verified",
+                      "known",
                       "unknown",
                       "not_applicable"
                     ]
@@ -445,7 +398,7 @@
                   "status": {
                     "type": "string",
                     "enum": [
-                      "verified",
+                      "known",
                       "unknown",
                       "not_applicable"
                     ]
@@ -490,7 +443,7 @@
                   "status": {
                     "type": "string",
                     "enum": [
-                      "verified",
+                      "known",
                       "unknown",
                       "not_applicable"
                     ]
@@ -544,7 +497,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -589,7 +542,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -634,7 +587,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -687,7 +640,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -740,7 +693,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -793,7 +746,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -846,7 +799,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -899,7 +852,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -952,7 +905,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -1005,7 +958,7 @@
               "status": {
                 "type": "string",
                 "enum": [
-                  "verified",
+                  "known",
                   "unknown",
                   "not_applicable"
                 ]
@@ -1246,8 +1199,6 @@
     "name",
     "aliases",
     "category",
-    "publication",
-    "review",
     "summary",
     "meta_description",
     "research",

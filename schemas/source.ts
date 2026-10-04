@@ -70,13 +70,6 @@ export const Option = z.strictObject({
 
 export type Option = z.infer<typeof Option>;
 
-export const Review = z.strictObject({
-  reviewer: NonEmptyText,
-  reviewed_on: IsoDate,
-  method: z.enum(["docs", "tested", "both"]),
-  approved_content_hash: z.string().regex(/^sha256:[a-f0-9]{64}$/, "must be sha256:<64 hex>"),
-});
-
 export const Source = z.strictObject({
   schema_version: z.literal(1),
   id: Slug,
@@ -84,8 +77,6 @@ export const Source = z.strictObject({
   name: NonEmptyText,
   aliases: z.array(NonEmptyText),
   category: Category,
-  publication: z.enum(["draft", "published", "retired"]),
-  review: Review.nullable(),
   summary: NonEmptyText,
   meta_description: NonEmptyText.max(170),
   research: z.strictObject({

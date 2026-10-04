@@ -1,11 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { Source } from "../schemas/source.ts";
-import { contentHash } from "../scripts/lib/hash.ts";
-import { isPublished, validateContent } from "../scripts/lib/validate.ts";
-import { bundle, fixtureContent, publishedFixture } from "./fixtures/content.ts";
-import { fixtureOption, fixtureOurOption, fixtureSource, unknown, verified } from "./fixtures/factory.ts";
+import { validateContent } from "../scripts/lib/validate.ts";
+import { bundle, fixtureContent, fixtureRecord } from "./fixtures/content.ts";
+import { fixtureOption, fixtureOurOption, fixtureSource, unknown, known } from "./fixtures/factory.ts";
 
-const draft = () => Source.parse(fixtureSource());
+const record = () => Source.parse(fixtureSource());
 
 function messages(content: Parameters<typeof validateContent>[0], production = false): string[] {
   return validateContent(content, { production, allowReservedHosts: true }).map((p) => `${p.path}: ${p.message}`);
@@ -17,25 +16,25 @@ function messagesWithHostCheck(content: Parameters<typeof validateContent>[0]): 
 }
 
 describe("cross-reference validation", () => {
-  it("accepts a valid draft", () => {
-    expect(messages(fixtureContent([draft()]))).toEqual([]);
+  it("accepts a valid record", () => {
+    expect(messages(fixtureContent([record()]))).toEqual([]);
   });
 
   it("rejects duplicate ids and slugs", () => {
-    const a = draft();
+    const a = record();
     const b = Source.parse(fixtureSource({ slug: "other-source" }));
     const problems = messages(fixtureContent([a, b]));
     expect(problems).toContain(`id: duplicate source id "fixture-source" (also in data/sources/fixture-source.yaml)`);
   });
 
   it("rejects unresolved evidence ids", () => {
-    const record = Source.parse(fixtureSource({ options: [fixtureOption({ access: verified("read", ["missing"]) })] }));
+    const record = Source.parse(fixtureSource({ options: [fixtureOption({ access: known("read", ["missing"]) })] }));
     expect(messages(fixtureContent([record]))).toContain('options.fx-route.access: evidence id "missing" does not resolve');
   });
 
   it("accepts evidence that lives only in the private tree", () => {
     const record = Source.parse(
-      fixtureSource({ options: [fixtureOption({ limits: verified("Internal note.", ["fx-internal"]) })] }),
+      fixtureSource({ options: [fixtureOption({ limits: known("Internal note.", ["fx-internal"]) })] }),
     );
     const privateEvidence = [
       {
@@ -85,61 +84,30 @@ describe("cross-reference validation", () => {
     );
   });
 
-  it("rejects recommending a route whose availability is not verified", () => {
+  it("rejects recommending a route whose availability is not known", () => {
     const record = Source.parse(fixtureSource({ options: [fixtureOption({ route_status: unknown() })] }));
     expect(messages(fixtureContent([record]))).toContain(
-      'recommendations.0: recommends "fx-route", whose availability is not a verified usable route',
+      'recommendations.0: recommends "fx-route", whose availability is not a usable route',
     );
   });
 
   it("rejects recommending an unavailable route", () => {
-    const record = Source.parse(fixtureSource({ options: [fixtureOption({ route_status: verified("unavailable") })] }));
+    const record = Source.parse(fixtureSource({ options: [fixtureOption({ route_status: known("unavailable") })] }));
     expect(messages(fixtureContent([record]))).toContain(
-      'recommendations.0: recommends "fx-route", whose availability is not a verified usable route',
+      'recommendations.0: recommends "fx-route", whose availability is not a usable route',
     );
   });
 
-  it("rejects a stale approval hash", () => {
-    const record = publishedFixture();
-    const edited = Source.parse({ ...record, summary: "Edited after approval." });
-    expect(isPublished(edited)).toBe(false);
-    expect(messages(fixtureContent([edited]))).toContain(
-      "review.approved_content_hash: does not match the record's current content; a reviewer must re-approve",
-    );
-  });
-
-  it("rejects publication without a review", () => {
-    const record = Source.parse(fixtureSource({ publication: "published" }));
-    expect(messages(fixtureContent([record]))).toContain("review: a published record requires a human review");
-  });
-
-  it("ignores publication status when hashing, so approval survives publishing", () => {
-    const a = Source.parse(fixtureSource({ publication: "draft" }));
-    const b = Source.parse(fixtureSource({ publication: "published" }));
-    expect(contentHash(a)).toBe(contentHash(b));
-  });
 });
 
-describe("publication rules", () => {
+describe("record rules", () => {
   it("rejects placeholder text", () => {
-    const record = publishedFixture({ summary: "TODO: write this." });
+    const record = fixtureRecord({ summary: "TODO: write this." });
     expect(messages(fixtureContent([record]))).toContain("summary: contains placeholder text");
   });
 
-  it("rejects copy that talks about the editorial workflow instead of the source", () => {
-    for (const [field, text] of [
-      ["summary", "This page is still a draft covering two routes."],
-      ["meta_description", "Routes that have not yet been researched for this source."],
-    ] as const) {
-      const problems = messages(fixtureContent([publishedFixture({ [field]: text })]));
-      expect(problems, field).toContain(
-        `${field}: describes this repository's editorial workflow; visitor-facing copy should describe the source`,
-      );
-    }
-  });
-
   it("accepts honest statements about evidence limits", () => {
-    const record = publishedFixture({
+    const record = fixtureRecord({
       research: {
         searched_on: "2026-09-01",
         checked_urls: ["https://directory.example.test/search"],
@@ -150,8 +118,8 @@ describe("publication rules", () => {
     expect(messages(fixtureContent([record]))).toEqual([]);
   });
 
-  it("rejects reserved and documentation hostnames in published links", () => {
-    const record = publishedFixture({
+  it("rejects reserved and documentation hostnames in links", () => {
+    const record = fixtureRecord({
       options: [fixtureOption({ links: { overview: "https://example.com/x" } }), fixtureOurOption()],
     });
     expect(messagesWithHostCheck(fixtureContent([record]))).toContain(
@@ -166,35 +134,35 @@ describe("publication rules", () => {
       surfaces: { claude_web: unknown(), claude_desktop: unknown(), claude_code: unknown(), cowork: unknown() },
       success_check: null,
     });
-    const problems = messages(fixtureContent([publishedFixture({ options: [weak, fixtureOurOption()] })]));
+    const problems = messages(fixtureContent([fixtureRecord({ options: [weak, fixtureOurOption()] })]));
     expect(problems).toContain("options.fx-route.access: needs a sourced access claim");
     expect(problems).toContain("options.fx-route.prerequisites: needs a sourced prerequisites claim");
     expect(problems).toContain(
-      "options.fx-route.surfaces: needs at least one verified supported or limited Claude surface",
+      "options.fx-route.surfaces: needs at least one known supported or limited Claude surface",
     );
     expect(problems).toContain("options.fx-route.success_check: needs a way to confirm the route works");
   });
 
-  it("requires evidence on published setup steps", () => {
-    const record = publishedFixture({
+  it("requires evidence on setup steps", () => {
+    const record = fixtureRecord({
       options: [fixtureOption({ setup_steps: [{ text: "Do a thing.", evidence_ids: [] }] }), fixtureOurOption()],
     });
     expect(messages(fixtureContent([record]))).toContain(
-      "options.fx-route.setup_steps.0: published setup steps need evidence",
+      "options.fx-route.setup_steps.0: setup steps need evidence",
     );
   });
 
   it("rejects a directory listing that points at a homepage", () => {
-    const record = publishedFixture({
-      options: [fixtureOption({ directory_listing: verified("https://directory.example.test/") }), fixtureOurOption()],
+    const record = fixtureRecord({
+      options: [fixtureOption({ directory_listing: known("https://directory.example.test/") }), fixtureOurOption()],
     });
     expect(messages(fixtureContent([record]))).toContain(
       "options.fx-route.directory_listing: must point at a specific directory entry, not a homepage",
     );
   });
 
-  it("requires a public citation for published recommendations", () => {
-    const record = publishedFixture({
+  it("requires a public citation for recommendations", () => {
+    const record = fixtureRecord({
       evidence: [
         {
           id: "fx-private",
@@ -215,15 +183,11 @@ describe("publication rules", () => {
     );
   });
 
-  it("leaves drafts alone", () => {
-    const record = Source.parse(fixtureSource({ summary: "TODO: still drafting." }));
-    expect(messages(fixtureContent([record]))).toEqual([]);
-  });
 });
 
 describe("production readiness", () => {
   it("fails while site metadata is a placeholder", () => {
-    const problems = messages(fixtureContent([publishedFixture()]), true);
+    const problems = messages(fixtureContent([fixtureRecord()]), true);
     expect(problems).toEqual(
       expect.arrayContaining([
         "url: production builds need an absolute https site URL",
@@ -233,7 +197,7 @@ describe("production readiness", () => {
     );
   });
 
-  it("fails when nothing is published", () => {
-    expect(messages(fixtureContent([draft()]), true)).toContain("(any): no reviewed published record to deploy");
+  it("fails when there are no sources", () => {
+    expect(messages(fixtureContent([]), true)).toContain("(any): no source record to deploy");
   });
 });

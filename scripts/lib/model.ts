@@ -3,7 +3,7 @@ import type { CategoryRecord, Option, Source } from "../../schemas/source.ts";
 import { SURFACES } from "../../schemas/source.ts";
 import type { SiteConfig } from "../../schemas/site.ts";
 import type { Content } from "./load.ts";
-import { isPublished, isVerifiedRoute } from "./validate.ts";
+import { isUsableRoute } from "./validate.ts";
 
 export const SURFACE_LABELS: Record<(typeof SURFACES)[number], string> = {
   claude_web: "Claude web",
@@ -33,7 +33,7 @@ export interface ModelOption extends Option {
   badges: string[];
   maintainer_label: string;
   method_label: string;
-  is_verified_route: boolean;
+  is_usable_route: boolean;
 }
 
 export interface ModelRecommendation {
@@ -53,8 +53,6 @@ export interface ModelSource {
   category_name: string;
   summary: string;
   meta_description: string;
-  published: boolean;
-  review: { reviewer: string; reviewed_on: string; method: "docs" | "tested" | "both" } | null;
   research: { searched_on: string; coverage_note: string; checked_urls: string[] };
   evidence: Evidence[];
   options: ModelOption[];
@@ -73,25 +71,20 @@ export interface Model {
   categories: ModelCategory[];
 }
 
-export interface BuildOptions {
-  /** Include records that are not published. Only the local draft preview sets this. */
-  includeDrafts?: boolean;
-}
-
 /**
  * A route a reader cannot use today never leads the comparison, however official it is: an
  * invitation-only pilot is interesting context, not the answer to "how do I connect this?".
  */
 function availabilityRank(option: Option): number {
-  if (option.route_status.status !== "verified") return 1;
+  if (option.route_status.status !== "known") return 1;
   if (option.route_status.value === "available") return 0;
   if (option.route_status.value === "limited") return 2;
   return 3;
 }
 
-/** Ordering: verified vendor/Anthropic routes, other managed routes by provider, community, manual. */
+/** Ordering: vendor/Anthropic routes, other managed routes by provider, community, manual. */
 function rank(option: Option): number {
-  if (option.maintainer.status === "verified") {
+  if (option.maintainer.status === "known") {
     if (option.maintainer.value === "source_vendor" || option.maintainer.value === "anthropic") return 0;
     if (option.maintainer.value === "community") return 2;
     if (option.maintainer.value === "manual") return 3;
@@ -102,10 +95,10 @@ function rank(option: Option): number {
 
 function badges(option: Option): string[] {
   const list: string[] = [];
-  if (option.maintainer.status === "verified") list.push(MAINTAINER_LABELS[option.maintainer.value!]);
-  if (option.directory_listing.status === "verified") list.push("Listed in Claude directory");
-  if (option.route_status.status === "verified" && option.route_status.value === "limited") list.push("Limited");
-  if (option.route_status.status === "verified" && option.route_status.value === "unavailable") {
+  if (option.maintainer.status === "known") list.push(MAINTAINER_LABELS[option.maintainer.value!]);
+  if (option.directory_listing.status === "known") list.push("Listed in Claude directory");
+  if (option.route_status.status === "known" && option.route_status.value === "limited") list.push("Limited");
+  if (option.route_status.status === "known" && option.route_status.value === "unavailable") {
     list.push("Not available");
   }
   return list;
@@ -155,18 +148,16 @@ function toModelOption(option: Option, allowed: Set<string>): ModelOption {
       : null,
     badges: badges(option),
     maintainer_label:
-      option.maintainer.status === "verified" ? MAINTAINER_LABELS[option.maintainer.value!] : "Not verified",
+      option.maintainer.status === "known" ? MAINTAINER_LABELS[option.maintainer.value!] : "Unknown",
     method_label: METHOD_LABELS[option.method],
-    is_verified_route: isVerifiedRoute(option),
+    is_usable_route: isUsableRoute(option),
   };
 }
 
-export function buildModel(content: Content, options: BuildOptions = {}): Model {
-  const includeDrafts = options.includeDrafts === true;
+export function buildModel(content: Content): Model {
   const categoryNames = new Map(content.categories.map((c) => [c.id, c.name]));
 
   const selected = content.sources
-    .filter((bundle) => includeDrafts || isPublished(bundle.record))
     .map((bundle) => bundle.record)
     .sort((a, b) => a.name.localeCompare(b.name));
 
@@ -195,10 +186,6 @@ export function buildModel(content: Content, options: BuildOptions = {}): Model 
       category_name: categoryNames.get(record.category) ?? record.category,
       summary: record.summary,
       meta_description: record.meta_description,
-      published: isPublished(record),
-      review: record.review
-        ? { reviewer: record.review.reviewer, reviewed_on: record.review.reviewed_on, method: record.review.method }
-        : null,
       research: record.research,
       evidence,
       options: modelOptions,

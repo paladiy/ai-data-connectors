@@ -44,15 +44,3 @@ jobs:
       # Builds must be reproducible and offline: nothing below may fetch content.
       - name: Production build, search index, and internal links
         run: npm run build
-
-      # Unreviewed records are the only pages that emit "noindex, nofollow"; the 404 page uses a
-      # plain "noindex". Checking the directive rather than page prose keeps this guard stable
-      # when editorial wording changes.
-      - name: Unreviewed records never reach the production build
-        run: |
-          if grep -rl 'noindex, nofollow' site/dist >/dev/null 2>&1; then
-            echo "An unreviewed page reached site/dist:" >&2
-            grep -rl 'noindex, nofollow' site/dist >&2
-            exit 1
-          fi
-          echo "site/dist contains reviewed pages only."

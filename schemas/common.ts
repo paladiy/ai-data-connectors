@@ -86,7 +86,7 @@ export const Evidence = z
 
 export type Evidence = z.infer<typeof Evidence>;
 
-export const ClaimStatus = z.enum(["verified", "unknown", "not_applicable"]);
+export const ClaimStatus = z.enum(["known", "unknown", "not_applicable"]);
 
 export function claim<T extends z.ZodType>(value: T) {
   return z
@@ -98,10 +98,10 @@ export function claim<T extends z.ZodType>(value: T) {
     })
     .superRefine((raw, ctx) => {
       const c = raw as Claim<unknown>;
-      if (c.status === "verified") {
-        if (c.value === null) ctx.addIssue({ code: "custom", message: "verified claim needs a value", path: ["value"] });
+      if (c.status === "known") {
+        if (c.value === null) ctx.addIssue({ code: "custom", message: "known claim needs a value", path: ["value"] });
         if (c.evidence_ids.length === 0) {
-          ctx.addIssue({ code: "custom", message: "verified claim needs at least one evidence id", path: ["evidence_ids"] });
+          ctx.addIssue({ code: "custom", message: "known claim needs at least one evidence id", path: ["evidence_ids"] });
         }
       } else if (c.value !== null) {
         ctx.addIssue({ code: "custom", message: `${c.status} claim must have a null value`, path: ["value"] });
@@ -113,7 +113,7 @@ export function claim<T extends z.ZodType>(value: T) {
 }
 
 export interface Claim<T> {
-  status: "verified" | "unknown" | "not_applicable";
+  status: "known" | "unknown" | "not_applicable";
   value: T | null;
   evidence_ids: string[];
   note?: string;

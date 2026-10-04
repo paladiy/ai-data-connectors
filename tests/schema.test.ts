@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Evidence } from "../schemas/common.ts";
 import { Source } from "../schemas/source.ts";
-import { fixtureOption, fixtureSource, unknown, verified } from "./fixtures/factory.ts";
+import { fixtureOption, fixtureSource, unknown, known } from "./fixtures/factory.ts";
 
 function issues(input: unknown): string[] {
   const result = Source.safeParse(input);
@@ -15,22 +15,23 @@ describe("source schema", () => {
 
   it("rejects invalid enums", () => {
     expect(issues(fixtureSource({ category: "finance" }))).not.toEqual([]);
-    expect(issues(fixtureSource({ publication: "live" }))).not.toEqual([]);
     expect(issues(fixtureSource({ options: [fixtureOption({ method: "magic" })] }))).not.toEqual([]);
-    expect(issues(fixtureSource({ options: [fixtureOption({ maintainer: verified("official") })] }))).not.toEqual([]);
+    expect(issues(fixtureSource({ options: [fixtureOption({ maintainer: known("official") })] }))).not.toEqual([]);
   });
 
   it("rejects unknown keys", () => {
+    expect(issues(fixtureSource({ publication: "published" }))).not.toEqual([]);
+    expect(issues(fixtureSource({ review: null }))).not.toEqual([]);
     expect(issues(fixtureSource({ rating: 5 }))).toEqual([expect.stringContaining("rating")]);
     expect(issues(fixtureSource({ options: [fixtureOption({ stars: 4 })] }))).not.toEqual([]);
   });
 
-  it("rejects verified claims without evidence or value", () => {
-    const noEvidence = fixtureOption({ access: { status: "verified", value: "read", evidence_ids: [] } });
+  it("rejects known claims without evidence or value", () => {
+    const noEvidence = fixtureOption({ access: { status: "known", value: "read", evidence_ids: [] } });
     expect(issues(fixtureSource({ options: [noEvidence] }))).toEqual([
       expect.stringContaining("options.0.access.evidence_ids"),
     ]);
-    const noValue = fixtureOption({ access: { status: "verified", value: null, evidence_ids: ["fx-docs"] } });
+    const noValue = fixtureOption({ access: { status: "known", value: null, evidence_ids: ["fx-docs"] } });
     expect(issues(fixtureSource({ options: [noValue] }))).not.toEqual([]);
   });
 
@@ -49,10 +50,6 @@ describe("source schema", () => {
     expect(issues(fixtureSource({ slug: "Fixture_Source" }))).not.toEqual([]);
   });
 
-  it("rejects malformed review hashes", () => {
-    const review = { reviewer: "A Person", reviewed_on: "2026-09-02", method: "docs", approved_content_hash: "abc" };
-    expect(issues(fixtureSource({ review }))).not.toEqual([]);
-  });
 });
 
 describe("evidence schema", () => {

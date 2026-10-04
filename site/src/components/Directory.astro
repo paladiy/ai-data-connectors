@@ -37,7 +37,7 @@ const usedCategories = categories.filter((category) =>
   {
     sources.length === 0 ? (
       <p class="directory-empty">
-        A source appears here once its connection options have been verified against cited evidence.
+        No sources have been added yet.
       </p>
     ) : (
       <ul class="directory-list" role="list">
@@ -54,9 +54,8 @@ const usedCategories = categories.filter((category) =>
             <p class="directory-meta">
               <span class="directory-category">{source.category_name}</span>
               <span>
-                {source.verified_routes} verified {source.verified_routes === 1 ? "route" : "routes"}
+                {source.routes} {source.routes === 1 ? "route" : "routes"}
               </span>
-              {!source.published && <span class="directory-draft">Preview</span>}
             </p>
             {source.aliases.length > 0 && (
               <p class="directory-aliases">Also searched as {source.aliases.join(", ")}.</p>
