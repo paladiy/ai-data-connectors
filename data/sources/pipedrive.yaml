@@ -8,11 +8,10 @@ aliases:
   - Pipedrive CRM
 summary: >-
   Pipedrive is a sales CRM that stores deals, contacts, organizations, and activities. To analyze
-  that data in Claude, you can use Pipedrive's own connector in Claude's directory, which reads live
-  data and can create and update records, or scheduled Coupler.io imports, which load one entity at
-  a time into a queryable dataset.
+  that data in Claude, use scheduled Coupler.io imports, which load one entity at a time into a
+  queryable dataset.
 
-meta_description: "Connect Pipedrive deals, contacts, and activities to Claude: Pipedrive's own live connector or scheduled Coupler.io imports."
+meta_description: "Connect Pipedrive deals, contacts, and activities to Claude with scheduled Coupler.io imports."
 
 research:
   searched_on: "2026-10-04"
@@ -26,16 +25,9 @@ research:
     - https://docs.coupler.io/destinations/categories/ai/claude/common-issues
     - https://docs.coupler.io/ai/mcp
     - https://claude.com/connectors/coupler-io
-    - https://claude.com/connectors/pipedrive-mcp
-    - https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
-    - https://support.pipedrive.com/en/article/mcp-claude
-    - https://www.pipedrive.com/en/features/mcp-server
   coverage_note: >-
-    Two routes are covered, from the three researched on 4 October 2026: the Coupler.io data platform
-    and Pipedrive's own connector in Claude's directory. Each route's
-    own documentation was read in full, covering the data available, prerequisites, access, and
-    limits. One disagreement is recorded rather than resolved: Anthropic's directory entry says the
-    Pipedrive connector needs a paid Pipedrive plan, while Pipedrive says every plan can use it.
+    One route is covered, researched on 4 October 2026: the Coupler.io data platform. Its
+    documentation was read in full, covering the data available, prerequisites, access, and limits.
 
 evidence:
   - id: cpl-claude-destination
@@ -121,34 +113,6 @@ evidence:
     publisher: Anthropic
     checked_on: "2026-10-04"
     kind: directory
-    public: true
-  - id: dir-pipedrive
-    url: https://claude.com/connectors/pipedrive-mcp
-    title: Pipedrive in the Claude connectors directory
-    publisher: Anthropic
-    checked_on: "2026-10-04"
-    kind: directory
-    public: true
-  - id: claude-connectors-help
-    url: https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
-    title: Use connectors to extend Claude's capabilities
-    publisher: Anthropic
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-  - id: pipedrive-claude-article
-    url: https://support.pipedrive.com/en/article/mcp-claude
-    title: Pipedrive MCP for Claude
-    publisher: Pipedrive
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-  - id: pipedrive-mcp-feature
-    url: https://www.pipedrive.com/en/features/mcp-server
-    title: Pipedrive MCP server
-    publisher: Pipedrive
-    checked_on: "2026-10-04"
-    kind: vendor_docs
     public: true
 options:
   - id: coupler-io
@@ -326,163 +290,6 @@ options:
         run in Coupler.io, because the preview alone does not confirm what Claude received.
       evidence_ids: [cpl-claude-destination, cpl-claude-issues]
 
-  - id: pipedrive-mcp
-    name: Pipedrive connector
-    provider: Pipedrive
-    method: remote_mcp
-    description: >-
-      Pipedrive's own connector in Claude's directory. Claude calls Pipedrive's hosted MCP endpoint
-      during the conversation, so the data is live, and the same connection can create and update
-      CRM records as well as read them.
-
-    maintainer:
-      status: known
-      value: source_vendor
-      evidence_ids: [dir-pipedrive]
-      note: The directory entry states that it is built and maintained by Pipedrive
-
-    route_status:
-      status: known
-      value: available
-      evidence_ids: [dir-pipedrive, pipedrive-claude-article]
-
-    directory_listing:
-      status: known
-      value: https://claude.com/connectors/pipedrive-mcp
-      evidence_ids: [dir-pipedrive]
-
-    links:
-      overview: https://claude.com/connectors/pipedrive-mcp
-      setup: https://support.pipedrive.com/en/article/mcp-claude
-
-    # Anthropic's help article states where connectors run as a class; Pipedrive names Claude.ai and
-    # Claude Code specifically.
-    surfaces:
-      claude_web:
-        status: known
-        value: supported
-        evidence_ids: [pipedrive-mcp-feature, claude-connectors-help]
-        note: >-
-          Pipedrive documents the connection being made from Claude's Customize and Connectors
-          menus, and Anthropic states web connectors are available to all users on Claude
-      claude_desktop:
-        status: known
-        value: supported
-        evidence_ids: [claude-connectors-help]
-        note: Claude Desktop is named among the apps where web connectors are available, rather than by Pipedrive
-      claude_code:
-        status: known
-        value: supported
-        evidence_ids: [claude-connectors-help]
-        note: >-
-          Anthropic states that connectors work across Claude, Claude Desktop, Claude Code, and the
-          API; Pipedrive's own article documents only the Claude connector menu
-      cowork:
-        status: known
-        value: supported
-        evidence_ids: [claude-connectors-help]
-        note: Cowork is named among the apps where web connectors are available, rather than by Pipedrive
-
-    access:
-      status: known
-      value: read_write
-      evidence_ids: [dir-pipedrive, pipedrive-mcp-feature]
-      note: >-
-        The entry describes creating and updating CRM records in natural language alongside finding
-        deals, contacts, organisations, and activities. Pipedrive states that the assistant can only
-        access and modify data your own user may view and edit, and that all actions are recorded in
-        the change log
-
-    data_available:
-      status: known
-      value:
-        - "Deals: getDeal, getDeals, searchDeals, addDeal"
-        - "People and organisations: getPerson, getPersons, searchPersons, addPerson, getOrganization, getOrganizations, searchOrganization, addOrganization"
-        - "Activities and notes: getActivities, getActivity, addActivity, updateActivity, getNote, getNotes, addNote"
-        - "Leads: searchLeads, convertLeadToDeal, getLeadConversionStatus"
-        - "Pipeline structure: getStage, getStages"
-      evidence_ids: [dir-pipedrive]
-      note: The entry lists 23 tools in total
-
-    history:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: neither the entry nor Pipedrive's documentation states how far back the connector can reach
-
-    refresh:
-      status: not_applicable
-      value: null
-      evidence_ids: [dir-pipedrive, pipedrive-mcp-feature]
-      note: >-
-        There is no import to schedule. Pipedrive states that the assistant works with real-time CRM
-        data rather than delayed syncs, so each question reads the CRM as it stands
-
-    multi_source:
-      status: not_applicable
-      value: null
-      evidence_ids: [dir-pipedrive]
-      note: >-
-        This connector reaches Pipedrive only. Combining it with another system means adding that
-        system's own connector and asking Claude to work across both in the conversation
-
-    prerequisites:
-      status: known
-      value:
-        - A Pipedrive account, and a Claude account on an app where connectors are available
-        - "Anthropic's entry states the connector is available on all paid Pipedrive plans"
-        - "Pipedrive states that all customers on every plan can use it, with usage subject to plan token limits"
-        - On a Claude Team or Enterprise plan, an owner must enable the connector before members can authenticate
-      evidence_ids: [dir-pipedrive, pipedrive-mcp-feature, claude-connectors-help]
-      note: >-
-        The two vendor statements about whether a paid Pipedrive plan is required disagree; both are
-        recorded here rather than resolved
-
-    pricing:
-      status: known
-      value:
-        - Usage is based on token limits included in your Pipedrive plan, and additional tokens can be purchased
-      evidence_ids: [pipedrive-mcp-feature]
-      note: the specific token limit for each plan is not stated
-
-    data_path:
-      status: known
-      value: >-
-        Claude calls Pipedrive's hosted MCP endpoint at https://mcp.pipedrive.ai/mcp and the result
-        comes back into the conversation. Permissions are inherited from your existing Pipedrive
-        role and visibility settings, so Claude can reach only what your own user can, and every
-        action is written to the Pipedrive change log.
-      evidence_ids: [pipedrive-claude-article, pipedrive-mcp-feature]
-
-    limits:
-      status: known
-      value:
-        - "Usage is metered against your plan's token limit"
-        - "Claude may not load all available MCP tools when a conversation starts; Pipedrive documents enabling the setting that loads all tools"
-        - "Results arrive in the conversation rather than in a queryable store, so a long list competes with the rest of the context"
-        - "Pipedrive's own setup article still documents the older manual custom-connector path using the MCP server URL, not the directory entry"
-      evidence_ids: [pipedrive-claude-article, pipedrive-mcp-feature]
-
-    setup_steps:
-      - text: Open the connector's directory entry and add it to Claude, then complete the OAuth sign-in to your Pipedrive account.
-        evidence_ids: [dir-pipedrive]
-
-    claude_configuration:
-      - text: "Or add it from a chat: click the + button in the lower left, hover over Connectors, and select Manage connectors."
-        evidence_ids: [claude-connectors-help]
-      - text: If you need the full tool set, enable the setting that loads all available tools in the connector configuration.
-        evidence_ids: [pipedrive-claude-article]
-      - text: Approve the connector's tool request the first time Claude uses it in a conversation.
-        evidence_ids: [claude-connectors-help]
-
-    sample_query: Find every open deal over 10,000 that has had no activity in the last three weeks, and add a follow-up task to each.
-
-    success_check:
-      text: >-
-        Ask Claude to find a deal you know by name. A working connection answers with that deal's
-        stage and value from your own pipeline rather than asking which CRM you mean.
-      evidence_ids: [dir-pipedrive]
-
 recommendations:
   - job: Analysing sales history at length or alongside other systems
     option_id: coupler-io
@@ -491,28 +298,12 @@ recommendations:
       to fit into the conversation, and one data flow can join Deals with Persons or Organizations
       before Claude sees them.
     evidence_ids: [cpl-mcp, cpl-pipedrive-best]
-  - job: Asking about live pipeline, or letting Claude update records
-    option_id: pipedrive-mcp
-    reason: >-
-      It is Pipedrive's own connector, added from Claude's directory with OAuth, it reads real-time
-      CRM data rather than a sync, and it can create and update records within your existing
-      Pipedrive permissions with every action logged.
-    evidence_ids: [dir-pipedrive, pipedrive-mcp-feature]
 faq:
   - question: Can Claude update my CRM, or only read it?
     answer: >-
-      It depends on the route. Pipedrive's own connector creates and updates deals, people,
-      organisations, activities, and notes, and Pipedrive states that it can only touch data your
-      own user may edit and that every action is recorded in the change log. Coupler.io is read-only
-      against Pipedrive: Claude queries an imported dataset.
-    evidence_ids: [dir-pipedrive, pipedrive-mcp-feature, cpl-mcp]
-  - question: Do I need a paid Pipedrive plan for the official connector?
-    answer: >-
-      The two vendors disagree. Anthropic's directory entry says the connector is available on all
-      paid Pipedrive plans, while Pipedrive's own feature page says all customers on every plan can
-      use it, with usage subject to the token limits included in your plan. Check against your own
-      account before relying on either.
-    evidence_ids: [dir-pipedrive, pipedrive-mcp-feature]
+      Only read it. Coupler.io is read-only against Pipedrive: Claude queries an imported dataset
+      and cannot create or change records.
+    evidence_ids: [cpl-mcp]
   - question: Can I get my Pipedrive reports and forecasts into Claude?
     answer: >-
       Not as reports. Pipedrive's in-app analytics and forecast reports are not available through
@@ -541,8 +332,7 @@ faq:
       On individual Claude Free and Pro plans there is a documented defect where the official
       Coupler.io connector connects but its tools never load, so Claude cannot query the datasets.
       Coupler.io documents a custom connector URL as a workaround and reports that it works on all
-      plans. For Pipedrive's own connector, the equivalent symptom is Claude not loading every tool
-      at the start of a conversation, which its setup article addresses with a configuration setting.
-    evidence_ids: [cpl-claude-free-pro, pipedrive-claude-article]
+      plans.
+    evidence_ids: [cpl-claude-free-pro]
 
 related_source_ids: []

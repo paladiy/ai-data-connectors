@@ -11,10 +11,9 @@ aliases:
 summary: >-
   Google Search Console is Google's free tool for monitoring how a website performs in Google
   Search. Its data covers queries, clicks, impressions, average position, pages, and URL index
-  status. Google offers no MCP server for it, so Claude reaches it through scheduled Coupler.io
-  imports, the hosted GSC PAP service, or a community MCP server you run yourself.
+  status. To analyze it in Claude, use scheduled Coupler.io imports.
 
-meta_description: "Connect Google Search Console queries, clicks, impressions, and index status to Claude: Coupler.io import, GSC PAP, or a community MCP server."
+meta_description: "Connect Google Search Console queries, clicks, impressions, and index status to Claude with scheduled Coupler.io imports."
 
 research:
   searched_on: "2026-10-04"
@@ -29,16 +28,10 @@ research:
     - https://docs.coupler.io/destinations/categories/ai/claude/common-issues
     - https://docs.coupler.io/ai/mcp
     - https://claude.com/connectors/coupler-io
-    - https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
-    - https://gscpap.com/integrations/claude-desktop
-    - https://github.com/russjeffery/google-search-console-mcp
-    - https://support.google.com/webmasters/answer/12919192
   coverage_note: >-
-    Three routes are covered, chosen from the five researched on 4 October 2026: the Coupler.io data
-    platform, the GSC PAP hosted connector, and a community MCP server you can self-host. No Search Console MCP server published by Google was found, and
-    no dedicated Search Console entry was reachable in Claude's connector directory at the obvious
-    address; neither absence can be proven, so both are recorded as not found rather than as
-    non-existent.
+    One route is covered, researched on 4 October 2026: the Coupler.io data platform. No dedicated
+    Search Console entry was reachable in Claude's connector directory at the obvious address; the
+    directory cannot be searched exhaustively, so no claim is made that none exists.
 
 evidence:
   - id: cpl-claude-destination
@@ -132,35 +125,6 @@ evidence:
     checked_on: "2026-10-04"
     kind: directory
     public: true
-  - id: claude-connectors-help
-    url: https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
-    title: Use connectors to extend Claude's capabilities
-    publisher: Anthropic
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-  - id: gscpap-claude
-    url: https://gscpap.com/integrations/claude-desktop
-    title: GSC PAP for Claude Desktop
-    publisher: GSC PAP
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-  - id: gsc-mcp-community
-    url: https://github.com/russjeffery/google-search-console-mcp
-    title: Google Search Console MCP server
-    publisher: Russ Jeffery
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-  - id: gsc-api-export
-    url: https://support.google.com/webmasters/answer/12919192
-    title: Export Search Console data using the Search Console API
-    publisher: Google
-    checked_on: "2026-10-04"
-    kind: vendor_docs
-    public: true
-
 options:
   - id: coupler-io
     name: Coupler.io
@@ -336,300 +300,6 @@ options:
         with the run in Coupler.io, because the preview alone does not confirm what Claude received.
       evidence_ids: [cpl-claude-destination, cpl-claude-issues]
 
-  - id: gsc-pap
-    name: GSC PAP
-    provider: GSC PAP
-    method: remote_mcp
-    description: >-
-      A hosted service built only for Search Console, and strictly read-only. Its main selling
-      point is skipping the Google Cloud setup that a self-hosted server demands.
-
-    maintainer:
-      status: known
-      value: third_party
-      evidence_ids: [gscpap-claude]
-      note: Published by the GSC PAP team
-
-    route_status:
-      status: known
-      value: available
-      evidence_ids: [gscpap-claude]
-      note: Described as being in free public preview
-
-    directory_listing:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: >-
-        the guide describes adding the service as a custom connector or through a config file, and
-        names no Claude directory entry
-
-    links:
-      overview: https://gscpap.com/integrations/claude-desktop
-
-    surfaces:
-      claude_web:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the guide covers Claude Desktop and does not describe a setup for Claude on the web
-      claude_desktop:
-        status: known
-        value: supported
-        evidence_ids: [gscpap-claude]
-        note: >-
-          Two paths are documented: a config-file setup bridged through mcp-remote, and adding the
-          hosted endpoint as a custom connector with OAuth
-      claude_code:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the guide does not name Claude Code
-      cowork:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the guide does not name Cowork
-
-    access:
-      status: known
-      value: read
-      evidence_ids: [gscpap-claude]
-      note: >-
-        It requests the read-only webmasters.readonly scope and states it cannot add or remove
-        sites, submit sitemaps, or request indexing
-
-    data_available:
-      status: known
-      value:
-        - "Verified sites, through a list_sites tool"
-        - "Search analytics: clicks, impressions, CTR, and average position"
-        - "Sitemap status"
-        - "URL inspection results"
-      evidence_ids: [gscpap-claude]
-
-    history:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: >-
-        the guide states no retention window; Search Console's own 16-month limit still governs
-        what the API can return
-
-    refresh:
-      status: not_applicable
-      value: null
-      evidence_ids: [gscpap-claude]
-      note: There is no import to schedule; the service queries the Search Console API on demand
-
-    multi_source:
-      status: not_applicable
-      value: null
-      evidence_ids: [gscpap-claude]
-      note: This service reaches Search Console only
-
-    prerequisites:
-      status: known
-      value:
-        - "A GSC PAP account; you never open the Google Cloud Console, enable an API, or create OAuth credentials, because the service uses its own registered client"
-        - Node.js on the machine, for the Claude Desktop config-file route that runs mcp-remote
-        - "A Claude account; the guide notes the Free plan works with the config-file setup, and that Anthropic limits Free plans to one custom connector"
-      evidence_ids: [gscpap-claude]
-      note: >-
-        The guide contrasts this with a self-hosted server, which it says needs all of those Google
-        Cloud steps and typically takes 30 to 45 minutes the first time
-
-    pricing:
-      status: known
-      value:
-        - Free during the public preview, with no credit card, no trial expiration, and no feature gate
-        - "Rate limits are 60 tool calls per minute and 1,000 per hour per user"
-      evidence_ids: [gscpap-claude]
-
-    data_path:
-      status: known
-      value: >-
-        Claude calls the hosted endpoint at https://mcp.gscpap.com/mcp, either directly as a custom
-        connector with OAuth or locally through the mcp-remote bridge, and the service calls the
-        Search Console API with the read-only scope.
-      evidence_ids: [gscpap-claude]
-
-    limits:
-      status: known
-      value:
-        - "Read-only: it cannot add or remove sites, submit sitemaps, or request indexing"
-        - "60 tool calls per minute and 1,000 per hour per user"
-        - "A third party holds the Search Console authorisation"
-        - "The Claude Desktop config-file route needs Node.js, because Claude Desktop only starts MCP servers it can run as a local command"
-      evidence_ids: [gscpap-claude]
-
-    setup_steps:
-      - text: Create a GSC PAP account and authorise it against the Search Console property you want to read.
-        evidence_ids: [gscpap-claude]
-
-    claude_configuration:
-      - text: "Add https://mcp.gscpap.com/mcp in Claude Desktop as a custom connector and approve the consent screen."
-        evidence_ids: [gscpap-claude]
-      - text: Or use the Claude Desktop config file, which starts the mcp-remote bridge through npx and needs Node.js installed.
-        evidence_ids: [gscpap-claude]
-
-    sample_query: Show me clicks and average position for my top 20 queries this month against last month.
-
-    success_check:
-      text: >-
-        Ask Claude to list your sites. The list_sites tool returning your verified properties
-        confirms the connection and the read-only scope are working.
-      evidence_ids: [gscpap-claude]
-
-  - id: search-console-mcp
-    name: Search Console MCP server (community)
-    provider: Russ Jeffery
-    method: local_mcp
-    description: >-
-      An open community server that runs locally, self-hosted, or on Cloudflare Workers. The only
-      route here that lets you hold your own Google credentials, at the cost of a Google Cloud
-      setup and some sharp edges its author documents candidly.
-
-    maintainer:
-      status: known
-      value: community
-      evidence_ids: [gsc-mcp-community]
-      note: >-
-        Maintained by an individual. The author states the public deployment is a personal one with
-        no uptime commitment, and advises deploying your own copy for anything you depend on
-
-    route_status:
-      status: known
-      value: available
-      evidence_ids: [gsc-mcp-community]
-
-    directory_listing:
-      status: not_applicable
-      value: null
-      evidence_ids: [gsc-mcp-community]
-      note: Configured by hand as a local server or a custom connector, not added from Claude's directory
-
-    links:
-      overview: https://github.com/russjeffery/google-search-console-mcp
-
-    surfaces:
-      claude_web:
-        status: known
-        value: supported
-        evidence_ids: [gsc-mcp-community]
-        note: Added in the Claude web or desktop UI under Settings, Connectors, Add custom connector
-      claude_desktop:
-        status: known
-        value: supported
-        evidence_ids: [gsc-mcp-community]
-        note: The setup flow produces ready-to-paste Claude Desktop configuration
-      claude_code:
-        status: known
-        value: supported
-        evidence_ids: [gsc-mcp-community]
-        note: The setup flow also produces ready-to-paste Claude Code configuration
-      cowork:
-        status: unknown
-        value: null
-        evidence_ids: []
-        note: the documentation does not name Cowork
-
-    access:
-      status: known
-      value: read_write
-      evidence_ids: [gsc-mcp-community]
-      note: >-
-        The scope is yours to choose: webmasters for full access or webmasters.readonly for
-        read-only. Writes are limited to submitting and unsubmitting sitemaps; site verification
-        and the sites.add and sites.delete methods are deliberately not exposed
-
-    data_available:
-      status: known
-      value:
-        - "list_sites and get_site: properties you can access, with permission levels"
-        - "query_search_analytics: clicks, impressions, CTR, and position, grouped, filtered, and paged"
-        - "compare_search_analytics: two periods with per-row and total deltas"
-        - "list_sitemaps and get_sitemap: submitted sitemaps and their submitted and indexed counts"
-        - "submit_sitemap and delete_sitemap: submit, resubmit, or unsubmit a sitemap"
-        - "inspect_url and inspect_urls: index status for one URL, or up to 25 concurrently with a coverage-state summary"
-        - "check_setup: whether credentials are present, still valid, and which properties they reach"
-      evidence_ids: [gsc-mcp-community]
-
-    history:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: >-
-        the documentation states no retention window; Search Console's own 16-month limit still
-        governs what the API can return
-
-    refresh:
-      status: not_applicable
-      value: null
-      evidence_ids: [gsc-mcp-community]
-      note: There is no import to schedule; the server queries the Search Console API on demand
-
-    multi_source:
-      status: not_applicable
-      value: null
-      evidence_ids: [gsc-mcp-community]
-      note: This server reaches Search Console only
-
-    prerequisites:
-      status: known
-      value:
-        - A Google Cloud project with the Search Console API enabled
-        - An OAuth client configured on the Google Auth Platform, and the scope you want
-        - "One of three deployment shapes: stdio locally through npx, Streamable HTTP self-hosted, or Cloudflare Workers"
-      evidence_ids: [gsc-mcp-community]
-
-    pricing:
-      status: unknown
-      value: null
-      evidence_ids: []
-      note: no price is stated for the server itself
-
-    data_path:
-      status: known
-      value: >-
-        One codebase runs three ways: locally over stdio, self-hosted over Streamable HTTP, or on
-        Cloudflare Workers. Self-hosted or local, your Google credentials never leave your own
-        infrastructure; using the author's public deployment sends them to someone else's host.
-      evidence_ids: [gsc-mcp-community]
-
-    limits:
-      status: known
-      value:
-        - "While the OAuth consent screen is in Testing, Google expires refresh tokens after seven days, so setup has to be repeated weekly until the app is published"
-        - "Both webmasters scopes are classed as sensitive, so a published but unverified app shows a warning before the consent screen and is capped at 100 users"
-        - "The public deployment is a personal one with no uptime commitment, and using it means sending your credentials to someone else's host"
-        - "Site verification and the sites.add and sites.delete methods are deliberately not exposed"
-      evidence_ids: [gsc-mcp-community]
-
-    setup_steps:
-      - text: Create or select a Google Cloud project and enable the Search Console API for it.
-        evidence_ids: [gsc-mcp-community]
-      - text: Configure an OAuth client on the Google Auth Platform, choosing the webmasters.readonly scope for read-only access or webmasters for full access.
-        evidence_ids: [gsc-mcp-community]
-      - text: Publish the app under Audience so refresh tokens stop expiring every seven days.
-        evidence_ids: [gsc-mcp-community]
-      - text: Choose a deployment shape, running it locally through npx, self-hosting it over Streamable HTTP, or deploying to Cloudflare Workers.
-        evidence_ids: [gsc-mcp-community]
-
-    claude_configuration:
-      - text: "In Claude web or desktop, add the server URL and header under Settings, Connectors, Add custom connector."
-        evidence_ids: [gsc-mcp-community]
-      - text: For Claude Desktop or Claude Code, paste the configuration the setup flow generates for each.
-        evidence_ids: [gsc-mcp-community]
-
-    sample_query: Compare search analytics for the last 28 days against the previous 28 and list the pages with the biggest click deltas.
-
-    success_check:
-      text: >-
-        Run the check_setup tool. It reports whether credentials are present, still valid, and
-        which properties they reach, which separates an auth problem from a permissions one.
-      evidence_ids: [gsc-mcp-community]
-
 recommendations:
   - job: Tracking search performance beyond Google's 16-month window
     option_id: coupler-io
@@ -638,26 +308,7 @@ recommendations:
       stored dataset are the documented way to keep it. Queries then run against that store rather
       than the API, and the data can be joined with GA4 by landing page.
     evidence_ids: [cpl-gsc-faq, cpl-gsc-best, cpl-mcp]
-  - job: Asking live questions with the least setup
-    option_id: gsc-pap
-    reason: >-
-      It is strictly read-only, free during preview, and its own documentation contrasts it with
-      self-hosting: no Google Cloud Console, no API to enable, no OAuth credentials to create.
-    evidence_ids: [gscpap-claude]
-  - job: Keeping your own Google credentials and controlling the host
-    option_id: search-console-mcp
-    reason: >-
-      It is the only researched route you can run locally or self-host, with the OAuth scope your
-      choice, so no third party holds your Search Console authorisation.
-    evidence_ids: [gsc-mcp-community]
 faq:
-  - question: Does Google publish a Search Console MCP server?
-    answer: >-
-      None was found. Google publishes official MCP servers for Analytics and for Google Ads, but
-      no equivalent for Search Console surfaced during this research, which is why the third-party
-      layer here is thicker than for any other source. Google does document the Search Console API
-      as the sanctioned programmatic route.
-    evidence_ids: [gsc-api-export]
   - question: How far back can Claude see my search data?
     answer: >-
       About 16 months, which is Search Console's own retention period, and Discover and Google News
@@ -679,10 +330,9 @@ faq:
     evidence_ids: [cpl-gsc-issues]
   - question: Can Claude submit a sitemap or request indexing?
     answer: >-
-      Sometimes submit, never request indexing. The community server can submit and remove
-      sitemaps. GSC PAP is strictly read-only and states it cannot submit sitemaps or request
-      indexing, and Coupler.io is read-only against Search Console.
-    evidence_ids: [gsc-mcp-community, gscpap-claude, cpl-mcp]
+      No. Coupler.io is read-only against Search Console: Claude queries an imported dataset and
+      cannot submit sitemaps or request indexing.
+    evidence_ids: [cpl-mcp]
   - question: Why can I not just average the CTR and position columns?
     answer: >-
       Because they are already averages. CTR and position are not directly summable across
