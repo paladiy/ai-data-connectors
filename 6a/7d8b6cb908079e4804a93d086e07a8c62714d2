@@ -1,0 +1,25 @@
+llms.txt
+  s_f1b4b4f75af937::t_4b03bf4b467da2 13
+sources/facebook-ads/README.md
+  s_f1b4b4f75af937::t_4b03bf4b467da2 1-387
+sources/facebook-ads/source.yaml
+  s_f1b4b4f75af937::t_4684e8f188246a 1-311
+README.md
+  s_f1b4b4f75af937::t_4b03bf4b467da2 50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "6a7d8b6cb908079e4804a93d086e07a8c62714d2",
+  "prompts": {},
+  "sessions": {
+    "s_f1b4b4f75af937": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "d9259d53-f372-4d00-9958-ad981841763c",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Olexander Paladiy <olexander.paladiy@railsware.com>"
+    }
+  }
+}
