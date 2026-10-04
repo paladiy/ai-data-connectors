@@ -1,0 +1,51 @@
+categories:
+  - id: accounting
+    name: Accounting and finance
+    intro: >-
+      Accounting data answers questions about money that has already moved: invoices, bills,
+      payments, and the reports built from them. Connecting it to Claude is mostly a question of
+      how much transaction-level detail reaches the model, because summary reports rarely explain
+      why a number changed.
+  - id: analytics
+    name: Web and product analytics
+    intro: >-
+      Analytics platforms expose pre-aggregated reports rather than raw event rows, and most apply
+      sampling, cardinality limits, and data-retention windows. When comparing routes, check which
+      dimensions and metrics each one can request and how far back its history goes.
+  - id: ads
+    name: Advertising
+    intro: >-
+      Ad platforms report spend and performance per account, and each has its own attribution
+      settings and reporting delays. The practical differences between connection routes are the
+      report types available, how many accounts can be queried at once, and whether figures can be
+      compared across platforms.
+  - id: crm
+    name: CRM and sales
+    intro: >-
+      CRM data describes pipeline and activity, and it changes throughout the day. The questions
+      worth asking of a connection route are which objects and custom fields it exposes, whether it
+      can read historical stage changes, and whether access is read-only.
+  - id: productivity
+    name: Productivity and spreadsheets
+    intro: >-
+      Files and spreadsheets are the most direct way to get data in front of Claude, and often the
+      least maintainable. Compare how a route handles refreshes, file size limits, and whether the
+      data stays in a place colleagues can also use.
+  - id: email-marketing
+    name: Email marketing
+    intro: >-
+      Email platforms hold campaign, list, and engagement data that is useful alongside revenue
+      data. Routes differ mainly in whether they expose per-campaign metrics, per-contact activity,
+      or both, and in how they treat unsubscribes and personal data.
+  - id: customer-support
+    name: Customer support
+    intro: >-
+      Support data combines ticket volumes with conversation text, so the limits that matter are
+      which fields a route exposes, whether message bodies are included, and how personal data is
+      handled on the way to the model.
+  - id: social
+    name: Social media
+    intro: >-
+      Organic social data is reported separately from paid advertising on most platforms, and the
+      two are rarely available through the same connection. Check which product a route actually
+      covers before relying on it.

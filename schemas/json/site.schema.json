@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tagline": {
+      "type": "string",
+      "minLength": 1
+    },
+    "url": {
+      "type": "string"
+    },
+    "repo": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9-]+\\/[A-Za-z0-9._-]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "maintainer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relationship_confirmed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "relationship_confirmed"
+      ],
+      "additionalProperties": false
+    },
+    "publisher": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Person",
+            "Organization"
+          ]
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "affiliation_statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_overdue_days": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    }
+  },
+  "required": [
+    "name",
+    "tagline",
+    "url",
+    "repo",
+    "maintainer",
+    "publisher",
+    "affiliation_statement",
+    "review_overdue_days"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,26 @@
+# Site metadata. Values marked PLACEHOLDER must be replaced by the owner before launch;
+# `npm run validate -- --production` fails while any of them remain.
+name: Claude Data Connections
+tagline: Compare verified ways to connect a data source to Claude.
+
+# PLACEHOLDER: local-development URL until the owner selects a domain.
+url: http://localhost:4321
+
+# PLACEHOLDER: null until the owner confirms the repository location.
+repo: null
+
+maintainer:
+  name: Olexander Paladiy
+  # PLACEHOLDER: set to true once the owner confirms the current role wording.
+  relationship_confirmed: false
+
+publisher:
+  name: Olexander Paladiy
+  type: Person
+
+affiliation_statement: >-
+  Maintained by Olexander Paladiy, who works at Coupler.io, one of the services listed here. Not
+  affiliated with Anthropic.
+
+review_overdue_days: 90
+
