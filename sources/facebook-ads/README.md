@@ -311,21 +311,21 @@ More from the provider: [Overview](https://docs.coupler.io/sources/category/ppc/
 
 A skill gives the AI tool instructions for a task. It connects no data, so connect Facebook Ads first.
 
-- [Audience analysis](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-audience-analysis): for questions like "Which audiences are working on Meta", "Is my lookalike better than broad", "Is retargeting worth it".
+- [Account settings audit](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-account-settings-audit): for questions like "Audit my Meta ads settings", "Is this account set up right", "I inherited this Facebook account, what's wrong with it".
+- [Account structure and learning phase review](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-account-structure-and-learning-phase-review): for questions like "Is my Meta account built right", "Why are my ad sets stuck in learning", "Do I have too many ad sets".
+- [Audience targeting analysis](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-audience-targeting-analysis): for questions like "Which audiences are working on Meta", "Is my lookalike better than broad", "Is retargeting worth it".
 - [Budget pacing](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-budget-pacing): for questions like "Am I on track with my Meta budget", "Will I overspend this month", "How much should I be spending a day".
 - [Client report](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-client-report): for questions like "What do I tell the client".
-- [Creative analysis](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-creative-analysis): for questions like "Which creative is working on Meta", "Which ads should I put money behind", "What should the next round of creative look like".
+- [Conversion tracking and pixel audit](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-conversion-tracking-and-pixel-audit): for questions like "Can I trust my Meta conversion numbers", "Why does Facebook claim more purchases than Shopify", "Are my conversions double counted".
 - [Creative fatigue](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-creative-fatigue): for questions like "Is my Meta creative burning out", "My CTR is dropping", "My CPMs keep rising".
-- [Performance review](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-performance-review): for questions like "How are my Meta ads doing", "Why did my cost per result go up", "What changed on Facebook this month".
-- [Pixel and attribution audit](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-pixel-and-attribution-audit): for questions like "Can I trust my Meta conversion numbers", "Why does Facebook claim more purchases than Shopify", "Are my conversions double counted".
-- [Placement geo and device](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-placement-geo-and-device): for questions like "Is Audience Network wasting my money", "Should I turn off automatic placements", "How are Reels doing versus Feed".
-- [Settings audit](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-settings-audit): for questions like "Audit my Meta ads settings", "Is this account set up right", "I inherited this Facebook account, what's wrong with it".
-- [Structure and learning review](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-structure-and-learning-review): for questions like "Is my Meta account built right", "Why are my ad sets stuck in learning", "Do I have too many ad sets".
-- [Waste and scale](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-waste-and-scale): for questions like "Where am I wasting money on Meta", "Which ad sets should I pause", "What should I turn off".
+- [Creative performance analysis](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-creative-performance-analysis): for questions like "Which creative is working on Meta", "Which ads should I put money behind", "What should the next round of creative look like".
+- [Performance report](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-performance-report): for questions like "How are my Meta ads doing", "Why did my cost per result go up", "What changed on Facebook this month".
+- [Placement location and device breakdown](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-placement-location-and-device-breakdown): for questions like "Is Audience Network wasting my money", "Should I turn off automatic placements", "How are Reels doing versus Feed".
+- [Wasted spend and scaling](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/facebook-ads/facebook-ads-wasted-spend-and-scaling): for questions like "Where am I wasting money on Meta", "Which ad sets should I pause", "What should I turn off".
 - [Marketing analytics](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/marketing-analytics): for questions like "Why did conversions drop", "Which channel has best ROI", "Where should I spend more". Also needs Google Ads, LinkedIn Ads, Google Analytics 4 (GA4).
 - [PPC analytics](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/ppc-analytics): for questions like "How are my ads performing", "Weekly PPC report", "Why did CPA spike". Also needs Google Ads.
 
-Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `cf24f3e`.
+Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `16831af`.
 
 ## Questions
 

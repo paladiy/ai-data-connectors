@@ -294,10 +294,10 @@ More from the provider: [Overview](https://docs.coupler.io/sources/category/crm/
 
 A skill gives the AI tool instructions for a task. It connects no data, so connect Pipedrive first.
 
-- [Ai citation to revenue funnel](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/geo/ai-citation-to-revenue-funnel): for questions like "Which of our pages do ChatGPT, Perplexity or Gemini cite", "Does our AI search visibility bring traffic, signups or sales", "Is our Peec visibility worth anything". Also needs Peec AI, Google Analytics 4 (GA4), Google Search Console, Shopify, WooCommerce, HubSpot, Salesforce, Stripe, Paddle.
+- [Ai search citations to revenue](https://github.com/coupler-io/skills/tree/main/marketing-and-ads/geo/ai-search-citations-to-revenue): for questions like "Which of our pages do ChatGPT, Perplexity or Gemini cite", "Does our AI search visibility bring traffic, signups or sales", "Is our Peec visibility worth anything". Also needs Peec AI, Google Analytics 4 (GA4), Google Search Console, Shopify, WooCommerce, HubSpot, Salesforce, Stripe, Paddle.
 - [Sales analytics](https://github.com/coupler-io/skills/tree/main/sales/sales-analytics): for questions like "How is the pipeline", "Win rate by segment", "Sales cycle". Also needs Salesforce, HubSpot, Close.com, Zoho CRM.
 
-Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `cf24f3e`.
+Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `16831af`.
 
 ## Questions
 

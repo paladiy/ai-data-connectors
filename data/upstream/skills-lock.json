@@ -1,8 +1,8 @@
 {
   "repo": "coupler-io/skills",
-  "commit_sha": "cf24f3e3dac682ebe4e00f0461bcb3acd50605db",
+  "commit_sha": "16831afe50e5ec4b58d5b14ee568d501cf70fc43",
   "path": "skills-index.json",
-  "sha256": "de02277fd81830a8a8e4f79fe13dc588606503c7801abb5324f2c5403448e1e0",
-  "retrieved_on": "2026-10-04",
+  "sha256": "a4225bce784082e8cc523ae0039faa2a78429a9205eb09d287c7f1756a3519d2",
+  "retrieved_on": "2026-10-24",
   "skill_count": 86
 }
