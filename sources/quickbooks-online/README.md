@@ -294,7 +294,7 @@ A skill gives the AI tool instructions for a task. It connects no data, so conne
 
 - [Finance analytics](https://github.com/coupler-io/skills/tree/main/finance/finance-analytics): for questions like "How is revenue trending", "Gross margin", "MRR breakdown". Also needs Xero, Oracle NetSuite, Stripe, Sage.
 
-Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `cf24f3e`.
+Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `d25f3b3`.
 
 ## Questions
 
