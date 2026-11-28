@@ -293,8 +293,12 @@ More from the provider: [Overview](https://docs.coupler.io/sources/category/fina
 A skill gives the AI tool instructions for a task. It connects no data, so connect QuickBooks Online first.
 
 - [Finance analytics](https://github.com/coupler-io/skills/tree/main/finance/finance-analytics): for questions like "How is revenue trending", "Gross margin", "MRR breakdown". Also needs Xero, Oracle NetSuite, Stripe, Sage.
+- [Balance sheet and working capital](https://github.com/coupler-io/skills/tree/main/finance/quickbooks/quickbooks-balance-sheet-and-working-capital): for questions like "How much working capital do we have in QuickBooks", "Where is our cash tied up", "What's our current ratio". Also needs QuickBooks Reports.
+- [Books health and close check](https://github.com/coupler-io/skills/tree/main/finance/quickbooks/quickbooks-books-health-and-close-check): for questions like "Are our QuickBooks books clean", "Can I trust the numbers in QuickBooks", "Are we ready to close the month in QuickBooks". Also needs QuickBooks Reports.
+- [Budget vs actual variance](https://github.com/coupler-io/skills/tree/main/finance/quickbooks/quickbooks-budget-vs-actual-variance): for questions like "Are we on budget in QuickBooks", "How did we do against budget last month", "Which costs are over budget". Also needs QuickBooks Reports.
+- [Multi entity consolidation](https://github.com/coupler-io/skills/tree/main/finance/quickbooks/quickbooks-multi-entity-consolidation): for questions like "Combine our QuickBooks companies", "Group P&L across all our QuickBooks entities", "Consolidated balance sheet for the group". Also needs QuickBooks Reports.
 
-Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `cf24f3e`.
+Skills list taken from [coupler-io/skills](https://github.com/coupler-io/skills) at commit `1b94038`.
 
 ## Questions
 
